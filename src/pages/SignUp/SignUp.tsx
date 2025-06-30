@@ -11,9 +11,12 @@ function SignUp() {
     <div className="bg-gray-100 min-h-screen flex flex-col ">
       <Header />
       <div className="flex items-center  bg-gradient-to-r from-green1 to-green2">
-        {/* Container chia 2 bên */}
+
+        {/* Container*/}
+
         <div className=" flex flex-row md:flex-row items-center py-12 w-full max-w-7xl justify-around mx-auto ">
-          {/* Logo bên trái */}
+            
+          {/* Logo*/}
           <div className="flex-[3] flex justify-center items-center w-full mb-8 md:mb-0">
             <img
             src={logo_big}
@@ -21,9 +24,11 @@ function SignUp() {
             alt="logo"
             />
           </div>
+
           {/* Form */}
           <div className="flex-1 w-full min-w-[500px] max-w-md bg-white rounded-2xl shadow-lg p-8 md:ml-20">
             <form className="space-y-4">
+
               {/* Họ tên */}
               <div className="flex gap-4">
                 <div className="flex-1">
