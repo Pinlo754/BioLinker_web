@@ -20,8 +20,9 @@ const routers = createBrowserRouter([
   {
     path: "/about", 
     element: <About />,
-  },{
-    path: "/not-found",
+  },
+  {
+    path: "*",
     element: <NotFound />,
   },
   
