@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import Header from "../../components/sections/Header";
-import Footer from "../../components/sections/footer";
+import Footer from "../../components/sections/Footer";
 import { FaEyeSlash } from "react-icons/fa";
 import logo_big from "../../assets/logo_big.png";
 
