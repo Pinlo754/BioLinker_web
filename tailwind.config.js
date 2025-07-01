@@ -8,6 +8,10 @@ module.exports = {
       fontFamily: {
         helvetica: ['Helvetica', 'Arial', 'sans-serif'],
       },
+      colors: {
+        green1: "#16C875",
+        green2: "#6CDFAB",
+      },
     },
   },
   plugins: [],
