@@ -27,7 +27,7 @@ const routers = createBrowserRouter([
     element: <NotFound />,
   },
   {
-    path: "/market",
+    path: "/marketplace",
     element: <Market />,
   },
   
