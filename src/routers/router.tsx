@@ -5,6 +5,8 @@ import NotFound from "../pages/NotFound/NotFoundScreen";
 import Login from "../pages/Login/Login";
 import SignUp from "../pages/SignUp/SignUp";
 import Market from "../pages/Market/Market";
+import TemplateDetail from "../pages/TemplateDetail/TemplateDetail";
+
 const routers = createBrowserRouter([
   {
     path: "/",
@@ -30,7 +32,10 @@ const routers = createBrowserRouter([
     path: "/marketplace",
     element: <Market />,
   },
-  
+  {
+    path: "/template-detail",
+    element: <TemplateDetail />,
+  },
 ]);
 
 export default routers;

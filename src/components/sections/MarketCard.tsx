@@ -40,7 +40,7 @@ export default function MarketCard({
               <span className="inline-block bg-gray-100 text-green-400 text-lg px-6 py-2 rounded-full font-medium">
                 Premium
               </span>
-              <a href="#" className="hover:text-green-400 font-medium inline-block text-lg px-2 py-2" >
+              <a href="/template-detail" className="hover:text-green-400 font-medium inline-block text-lg px-2 py-2" >
                 Edit Now
               </a>
             </div>
