@@ -6,6 +6,7 @@ import Login from "../pages/Login/Login";
 import SignUp from "../pages/SignUp/SignUp";
 import Market from "../pages/Market/Market";
 import TemplateDetail from "../pages/TemplateDetail/TemplateDetail";
+import MyCollection from "../pages/MyCollection/MyCollection";
 
 const routers = createBrowserRouter([
   {
@@ -35,6 +36,10 @@ const routers = createBrowserRouter([
   {
     path: "/template-detail",
     element: <TemplateDetail />,
+  },
+  {
+    path: "/my-collection",
+    element: <MyCollection />,
   },
 ]);
 
