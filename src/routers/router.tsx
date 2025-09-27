@@ -5,6 +5,9 @@ import NotFound from "../pages/NotFound/NotFoundScreen";
 import Login from "../pages/Login/Login";
 import SignUp from "../pages/SignUp/SignUp";
 import Market from "../pages/Market/Market";
+import TemplateDetail from "../pages/TemplateDetail/TemplateDetail";
+import MyCollection from "../pages/MyCollection/MyCollection";
+
 const routers = createBrowserRouter([
   {
     path: "/",
@@ -27,10 +30,17 @@ const routers = createBrowserRouter([
     element: <NotFound />,
   },
   {
-    path: "/market",
+    path: "/marketplace",
     element: <Market />,
   },
-  
+  {
+    path: "/template-detail",
+    element: <TemplateDetail />,
+  },
+  {
+    path: "/my-collection",
+    element: <MyCollection />,
+  },
 ]);
 
 export default routers;

@@ -1,4 +1,4 @@
-import Footer from "../../components/sections/footer";
+import Footer from "../../components/sections/Footer";
 import Header from "../../components/sections/Header";
 import { FaLock } from "react-icons/fa";
 import useLogin from "./useLogin";

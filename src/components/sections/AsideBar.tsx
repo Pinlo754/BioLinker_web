@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { FaChevronDown } from "react-icons/fa";
+import { ChevronDown } from "lucide-react";
 
 export default function AsideBar() {
   // State cho accordion
@@ -13,8 +13,39 @@ export default function AsideBar() {
     job: false,
   });
 
-  // Hàm toggle accordion
+  // Options
+  const aiOptions = ["Only-AI Generated", "Exclude-AI Generated", "All"] as const;
+  const orientationOptions = [
+    "Horizontal",
+    "Vertical",
+    "Square",
+    "Panoramic",
+    "Mobile",
+    "Desktop",
+  ] as const;
+
   const toggle = (key: keyof typeof open) => setOpen((o) => ({ ...o, [key]: !o[key] }));
+
+  // Checkbox selections
+  const [selectedAi, setSelectedAi] = useState<string[]>([]);
+  const [selectedOrientation, setSelectedOrientation] = useState<string[]>([]);
+
+  const toggleSelection = (section: "ai" | "orientation", value: string) => {
+    if (section === "ai") {
+      setSelectedAi((prev) =>
+        prev.includes(value) ? prev.filter((v) => v !== value) : [...prev, value]
+      );
+    } else if (section === "orientation") {
+      setSelectedOrientation((prev) =>
+        prev.includes(value) ? prev.filter((v) => v !== value) : [...prev, value]
+      );
+    }
+  };
+
+  const clearAll = () => {
+    setSelectedAi([]);
+    setSelectedOrientation([]);
+  };
 
   return (
     <aside className="w-full max-w-xs bg-white min-h-screen px-4 py-6 flex flex-col gap-4">
@@ -35,13 +66,18 @@ export default function AsideBar() {
           onClick={() => toggle("ai")}
         >
           AI Generated
-          {FaChevronDown ({className:`ml-2 transition-transform ${open.ai ? "rotate-180" : ""}`})}
+          <ChevronDown className={`ml-2 transition-transform ${open.ai ? "rotate-180" : ""}`} />
         </button>
         {open.ai && (
           <div className="mt-4 flex flex-col gap-3">
-            {["Only-AI Generated", "Exclude-AI Generated", "All"].map((txt) => (
+            {aiOptions.map((txt) => (
               <label key={txt} className="flex items-center gap-3 text-gray-700 text-lg">
-                <input type="checkbox" checked readOnly className="accent-green-400 w-6 h-6" />
+                <input
+                  type="checkbox"
+                  className="accent-green-400 w-6 h-6"
+                  checked={selectedAi.includes(txt)}
+                  onChange={() => toggleSelection("ai", txt)}
+                />
                 {txt}
               </label>
             ))}
@@ -56,13 +92,18 @@ export default function AsideBar() {
           onClick={() => toggle("orientation")}
         >
           Orientation
-          {FaChevronDown ({className:`ml-2 transition-transform ${open.orientation ? "rotate-180" : ""}`})}
+          <ChevronDown className={`ml-2 transition-transform ${open.orientation ? "rotate-180" : ""}`} />
         </button>
         {open.orientation && (
           <div className="mt-4 flex flex-col gap-3">
-            {["Horizontal", "Vertical", "Square", "Panoramic", "Mobile", "Desktop"].map((txt) => (
+            {orientationOptions.map((txt) => (
               <label key={txt} className="flex items-center gap-3 text-gray-700 text-lg">
-                <input type="checkbox" checked readOnly className="accent-green-400 w-6 h-6" />
+                <input
+                  type="checkbox"
+                  className="accent-green-400 w-6 h-6"
+                  checked={selectedOrientation.includes(txt)}
+                  onChange={() => toggleSelection("orientation", txt)}
+                />
                 {txt}
               </label>
             ))}
@@ -77,7 +118,7 @@ export default function AsideBar() {
           onClick={() => toggle("color")}
         >
           Color
-          {FaChevronDown ({className:`ml-2 transition-transform ${open.color ? "rotate-180" : ""}`})}
+          <ChevronDown className={`ml-2 transition-transform ${open.color ? "rotate-180" : ""}`} />
         </button>
         {open.color && (
           <div className="mt-4 flex flex-wrap gap-3">
@@ -98,7 +139,7 @@ export default function AsideBar() {
           onClick={() => toggle("people")}
         >
           People
-          {FaChevronDown ({className:`ml-2 transition-transform ${open.people ? "rotate-180" : ""}`})}
+          <ChevronDown className={`ml-2 transition-transform ${open.people ? "rotate-180" : ""}`} />
         </button>
         {open.people && (
           <div className="mt-4 flex flex-col gap-3">
@@ -110,7 +151,7 @@ export default function AsideBar() {
                 type="button"
               >
                 Gender
-                {FaChevronDown ({className:`ml-2 transition-transform ${open.gender ? "rotate-180" : ""}`})}
+                <ChevronDown className={`ml-2 transition-transform ${open.gender ? "rotate-180" : ""}`} />
               </button>
               {open.gender && (
                 <input
@@ -128,7 +169,7 @@ export default function AsideBar() {
                 type="button"
               >
                 Age
-                {FaChevronDown ({className:`ml-2 transition-transform ${open.age ? "rotate-180" : ""}`})}
+                <ChevronDown className={`ml-2 transition-transform ${open.age ? "rotate-180" : ""}`} />
               </button>
               {open.age && (
                 <input
@@ -146,7 +187,7 @@ export default function AsideBar() {
                 type="button"
               >
                 Job
-                {FaChevronDown ({className:`ml-2 transition-transform ${open.job ? "rotate-180" : ""}`})}
+                <ChevronDown className={`ml-2 transition-transform ${open.job ? "rotate-180" : ""}`} />
               </button>
               {open.job && (
                 <input
@@ -165,7 +206,7 @@ export default function AsideBar() {
         <button className="w-full py-3 rounded-full bg-gradient-to-r from-green-400 to-green-500 text-white text-lg font-semibold shadow hover:opacity-90 transition">
           Apply
         </button>
-        <button className="w-full py-3 rounded-full bg-gray-100 text-gray-400 text-lg font-semibold shadow">
+        <button className="w-full py-3 rounded-full bg-gray-100 text-gray-400 text-lg font-semibold shadow" onClick={clearAll}>
           Clear all
         </button>
       </div>
