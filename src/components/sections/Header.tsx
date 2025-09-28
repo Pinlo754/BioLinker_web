@@ -46,7 +46,8 @@ const Header = () => {
           Support
         </button>
         <button className="w-[125px] h-[44px] rounded-[60px] bg-gradient-to-r from-[#16C875] to-[#6CDFAB] flex justify-center items-center">
-          <div className="w-[121px] h-[40px] rounded-[64px] px-[40px] py-[18px] bg-white font-helvetica font-bold text-[14px] leading-[14px] flex justify-center items-center">
+          <div className="w-[121px] h-[40px] rounded-[64px] px-[40px] py-[18px] bg-white font-helvetica font-bold text-[14px] leading-[14px] flex justify-center items-center"
+               onClick={() => navigate("/login")}>
             Login
           </div>
         </button>
