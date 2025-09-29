@@ -124,8 +124,8 @@ const SignUp = () => {
           </div>
 
           {/* Form */}
-          <div className="flex-1 w-full min-w-[500px] max-w-lg bg-white rounded-2xl shadow-lg p-8 md:ml-20">
-            <form className="space-y-4">
+          <div className="flex-[1] w-full min-w-[500px] max-w-xl bg-white rounded-2xl shadow-lg p-8 md:ml-10">
+            <form className="space-y-6">
 
               {/* Họ tên */}
               <div className="flex gap-4">
