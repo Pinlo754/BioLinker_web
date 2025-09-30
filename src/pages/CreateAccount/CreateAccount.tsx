@@ -8,9 +8,9 @@ const CreateAccount = () => {
     const { 
         validEmail, 
         validSubmit, 
-        setValidEmail, 
-        setValidSubmit,
-        handleCreateAccount
+        handleCreateAccount,
+        email,
+        setEmail
     } = useCreateAccount();
     return (
         <div className="bg-gray-100 min-h-screen flex flex-col ">
@@ -25,7 +25,7 @@ const CreateAccount = () => {
                     <div className="flex-[3] flex ml-10 items-center w-full mb-8 md:mb-0">
                         <img
                             src={logo_big}
-                            className="w-[65%]"
+                            className="w-[63%]"
                             alt="logo"
                         />
                     </div>
@@ -64,14 +64,18 @@ const CreateAccount = () => {
 
 							<div className="space-y-2">
 								<p className="text-center text-xl text-gray-600">Enter your email address to create an account.</p>
-								<label htmlFor="email" className="block text-lg text-gray-700">Your email</label>
-								<input id="email" name="email" type="email" placeholder="name@example.com" className="w-full mb-2 rounded-xl border border-gray-300 px-4 py-3 focus:outline-none focus:ring-2 focus:ring-emerald-400 focus:border-emerald-400" />
+								<label className="block text-lg text-gray-700">Your email</label>
+								<input type="email" placeholder="name@example.com" 
+                                        className="w-full mb-2 rounded-xl border border-gray-300 px-4 py-3 focus:outline-none focus:ring-2 focus:ring-emerald-400 focus:border-emerald-400" 
+                                        onChange={(e) => setEmail(e.target.value)}
+                                        value={email}
+                                />
                                 {validEmail === false && validSubmit ? <span className=" ml-4 mt-6 text-red-500 text-base">Please enter a valid email address</span > : ""}
 							</div>
 
 							<button type="button" 
                                     className="w-full rounded-full bg-gradient-to-r from-emerald-400 to-green-500 px-6 py-4 text-white text-2xl font-semibold shadow-md hover:brightness-95 transition"
-                                    onClick={handleCreateAccount}
+                                    onClick={() => handleCreateAccount(email)}
                             >
 								Create an account
 							</button>

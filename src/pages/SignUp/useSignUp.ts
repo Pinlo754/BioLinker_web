@@ -1,4 +1,6 @@
 import { useState } from "react";
+import { postData } from "../../api/fetchers";
+import { useNavigate } from "react-router-dom";
 const useSignUp = () => {
 // Month Options
   const monthOptions = [
@@ -37,6 +39,18 @@ const validatePassword = (password: string) => {
     return hasMinLength && hasLetters && hasNumbers && hasSymbols
 };
 
+// Check Date
+const checkDate = () => {
+    const d = parseInt(day);
+    const m = parseInt(month);
+    const y = parseInt(year);
+    const date = new Date(y, m-1, d);
+    if (date.getDate() !== d || date.getMonth() !== m - 1 || date.getFullYear() !== y) {
+        return { isValid: false, error: 'Invalid date' };
+      }
+    return { isValid: true, date: date };
+}
+
 // State
 const [showPassword, setShowPassword] = useState(false);
 const [gender, setGender] = useState("");
@@ -49,23 +63,43 @@ const [agree, setAgree] = useState(false);
 const [password, setPassword] = useState("");
 const [checkField, setCheckField] = useState(false);
 const [validDate, setValidDate] = useState(false);
-const checkDate = () => {
-    const d = parseInt(day);
-    const m = parseInt(month);
-    const y = parseInt(year);
-    const date = new Date(y, m-1, d);
-    if (date.getDate() !== d || date.getMonth() !== m - 1 || date.getFullYear() !== y) {
-        return { isValid: false, error: 'Invalid date' };
-      }
-    return { isValid: true, date: date };
-}
+const [loading, setLoading] = useState(false);
+const [errorMessage, setErrorMessage] = useState("");
+const [error, setError] = useState(false);
+const navigate = useNavigate();
+
 // Handle Sign Up    
-const handleSignUp = () => {
+const handleSignUp = async (email: string) => {
     setCheckField(true)
     const { isValid, date } = checkDate();
     setValidDate(isValid);
     if(isValid && validatePassword(password) && agree && firstName !== "" && lastName !== "" && gender !== ""){
-        console.log(gender, month, day, year, agree, firstName, lastName, password, date);
+        console.log(gender, month, day, year, agree, firstName, lastName, password, date, email);
+        const data = {
+            email: email,
+            password: password,
+            firstName: firstName,
+            lastName: lastName,
+            // gender: gender,
+            // month: month,
+            // day: day,
+            // year: year,
+            // agree: agree,
+        }
+        setLoading(true);
+        try {
+            const response = await postData("Auth/Register", data);
+            if(response){
+                navigate("/");
+            }
+        } catch (error) {
+            setErrorMessage("Something went wrong, please try again later");
+            setError(true)
+        } finally {
+            setLoading(false);
+        }
+    } else {
+        setErrorMessage("Please fill in all fields");
     }
 }
 return { 
@@ -90,7 +124,10 @@ return {
     setPassword, 
     checkField, 
     handleSignUp,
-    validDate
+    validDate,
+    loading,
+    errorMessage,
+    error
     };
 }
 export default useSignUp;

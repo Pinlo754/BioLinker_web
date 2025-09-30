@@ -5,8 +5,10 @@ import { FaEyeSlash } from "react-icons/fa";
 import logo_big from "../../assets/logo_big.png";
 import background from "../../assets/background.jpg";
 import Select from 'react-select';
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import useSignUp from "./useSignUp";
+import { LoadingOverlay } from "../../components/ui/loading";
+import ErrorOverlay from "../../components/ui/error";
 
 const SignUp = () => {
     const { 
@@ -31,7 +33,10 @@ const SignUp = () => {
       setPassword, 
       checkField, 
       handleSignUp,
-      validDate
+      validDate,
+      loading,
+      errorMessage,
+      error
     } = useSignUp();
     // Custom Styles Select
     const customStyles = {
@@ -100,7 +105,7 @@ const SignUp = () => {
       })
     };
 
-
+  const { email } = useLocation().state || {};
   return (
     <div className="bg-gray-100 min-h-screen flex flex-col ">
       <Header />
@@ -261,12 +266,14 @@ const SignUp = () => {
               {/* Nút đăng ký */}
               <button
                 type="button"
-                onClick={() => handleSignUp()}
+                onClick={() => handleSignUp(email as string)}
+                disabled={loading}
                 className="w-full py-3 rounded-full bg-gradient-to-r from-[#16C875] to-[#6CDFAB] text-white text-lg font-semibold mt-2 hover:opacity-90 transition"
               >
                 Sign up
               </button>
-
+              <ErrorOverlay visible={error} message={errorMessage} />
+              <LoadingOverlay visible={loading} message="loading..." />
               {/* Đã có tài khoản */}
               <div className="text-center text-gray-500 text-sm mt-2">
                 Already have an account?

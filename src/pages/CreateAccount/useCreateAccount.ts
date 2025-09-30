@@ -4,13 +4,27 @@ const useCreateAccount = () => {
     const navigate = useNavigate();
     const [validEmail, setValidEmail] = useState(false);
     const [validSubmit, setValidSubmit] = useState(false);
-    const handleCreateAccount = () => {
+    const [email, setEmail] = useState("");
+
+    const checkValidEmail = (email: string) => {
+        const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        return regex.test(email);
+    }
+
+    const handleCreateAccount = (email: string) => {
         setValidSubmit(true);
-        navigate("/signup");
+        if (checkValidEmail(email)) {
+            setValidEmail(true);
+            navigate("/signup", { state: { email: email } });
+        } else {
+            setValidEmail(false);
+        }
     }
     return { 
         validEmail, 
         validSubmit, 
+        email,
+        setEmail,
         setValidEmail, 
         setValidSubmit,
         handleCreateAccount
