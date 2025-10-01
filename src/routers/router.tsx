@@ -8,6 +8,7 @@ import Market from "../pages/Market/Market";
 import TemplateDetail from "../pages/TemplateDetail/TemplateDetail";
 import MyCollection from "../pages/MyCollection/MyCollection";
 import CreateAccount from "../pages/CreateAccount/CreateAccount";
+import Analyticss from "../pages/Analytics/Analytics";
 
 const routers = createBrowserRouter([
   {
@@ -45,7 +46,11 @@ const routers = createBrowserRouter([
   {
     path: "/create-account",
     element: <CreateAccount />,
-  }
+  },
+  {
+    path: "/analytics",
+    element: <Analyticss />,
+  },
 ]);
 
 export default routers;
