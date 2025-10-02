@@ -3,8 +3,8 @@ import { useState } from "react";
 import { ResponsiveContainer, AreaChart, Area, BarChart, Bar, XAxis, YAxis, ReferenceLine, Cell } from "recharts";
 
 const Analytics = () => {
+    const avatar = "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=600&q=80"
     const [isHovered, setIsHovered] = useState(false);
-
     // Monthly bars data reused to compute highlighted bar height
     type MonthlyBar = { m: string; value: number; highlight?: boolean };
     const monthlyBars: MonthlyBar[] = [
@@ -232,7 +232,7 @@ const Analytics = () => {
                 <div className="bg-white rounded-[24px] shadow-sm border border-slate-100 p-6">
                     <div className="flex flex-col items-center text-center">
                         <img
-                            src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?q=80&w=400&auto=format&fit=crop"
+                            src={avatar}
                             alt="avatar"
                             className="w-40 h-40 rounded-full object-cover border-4 border-white shadow"
                         />

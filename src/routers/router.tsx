@@ -7,8 +7,7 @@ import SignUp from "../pages/SignUp/SignUp";
 import Market from "../pages/Market/Market";
 import TemplateDetail from "../pages/TemplateDetail/TemplateDetail";
 import MyCollection from "../pages/MyCollection/MyCollection";
-import CreateAccount from "../pages/CreateAccount/CreateAccount";
-import Analyticss from "../pages/Analytics/Analytics";
+import CreateAccount from "../pages/CreateAccount/CreateAccount";;
 
 const routers = createBrowserRouter([
   {
@@ -40,16 +39,12 @@ const routers = createBrowserRouter([
     element: <TemplateDetail />,
   },
   {
-    path: "/my-collection",
+    path: "/my_collection",
     element: <MyCollection />,
   },
   {
     path: "/create-account",
     element: <CreateAccount />,
-  },
-  {
-    path: "/analytics",
-    element: <Analyticss />,
   },
 ]);
 
