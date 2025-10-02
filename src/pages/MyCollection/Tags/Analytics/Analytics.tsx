@@ -1,68 +1,98 @@
 import { useState } from "react";
-// If not installed yet, run: npm i recharts
 import { ResponsiveContainer, AreaChart, Area, BarChart, Bar, XAxis, YAxis, ReferenceLine, Cell } from "recharts";
+import useAnalytics from "./useAnalytics";
 
 const Analytics = () => {
-    const avatar = "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=600&q=80"
-    const [isHovered, setIsHovered] = useState(false);
-    // Monthly bars data reused to compute highlighted bar height
-    type MonthlyBar = { m: string; value: number; highlight?: boolean };
-    const monthlyBars: MonthlyBar[] = [
-        { m: 'Jan', value: 52 },
-        { m: 'Feb', value: 200 },
-        { m: 'Mar', value: 140 },
-        { m: 'Apr', value: 180 },
-        { m: 'May', value: 120 },
-        { m: 'Jun', value: 220, highlight: true },
-        { m: 'Jul', value: 110 },
-        { m: 'Aug', value: 210 },
-        { m: 'Sep', value: 70 },
-        { m: 'Oct', value: 170 },
-        { m: 'Nov', value: 110 },
-        { m: 'Dec', value: 180 },
-    ];
-    const weeklyViewsSeries: { day: string; value: number }[] = [
-        { day: 'Mon', value: 90 },
-        { day: 'Tue', value: 30 },
-        { day: 'Wed', value: 120 },
-        { day: 'Thu', value: 60 },
-        { day: 'Fri', value: 110 },
-        { day: 'Sat', value: 140 },
-        { day: 'Sun', value: 20 },
-    ];
-    const clampBarHeight = (value: number) => Math.max(24, Math.min(220, value));
-    const highlightedBar = monthlyBars.find(b => b.highlight);
-    const monthlyBarsData = monthlyBars.map(b => ({ month: b.m, value: b.value, highlight: !!b.highlight }));
-    const linkList = [                            { name: 'Facebook', 
+    // const avatar = "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=600&q=80"
+    // // Monthly bars data reused to compute highlighted bar height
+    // type MonthlyBar = { m: string; value: number; highlight?: boolean };
+    // const monthlyBars: MonthlyBar[] = [
+    //     { m: 'Jan', value: 52 },
+    //     { m: 'Feb', value: 200 },
+    //     { m: 'Mar', value: 140 },
+    //     { m: 'Apr', value: 180 },
+    //     { m: 'May', value: 120 },
+    //     { m: 'Jun', value: 220, highlight: true },
+    //     { m: 'Jul', value: 110 },
+    //     { m: 'Aug', value: 210 },
+    //     { m: 'Sep', value: 70 },
+    //     { m: 'Oct', value: 170 },
+    //     { m: 'Nov', value: 110 },
+    //     { m: 'Dec', value: 180 },
+    // ];
+    // const weeklyViewsSeries: { day: string; value: number }[] = [
+    //     { day: 'Mon', value: 90 },
+    //     { day: 'Tue', value: 30 },
+    //     { day: 'Wed', value: 120 },
+    //     { day: 'Thu', value: 60 },
+    //     { day: 'Fri', value: 110 },
+    //     { day: 'Sat', value: 140 },
+    //     { day: 'Sun', value: 20 },
+    // ];
+    // const clampBarHeight = (value: number) => Math.max(24, Math.min(220, value));
+    // const highlightedBar = monthlyBars.find(b => b.highlight);
+    // const monthlyBarsData = monthlyBars.map(b => ({ month: b.m, value: b.value, highlight: !!b.highlight }));
+    // // Series data for cards (value-driven)
+    // const newViewsSeries: number[] = [12, 22, 15, 26, 20, 30, 18, 24];
+    // const viewThisMonthSeries: number[] = [48, 40, 56, 36, 64, 20];
+    // const interactionsSeries: number[] = [32, 24, 26, 18, 20, 30, 14, 22, 36, 30];
+    // const interactionsData = interactionsSeries.map((value, idx) => ({ idx, value }));
+    const { highlightedBar, monthlyBarsData, newViewsSeries, viewThisMonthSeries, interactionsData, avatar, weeklyViewsSeries } = useAnalytics()
+    const linkList = [                            
+        { name: 'Facebook', 
         date: '01 Junly 2025', 
         color: 'bg-emerald-100', 
         icon: (
-          <svg viewBox="0 0 24 24" className="w-5 h-5 text-emerald-500" fill="currentColor">
-              <path d="M22 12c0-5.52-4.48-10-10-10S2 6.48 2 12c0 5 3.66 9.13 8.44 9.88v-6.99H7.9V12h2.54V9.8c0-2.5 1.49-3.88 3.77-3.88 1.09 0 2.24.2 2.24.2v2.46h-1.26c-1.24 0-1.62.77-1.62 1.56V12h2.76l-.44 2.89h-2.32v6.99C18.34 21.13 22 17 22 12z"/>
-          </svg>
+            <svg width="41" height="41" viewBox="0 0 41 41" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M36.7811 20.1625C36.7811 10.9993 29.3443 3.5625 20.1811 3.5625C11.0179 3.5625 3.58105 10.9993 3.58105 20.1625C3.58105 28.1969 9.29146 34.8867 16.8611 36.4305V25.1425H13.5411V20.1625H16.8611V16.0125C16.8611 12.8087 19.4673 10.2025 22.6711 10.2025H26.8211V15.1825H23.5011C22.5881 15.1825 21.8411 15.9295 21.8411 16.8425V20.1625H26.8211V25.1425H21.8411V36.6795C30.2241 35.8495 36.7811 28.7779 36.7811 20.1625Z" fill="url(#paint0_linear_940_12825)"/>
+                <defs>
+                    <linearGradient id="paint0_linear_940_12825" x1="3.58105" y1="20.121" x2="37.7258" y2="20.121" gradientUnits="userSpaceOnUse">
+                        <stop stopColor="#16C875"/>
+                        <stop offset="1" stop-color="#6CDFAB"/>
+                    </linearGradient>
+                </defs>
+            </svg>
       )},
       { name: 'Instagram', 
         date: '01 Junly 2025', 
         color: 'bg-rose-100', 
         icon: (
-          <svg viewBox="0 0 24 24" className="w-5 h-5 text-rose-500" fill="currentColor">
-              <path d="M7 2C4.24 2 2 4.24 2 7v10c0 2.76 2.24 5 5 5h10c2.76 0 5-2.24 5-5V7c0-2.76-2.24-5-5-5H7zm10 2c1.66 0 3 1.34 3 3v10c0 1.66-1.34 3-3 3H7c-1.66 0-3-1.34-3-3V7c0-1.66 1.34-3 3-3h10zm-5 3.5A5.5 5.5 0 1 0 17.5 13 5.51 5.51 0 0 0 12 7.5zm6-1.75a1.25 1.25 0 1 0 1.25 1.25A1.25 1.25 0 0 0 18 5.75z"/>
-          </svg>
-      )},
+            <svg width="41" height="41" viewBox="0 0 41 41" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M5.24121 18.9812C5.24121 12.7213 5.24121 9.59055 7.18673 7.64669C9.13225 5.70283 12.2614 5.70117 18.5212 5.70117H21.8412C28.1011 5.70117 31.2318 5.70117 33.1757 7.64669C35.1196 9.59221 35.1212 12.7213 35.1212 18.9812V22.3012C35.1212 28.561 35.1212 31.6918 33.1757 33.6357C31.2302 35.5795 28.1011 35.5812 21.8412 35.5812H18.5212C12.2614 35.5812 9.13059 35.5812 7.18673 33.6357C5.24287 31.6901 5.24121 28.561 5.24121 22.3012V18.9812Z" stroke="url(#paint0_linear_940_12824)" strokeWidth="3.32"/>
+                <path d="M27.6511 15.6616C29.0263 15.6616 30.1411 14.5468 30.1411 13.1716C30.1411 11.7965 29.0263 10.6816 27.6511 10.6816C26.2759 10.6816 25.1611 11.7965 25.1611 13.1716C25.1611 14.5468 26.2759 15.6616 27.6511 15.6616Z" fill="url(#paint1_linear_940_12824)"/>
+                <path d="M20.1812 25.6202C22.9316 25.6202 25.1612 23.3905 25.1612 20.6402C25.1612 17.8898 22.9316 15.6602 20.1812 15.6602C17.4308 15.6602 15.2012 17.8898 15.2012 20.6402C15.2012 23.3905 17.4308 25.6202 20.1812 25.6202Z" stroke="url(#paint2_linear_940_12824)" strokeWidth="3.32"/>
+                <defs>
+                    <linearGradient id="paint0_linear_940_12824" x1="5.24121" y1="20.6412" x2="35.9715" y2="20.6412" gradientUnits="userSpaceOnUse">
+                        <stop stop-color="#16C875"/>
+                        <stop offset="1" stop-color="#6CDFAB"/>
+                    </linearGradient>
+                    <linearGradient id="paint1_linear_940_12824" x1="25.1611" y1="13.1716" x2="30.2828" y2="13.1716" gradientUnits="userSpaceOnUse">
+                        <stop stop-color="#16C875"/>
+                        <stop offset="1" stop-color="#6CDFAB"/>
+                    </linearGradient>
+                    <linearGradient id="paint2_linear_940_12824" x1="15.2012" y1="20.6402" x2="25.4446" y2="20.6402" gradientUnits="userSpaceOnUse">
+                        <stop stop-color="#16C875"/>
+                        <stop offset="1" stop-color="#6CDFAB"/>
+                    </linearGradient>
+                </defs>
+            </svg>
+        )},
       { name: 'Tiktok', 
         date: '01 Junly 2025', 
         color: 'bg-emerald-100', 
         icon: (
-          <svg viewBox="0 0 24 24" className="w-5 h-5 text-emerald-500" fill="currentColor">
-              <path d="M16 3h2a6 6 0 0 0 6 6v2a7.99 7.99 0 0 1-6-2v7a6 6 0 1 1-6-6h2a4 4 0 1 0 4 4V3z"/>
-          </svg>
-      )},
+            <svg width="41" height="41" viewBox="0 0 41 41" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M27.8174 10.1832C26.6829 8.88757 26.0576 7.22404 26.0578 5.50195H20.9284V26.086C20.8897 27.2001 20.4196 28.2557 19.6175 29.03C18.8154 29.8042 17.7438 30.2366 16.629 30.236C14.2718 30.236 12.313 28.3104 12.313 25.92C12.313 23.0648 15.0686 20.9234 17.9072 21.8032V16.5576C12.1802 15.794 7.16699 20.2428 7.16699 25.92C7.16699 31.4478 11.7486 35.382 16.6124 35.382C21.8248 35.382 26.0578 31.149 26.0578 25.92V15.4786C28.1378 16.9723 30.635 17.7737 33.1958 17.7694V12.64C33.1958 12.64 30.075 12.7894 27.8174 10.1832Z" fill="url(#paint0_linear_940_12823)"/>
+                <defs>
+                    <linearGradient id="paint0_linear_940_12823" x1="7.16699" y1="20.442" x2="33.9365" y2="20.442" gradientUnits="userSpaceOnUse">
+                        <stop stop-color="#16C875"/>
+                        <stop offset="1" stop-color="#6CDFAB"/>
+                    </linearGradient>
+                </defs>
+            </svg>
+        )},
     ];
-    // Series data for cards (value-driven)
-    const newViewsSeries: number[] = [12, 22, 15, 26, 20, 30, 18, 24];
-    const viewThisMonthSeries: number[] = [48, 40, 56, 36, 64, 20];
-    const interactionsSeries: number[] = [32, 24, 26, 18, 20, 30, 14, 22, 36, 30];
-    const interactionsData = interactionsSeries.map((value, idx) => ({ idx, value }));
+
 
     const computeBarHeights = (values: number[], maxPixelHeight: number): number[] => {
         if (values.length === 0) return [];
@@ -79,7 +109,7 @@ const Analytics = () => {
                                 hover:shadow-emerald-500/50
                                 hover:before:translate-y-[40%]
                                 before:absolute before:inset-0 
-                                before:bg-emerald-500 
+                                before:bg-emerald-500/50 
                                 before:translate-y-full 
                                 before:transition-transform 
                                 before:duration-1000 
@@ -107,12 +137,12 @@ const Analytics = () => {
                 </button>
 
                 {/* New Views */}
-                <button className=" relative overflow-hidden bg-white rounded-[24px] shadow-xl border border-slate-100 p-6 flex items-center gap-4
+                <button className=" relative overflow-hidden bg-white rounded-[24px] shadow-xl border border-slate-100 py-6 px-2 flex justify-around gap-2
                                 hover:text-white before:content-['']
                                 hover:shadow-emerald-500/50
                                 hover:before:translate-y-[40%]
                                 before:absolute before:inset-0 
-                                before:bg-emerald-500 
+                                before:bg-emerald-500/50 
                                 before:translate-y-full 
                                 before:transition-transform 
                                 before:duration-1000 
@@ -132,13 +162,13 @@ const Analytics = () => {
                             <path d="M12 12c2.21 0 4-1.79 4-4S14.21 4 12 4 8 5.79 8 8s1.79 4 4 4zm0 2c-3.33 0-10 1.67-10 5v1h20v-1c0-3.33-6.67-5-10-5z" />
                         </svg>
                     </div>
-                    <div className="relative z-10 flex-1">
-                        <p className="text-slate-400 font-medium text-start">New Views</p>
+                    <div className="relative z-10 flex-[2/3]">
+                        <p className="text-slate-400 font-medium text-base text-start">New Views</p>
                         <p className="text-xl font-extrabold text-start text-slate-900">111</p>
                     </div>
-                    <div className="relative z-10 h-10 w-24 flex items-end gap-1">
+                    <div className="relative z-10 h-10 w-20 flex items-end gap-1">
                         {computeBarHeights(newViewsSeries, 40).map((h, idx) => (
-                            <span key={idx} className="w-1.5 rounded-sm bg-white/80" style={{ height: `${h}px` }} />
+                            <span key={idx} className="w-1.5 rounded-sm bg-emerald-500/80" style={{ height: `${h}px` }} />
                         ))}
                     </div>
                 </button>
@@ -149,7 +179,7 @@ const Analytics = () => {
                                 hover:shadow-emerald-500/50
                                 hover:before:translate-y-[40%]
                                 before:absolute before:inset-0 
-                                before:bg-emerald-500 
+                                before:bg-emerald-500/50 
                                 before:translate-y-full 
                                 before:transition-transform 
                                 before:duration-1000 

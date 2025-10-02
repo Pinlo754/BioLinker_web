@@ -27,8 +27,20 @@ const useAnalytics = () => {
     const clampBarHeight = (value: number) => Math.max(24, Math.min(220, value));
     const highlightedBar = monthlyBars.find(b => b.highlight);
     const monthlyBarsData = monthlyBars.map(b => ({ month: b.m, value: b.value, highlight: !!b.highlight }));
+    const newViewsSeries: number[] = [12, 22, 15, 26, 20, 30, 18, 24];
+    const viewThisMonthSeries: number[] = [48, 40, 56, 36, 64, 20];
+    const interactionsSeries: number[] = [32, 24, 26, 18, 20, 30, 14, 22, 36, 30];
+    const interactionsData = interactionsSeries.map((value, idx) => ({ idx, value }));
+    const avatar = "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=600&q=80"
     return {
         monthlyBars,
+        highlightedBar,
+        monthlyBarsData,
+        newViewsSeries,
+        viewThisMonthSeries,
+        interactionsData,
+        avatar,
+        weeklyViewsSeries
     }
 }
 
