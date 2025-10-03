@@ -22,7 +22,7 @@ const Account = () => {
             <Header/>
             <main className="flex-1 w-full  flex">
                 {/* Left sidebar */}
-                <aside className="w-full max-w-xs bg-gradient-to-b from-green1 to-green2 min-h-screen pt-5 flex flex-col gap-4">
+                <aside className="w-full max-w-xs bg-gradient-to-br from-green1 to-green2 min-h-screen pt-5 flex flex-col gap-4">
                     <div className="flex flex-col gap-2">
                         {menuComponent.map((item) => (
                             <button
@@ -39,7 +39,7 @@ const Account = () => {
                     </div>
                 </aside>
                 {/* Main content */}
-                <div className="w-full ">
+                <div className="w-full bg-gradient-to-br from-green1">
                     <ActiveTabView />
                 </div>
             </main>
