@@ -7,7 +7,8 @@ import SignUp from "../pages/SignUp/SignUp";
 import Market from "../pages/Market/Market";
 import TemplateDetail from "../pages/TemplateDetail/TemplateDetail";
 import MyCollection from "../pages/MyCollection/MyCollection";
-import CreateAccount from "../pages/CreateAccount/CreateAccount";;
+import CreateAccount from "../pages/CreateAccount/CreateAccount";import Account from "../pages/Account/Account";
+;
 
 const routers = createBrowserRouter([
   {
@@ -45,6 +46,10 @@ const routers = createBrowserRouter([
   {
     path: "/create-account",
     element: <CreateAccount />,
+  },
+  {
+    path: "/account",
+    element: <Account />,
   },
 ]);
 
