@@ -1,3 +1,4 @@
+
 import React from "react";
 import Header from "../../components/sections/Header";
 import Footer from "../../components/sections/Footer";
@@ -148,14 +149,17 @@ const SignUp = () => {
                   <input
                     onChange={(e) => setLastName(e.target.value)}
                     type="text"
+
                     placeholder="Enter your profile name"
                     className={`w-full border  rounded-xl px-4 py-3 text-gray-700 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-green-300 ${checkField && lastName === "" ? "border-red-500" : "border-gray-300"}`}
+
                   />
                 </div>
               </div>
 
-              {/* Giới tính */}
+              {/* Email */}
               <div>
+
                 <label className="block mb-1 text-gray-700">
                   What's your gender?
                   {checkField && gender === "" ? <span className=" ml-2 text-red-500">(*)</span> : ""}
@@ -222,6 +226,7 @@ const SignUp = () => {
                     />
                   </div>
                 </div>
+
               </div>
 
               {/* Password */}
@@ -232,20 +237,23 @@ const SignUp = () => {
                     type={showPassword ? "text" : "password"}
                     onChange={(e) => setPassword(e.target.value)}
                     placeholder="Enter your password"
+
                     className={`w-full border  rounded-xl px-4 py-3 text-gray-700 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-green-300 pr-16 ${checkField && !validatePassword(password) ? "border-red-500" : "border-gray-300"}`}
                   ></input>
+
                   <button
                     type="button"
                     className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 flex items-center gap-1"
                     onClick={() => setShowPassword((v) => !v)}
                     tabIndex={-1}
                   >
-                    {FaEyeSlash({className:"w-5 h-5"})}
-                    <span className="ml-1 text-sm">Hide</span>
+                    {FaEyeSlash({ className: "w-5 h-5" })}
+                    <span className="ml-1 text-sm">{showPassword ? "Hide" : "Show"}</span>
                   </button>
                 </div>
                 <div className="text-gray-400 text-xs mt-1">
                   Use 8 or more characters with a mix of letters, numbers & symbols
+
                   {checkField && !validatePassword(password) ? <span className=" ml-2 text-red-500">(*)</span> : ""}
                 </div>
               </div>
@@ -258,7 +266,9 @@ const SignUp = () => {
                   onChange={() => setAgree((v) => !v)}
                   className="accent-green-500 mt-1"
                 />
+
                 <label className={`text-black text-sm ${checkField && !agree ? "text-red-500" : "text-black"}`}>
+
                   Share my registration data with our content providers for marketing purposes.
                 </label>
               </div>
