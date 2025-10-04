@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 const AddDomain = () => {
-    const [username, setUsername] = useState('Khoa');
+    const [name, setName] = useState('Khoa');
     const [domain, setDomain] = useState('');
     const [showError, setShowError] = useState(false);
     const navigate = useNavigate();
@@ -13,7 +13,7 @@ const AddDomain = () => {
             return;
         }
         // Handle continue logic here
-        navigate('/signup/add-bio', { state: { username: username, domain: domain } } );
+        navigate('/signup/select-platform', { state: { username: name, domain: domain } } );
     };
 
     const handleBack = () => {
@@ -22,17 +22,17 @@ const AddDomain = () => {
 
     const handleSkip = () => {
         // Handle skip logic here
-        navigate('/signup/add-bio', { state: { username: username, domain: '' } } );
+        navigate('/signup/select-platform', { state: { username: name, domain: '' } } );
     };
     return {
-        username,
+        name,
         domain,
         showError,
         navigate,
         handleContinue,
         handleBack,
         handleSkip,
-        setUsername,
+        setName,
         setDomain,
         setShowError
     }

@@ -2,9 +2,13 @@ import React from 'react';
 import Button from '../../../components/ui/button';
 import logo from "../../../assets/logo.png";
 import useAddDomain from './useAddDomain';
+import { useLocation } from 'react-router-dom';
 const AddDomain = () => {
-const { username, domain, showError, navigate, handleContinue, handleBack, handleSkip, setUsername, setDomain, setShowError } = useAddDomain();
-
+const { username } = useLocation().state || { username: '' };
+const { domain, showError, navigate, handleContinue, handleBack, handleSkip,  setDomain, setShowError, setName } = useAddDomain();
+if(username) {
+setName(username);
+}
     return (
         <div className="min-h-screen bg-white ">
             {/* Header Section */}
@@ -18,6 +22,8 @@ const { username, domain, showError, navigate, handleContinue, handleBack, handl
                       onClick={() => navigate("/")}
                     />
                 </button>
+
+                {/* Progress Bar */}
                 <div className="w-full max-w-md mx-auto px-6 align-middle">
                     <div className="flex space-x-2">
                         {/* Step 1 - Completed */}
@@ -35,9 +41,6 @@ const { username, domain, showError, navigate, handleContinue, handleBack, handl
                     Welcome, {username}!
                 </div>
             </div>
-
-            {/* Progress Bar */}
-
 
             {/* Main Content */}
             <div className="flex flex-col items-center justify-center px-6 ">
