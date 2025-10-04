@@ -8,6 +8,10 @@ import Market from "../pages/Market/Market";
 import TemplateDetail from "../pages/TemplateDetail/TemplateDetail";
 import MyCollection from "../pages/MyCollection/MyCollection";
 import CreateAccount from "../pages/CreateAccount/CreateAccount";import Account from "../pages/Account/Account";
+import AddLink from "../pages/SignUp/AddLink/AddLink";
+import AddDomain from "../pages/SignUp/AddDomain/AddDomain";
+import CreateNameBio from "../pages/SignUp/CreateNameBio/CreateNameBio";
+import SelectPlatform from "../pages/SignUp/SelectPlatform/SelectPlatform";
 ;
 
 const routers = createBrowserRouter([
@@ -22,6 +26,22 @@ const routers = createBrowserRouter([
   {
     path: "/signup",
     element: <SignUp />,
+  },
+  {
+    path: "/signup/add-link",
+    element: <AddLink />,
+  },
+  {
+    path: "/signup/add-domain",
+    element: <AddDomain />,
+  },
+  {
+    path: "/signup/create-name-bio",
+    element: <CreateNameBio />,
+  },
+  {
+    path: "/signup/select-platform",
+    element: <SelectPlatform />,
   },
   {
     path: "/about", 
