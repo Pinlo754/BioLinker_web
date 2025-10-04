@@ -7,6 +7,9 @@ import SignUp from "../pages/SignUp/SignUp";
 import Market from "../pages/Market/Market";
 import TemplateDetail from "../pages/TemplateDetail/TemplateDetail";
 import MyCollection from "../pages/MyCollection/MyCollection";
+import Getstarted from "../pages/GetStarted/GetStarted";
+import Dashboard from "../pages/Dashboard/Dashboard";
+import BioBuilder from "../pages/Bio-Edit/page";
 
 const routers = createBrowserRouter([
   {
@@ -41,6 +44,18 @@ const routers = createBrowserRouter([
     path: "/my-collection",
     element: <MyCollection />,
   },
+  {
+    path: "/get-started",
+    element: <Getstarted />,
+  },
+  {
+    path: "/dashboard",
+    element: <Dashboard />,
+  },
+  {
+    path: "/bio-edit",
+    element: <BioBuilder />,
+  }
 ]);
 
 export default routers;
