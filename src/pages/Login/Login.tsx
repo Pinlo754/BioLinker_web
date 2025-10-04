@@ -29,7 +29,7 @@ const Login = () => {
           <div className="flex">
             <div className="font-helvetica">New to Design Space? </div>
             <a
-              href="/signup"
+              href="/create-account"
               className="font-helvetica ml-1 underline text-[#16C875]"
             >
               Sign up for free
