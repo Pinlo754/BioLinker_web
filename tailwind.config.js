@@ -7,6 +7,7 @@ module.exports = {
     extend: {
       fontFamily: {
         helvetica: ['Helvetica', 'Arial', 'sans-serif'],
+        roboto: ['Roboto', 'Arial', 'sans-serif'],
       },
       colors: {
         green1: "#16C875",

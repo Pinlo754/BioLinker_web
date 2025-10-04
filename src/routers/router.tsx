@@ -10,6 +10,11 @@ import MyCollection from "../pages/MyCollection/MyCollection";
 import Getstarted from "../pages/GetStarted/GetStarted";
 import Dashboard from "../pages/Dashboard/Dashboard";
 import BioBuilder from "../pages/Bio-Edit/page";
+import CreateAccount from "../pages/CreateAccount/CreateAccount";import Account from "../pages/Account/Account";
+import AddLink from "../pages/SignUp/AddLink/AddLink";
+import AddDomain from "../pages/SignUp/AddDomain/AddDomain";
+import CreateNameBio from "../pages/SignUp/CreateNameBio/CreateNameBio";
+import SelectPlatform from "../pages/SignUp/SelectPlatform/SelectPlatform";
 
 const routers = createBrowserRouter([
   {
@@ -23,6 +28,22 @@ const routers = createBrowserRouter([
   {
     path: "/signup",
     element: <SignUp />,
+  },
+  {
+    path: "/signup/add-link",
+    element: <AddLink />,
+  },
+  {
+    path: "/signup/add-domain",
+    element: <AddDomain />,
+  },
+  {
+    path: "/signup/create-name-bio",
+    element: <CreateNameBio />,
+  },
+  {
+    path: "/signup/select-platform",
+    element: <SelectPlatform />,
   },
   {
     path: "/about", 
@@ -41,7 +62,7 @@ const routers = createBrowserRouter([
     element: <TemplateDetail />,
   },
   {
-    path: "/my-collection",
+    path: "/my_collection",
     element: <MyCollection />,
   },
   {
@@ -56,6 +77,13 @@ const routers = createBrowserRouter([
     path: "/bio-edit",
     element: <BioBuilder />,
   }
+    path: "/create-account",
+    element: <CreateAccount />,
+  },
+  {
+    path: "/account",
+    element: <Account />,
+  },
 ]);
 
 export default routers;

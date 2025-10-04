@@ -25,11 +25,12 @@ const Login = () => {
           <div className="font-helvetica font-medium text-2xl sm:text-3xl md:text-4xl text-center w-full mb-4">
             Log in
           </div>
-
-          {/* Sign up link */}
-          <div className="flex text-sm sm:text-base mb-6">
-            <span>New to Design Space? </span>
-            <a href="/signup" className="ml-1 underline text-[#16C875]">
+          <div className="flex">
+            <div className="font-helvetica">New to Design Space? </div>
+            <a
+              href="/create-account"
+              className="font-helvetica ml-1 underline text-[#16C875]"
+            >
               Sign up for free
             </a>
           </div>

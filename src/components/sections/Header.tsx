@@ -25,7 +25,6 @@ const Header = () => {
         <button onClick={() => navigate("/")} className="flex items-center">
           <img src={logo} alt="logo" className="h-12 md:h-14" />
         </button>
-
         {/* Desktop Navigation */}
         <nav className="hidden md:flex items-center gap-16 w-1/2 justify-center">
           {navItems.map((item) => (

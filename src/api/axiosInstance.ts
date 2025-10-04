@@ -2,8 +2,8 @@ import axios, { AxiosError, AxiosResponse, InternalAxiosRequestConfig } from "ax
 import { AxiosInstance } from "axios";
 import { handleApiError } from "./errorHandler";
 const axiosInstance: AxiosInstance = axios.create({
-  baseURL: "https://localhost:3000/api/",
-  withCredentials: true,
+  baseURL: "https://biolinker.onrender.com/api/",
+  // withCredentials: true,
   timeout: 60000,
   headers: {
     "Content-Type": "application/json",
