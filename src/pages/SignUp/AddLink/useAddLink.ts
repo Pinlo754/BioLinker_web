@@ -53,6 +53,16 @@ const useAddLink = () => {
         });
     };
 
+    const handleBack = () => {
+        navigate('/signup/select-platform', { 
+            state: { 
+                username: username, 
+                domain: domain,
+                platforms: platforms,
+            } 
+        });
+    };
+
     return {
         username,
         domain,
@@ -67,6 +77,7 @@ const useAddLink = () => {
         updateAdditionalLink,
         handleContinue,
         handleSkip,
+        handleBack,
     }
 }
 export default useAddLink;

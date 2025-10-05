@@ -6,8 +6,7 @@ import Button from "../../../components/ui/button";
 const AddLink = () => {
     const navigate = useNavigate();
     const { 
-        username, 
-        domain, 
+        username,  
         platforms = [], 
         platformLink,
         updatePlatformValue,
@@ -16,6 +15,7 @@ const AddLink = () => {
         updateAdditionalLink,
         handleContinue,
         handleSkip,
+        handleBack,
     } = useAddLink();
     return (
         <div className="min-h-screen bg-white ">
@@ -116,7 +116,7 @@ const AddLink = () => {
             <div className="flex justify-between items-center px-6 py-4">
                 {/* Back Button */}
                 <button
-                    onClick={() => navigate(-1)}
+                    onClick={handleBack}
                     className="px-6 py-3 text-lg hover:text-green-500 font-medium"
                 >
                     Back
