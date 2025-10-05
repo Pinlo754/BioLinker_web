@@ -33,7 +33,7 @@ const useSelectPlatform = () => {
     };
 
     const handleContinue = () => {
-        navigate('/signup/create-name-bio', { 
+        navigate('/signup/add-link', { 
             state: { 
                 username: username, 
                 domain: domain, 
@@ -43,11 +43,19 @@ const useSelectPlatform = () => {
     };
 
     const handleSkip = () => {
-        navigate('/signup/create-name-bio', { 
+        navigate('/signup/add-link', { 
             state: { 
                 username: username, 
                 domain: domain, 
                 platforms: [] 
+            } 
+        });
+    };
+    const handleBack = () => {
+        navigate('/signup/add-domain', { 
+            state: { 
+                username: username, 
+                domain: domain,
             } 
         });
     };
@@ -60,7 +68,8 @@ const useSelectPlatform = () => {
         togglePlatform,
         handleContinue,
         handleSkip,
-        maxSelectedPlatforms
+        maxSelectedPlatforms,
+        handleBack
     }
 };
 

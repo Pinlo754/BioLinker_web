@@ -12,7 +12,8 @@ const SelectPlatform = () => {
         togglePlatform, 
         handleContinue, 
         handleSkip,
-        maxSelectedPlatforms
+        maxSelectedPlatforms,
+        handleBack
     } = useSelectPlatform();
     const navigate = useNavigate(); 
     ;
@@ -104,7 +105,7 @@ const SelectPlatform = () => {
             <div className="flex justify-between items-center px-6 py-4">
                 {/* Back Button */}
                 <button
-                    onClick={() => navigate(-1)}
+                    onClick={handleBack}
                     className="px-6 py-3 text-lg hover:text-green-500 font-medium"
                 >
                     Back

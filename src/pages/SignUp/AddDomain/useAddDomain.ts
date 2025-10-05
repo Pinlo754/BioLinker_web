@@ -12,16 +12,16 @@ const AddDomain = () => {
             setShowError(true);
             return;
         }
-        // Handle continue logic here
+
+        {/*còn logic check domain có tồn tại trong db hay không*/}
         navigate('/signup/select-platform', { state: { username: username, domain: domain } } );
     };
 
     const handleBack = () => {
-        navigate(-1); // Go back to previous page
+        navigate('/signup');
     };
 
     const handleSkip = () => {
-        // Handle skip logic here
         navigate('/signup/select-platform', { state: { username: username, domain: '' } } );
     };
     return {
