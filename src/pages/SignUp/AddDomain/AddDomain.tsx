@@ -1,14 +1,10 @@
-import React from 'react';
+
 import Button from '../../../components/ui/button';
 import logo from "../../../assets/logo.png";
 import useAddDomain from './useAddDomain';
-import { useLocation } from 'react-router-dom';
 const AddDomain = () => {
-const { username } = useLocation().state || { username: '' };
-const { domain, showError, navigate, handleContinue, handleBack, handleSkip,  setDomain, setShowError, setName } = useAddDomain();
-if(username) {
-setName(username);
-}
+
+const { domain, showError, navigate, handleContinue, handleBack, handleSkip,  setDomain, setShowError, username } = useAddDomain();
     return (
         <div className="min-h-screen bg-white ">
             {/* Header Section */}
@@ -92,6 +88,7 @@ setName(username);
                             onClick={handleContinue}
                             width="100%"
                             height="56px"
+                            disabled={domain.trim() === ''}
                         />
                     </div>
                 </div>
