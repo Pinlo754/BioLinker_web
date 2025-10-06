@@ -62,7 +62,7 @@ const routers = createBrowserRouter([
     element: <TemplateDetail />,
   },
   {
-    path: "/my_collection",
+    path: "/my-collection",
     element: <MyCollection />,
   },
   {

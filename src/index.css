@@ -23,7 +23,8 @@ html, body {
 
 html::-webkit-scrollbar,
 body::-webkit-scrollbar {
-  display: none;          
+  display: none;    
+}      
 /* Custom Animations */
 @keyframes fadeInUp {
   from {
