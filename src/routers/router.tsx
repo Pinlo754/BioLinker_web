@@ -62,7 +62,7 @@ const routers = createBrowserRouter([
     element: <TemplateDetail />,
   },
   {
-    path: "/my_collection",
+    path: "/my-collection",
     element: <MyCollection />,
   },
   {
@@ -76,7 +76,8 @@ const routers = createBrowserRouter([
   {
     path: "/bio-edit",
     element: <BioBuilder />,
-  }
+  },
+  {
     path: "/create-account",
     element: <CreateAccount />,
   },

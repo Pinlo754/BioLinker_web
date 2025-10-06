@@ -3,6 +3,10 @@ import Features from "./components/Features";
 import Dot from "../../components/ui/dot";
 import TemplateLayer from "./components/templateLayer";
 import useDasshboard from "./useDashboard";
+import { TemplatesSection } from "./components/template-section";
+import { CollectionOverview } from "./components/collection-overview";
+import { CreateTemplatesSection } from "./components/create-templates-section";
+import { FeaturedCollections } from "./components/featured-collection";
 const Dashboard = () => {
   const { templates } = useDasshboard();
   return (
@@ -61,7 +65,10 @@ const Dashboard = () => {
       </div>
 
       <Features />
-
+      <TemplatesSection />
+      <CollectionOverview />
+      <CreateTemplatesSection />
+      <FeaturedCollections />
       
     </div>
   );

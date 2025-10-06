@@ -29,9 +29,7 @@ const Home = () => {
           </h1>
 
           <p className="mt-4 text-base sm:text-lg lg:text-xl font-helvetica text-gray-600 opacity-80 mb-6">
-            Lorem Ipsum is simply dummy text of the printing and typesetting
-            industry. Lorem Ipsum has been the industry's standard dummy text
-            ever since the 1500s.
+            Biolinker is a smart link-in-bio tool that helps users create a personalized landing page to showcase all their important links, social profiles, and content in one place. Perfect for creators, businesses, and influencers.
           </p>
 
           {/* Start Trial Button */}
