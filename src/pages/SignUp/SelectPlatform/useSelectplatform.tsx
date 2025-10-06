@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 
 const useSelectPlatform = () => {
-    const { username, domain } = useLocation().state || {};
+    const { username, domain, job } = useLocation().state;
     const navigate = useNavigate();
     const [selectedPlatforms, setSelectedPlatforms] = useState<string[]>([]);
     const maxSelectedPlatforms = 4
@@ -37,7 +37,8 @@ const useSelectPlatform = () => {
             state: { 
                 username: username, 
                 domain: domain, 
-                platforms: selectedPlatforms 
+                platforms: selectedPlatforms,
+                job: job
             } 
         });
     };
@@ -47,7 +48,8 @@ const useSelectPlatform = () => {
             state: { 
                 username: username, 
                 domain: domain, 
-                platforms: [] 
+                platforms: [],
+                job: job
             } 
         });
     };
@@ -56,6 +58,7 @@ const useSelectPlatform = () => {
             state: { 
                 username: username, 
                 domain: domain,
+                job: job,
             } 
         });
     };

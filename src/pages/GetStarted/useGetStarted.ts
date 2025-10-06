@@ -40,11 +40,11 @@ const useGetStarted = () => {
       navigate('/signup')
     }
 
-    const handleContinue = (job: string) => {
+    const handleContinue = (choose: string) => {
       navigate('/signup/add-domain', { 
         state: { 
             username: username,
-            job: job,
+            job: choose,
           } 
       });
     }

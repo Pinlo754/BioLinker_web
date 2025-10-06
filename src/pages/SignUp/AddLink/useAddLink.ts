@@ -2,7 +2,7 @@ import { useMemo, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 
 const useAddLink = () => {
-    const { username, domain, platforms } = useLocation().state || {};
+    const { username, domain, platforms, job } = useLocation().state || {};
     const navigate = useNavigate();
     const [showError, setShowError] = useState(false);
     const [additionalLinks, setAdditionalLinks] = useState<string[]>(['', '']);
@@ -32,12 +32,13 @@ const useAddLink = () => {
 
     const handleContinue = () => {
         {/*còn logic check link có thật hay không*/}
+        {/*post link o day*/}
+        
         navigate('/signup/create-name-bio', { 
             state: { 
                 username: username, 
                 domain: domain,
-                additionalLinks: additionalLinks,
-                platformLink: platformLink,
+                job: job
             } 
         });
     };
@@ -47,8 +48,7 @@ const useAddLink = () => {
             state: { 
                 username: username, 
                 domain: domain, 
-                additionalLinks: "",
-                platformLink: "",
+                job: job
             } 
         });
     };
@@ -58,7 +58,7 @@ const useAddLink = () => {
             state: { 
                 username: username, 
                 domain: domain,
-                platforms: platforms,
+                job: job,
             } 
         });
     };

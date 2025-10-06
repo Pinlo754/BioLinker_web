@@ -60,24 +60,6 @@ const Getstarted = () => {
           </button>
         ))}
       </div>
-
-      {/* Bottom Navigation */}
-      <div className="flex justify-between items-center px-6 py-4">
-      {/* Back Button */}
-        <button
-            onClick={handleBack}
-            className="px-6 py-3 text-lg hover:text-green-500 font-medium w-40% h-14"
-        >
-            Back
-        </button>
-        {/* Skip Button */}
-        <button
-            onClick={handleSkip}
-            className="px-6 py-3 text-lg hover:text-green-500 font-medium"
-        >
-            Skip
-        </button>
-      </div>
     </div>
   );
 };

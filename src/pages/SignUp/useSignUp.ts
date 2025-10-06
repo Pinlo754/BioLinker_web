@@ -80,18 +80,15 @@ const handleSignUp = async (email: string) => {
             password: password,
             firstName: firstName,
             lastName: lastName,
-            // gender: gender,
-            // month: month,
-            // day: day,
-            // year: year,
-            // agree: agree,
+            gender: gender,
+            dateOfBirth: date,
         }
         setLoading(true);
         try {
             const response = await postData("Auth/Register", data);
             console.log(response);
             if(response){
-                navigate("/get-started", { state: { username: data.firstName + data.lastName} });
+                navigate("/get-started", { state: { username: data.firstName+ " " + data.lastName} });
             }
         } catch (error) {
             setErrorMessage("Something went wrong, please try again later");

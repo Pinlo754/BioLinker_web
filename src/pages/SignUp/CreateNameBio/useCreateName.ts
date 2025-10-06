@@ -3,33 +3,41 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { postData } from "../../../api/fetchers";
 
 const useCreateName = () => {
-    const { username, domain, additionalLinks, platformLink } = useLocation().state || {};
+    const { username, domain, additionalLinks, platformLink, job } = useLocation().state || {};
     const [displayName, setDisplayName] = useState<string>(username || "");
-    const [bio, setBio] = useState<string>("");
+    const [description, setDescription] = useState<string>("");
     const [avatarUrl, setAvatarUrl] = useState<string>("");
     const fileInputRef = useRef<HTMLInputElement | null>(null);
     const navigate = useNavigate();
     const [error, setError] = useState(false);
     const data = {
         displayName: displayName,
-        bio: bio,
         avatarUrl: avatarUrl,
-        username: username,
         domain: domain,
+        job: job,
+        description: description,
         additionalLinks: additionalLinks,
         platformLink: platformLink,
     }
     const handleContinue = async () => {
         try {
-            const response = true;
-            // await postData("/user/create-name-bio", data);
             console.log(data);
+            const userId = localStorage.getItem("userId");
+            const response = await postData("/Auth/profile-customize", {
+                userId: userId,
+                job: job,
+                nickname: displayName,
+                description: description,
+                customDomain: domain,
+            });
+
+            console.log(response);
             if(response){
                 navigate('/dashboard');
             }
         } catch (error) {
             console.log(error);
-            setError(true);
+            // setError(true);
         }
     }
 
@@ -38,6 +46,9 @@ const useCreateName = () => {
             state: { 
                 username: username, 
                 domain: domain, 
+                job: job,
+                additionalLinks: additionalLinks,
+                platformLink: platformLink,
             } 
         });
     }
@@ -52,12 +63,12 @@ const useCreateName = () => {
         handleBack,
         displayName,
         setDisplayName,
-        bio,
-        setBio,
         avatarUrl,
         setAvatarUrl,
         fileInputRef,
         error,
+        description,
+        setDescription,
     }
 }
 export default useCreateName;

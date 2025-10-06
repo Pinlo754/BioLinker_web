@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 
 const AddDomain = () => {
-    const { username } = useLocation().state || {username: 'khoa'};
+    const { username, job } = useLocation().state;
     const [domain, setDomain] = useState('');
     const [showError, setShowError] = useState(false);
     const navigate = useNavigate();
@@ -12,9 +12,9 @@ const AddDomain = () => {
             setShowError(true);
             return;
         }
-
+        console.log("domain",job);
         {/*còn logic check domain có tồn tại trong db hay không*/}
-        navigate('/signup/select-platform', { state: { username: username, domain: domain } } );
+        navigate('/signup/select-platform', { state: { username: username, domain: domain, job: job } } );
     };
 
     const handleBack = () => {
@@ -22,7 +22,7 @@ const AddDomain = () => {
     };
 
     const handleSkip = () => {
-        navigate('/signup/select-platform', { state: { username: username, domain: '' } } );
+        navigate('/signup/select-platform', { state: { username: username, domain: '', job: job } } );
     };
     return {
         username,

@@ -12,12 +12,12 @@ const CreateNameBio = () => {
         handleContinue, 
         displayName, 
         setDisplayName, 
-        bio, 
-        setBio,
         avatarUrl, 
         setAvatarUrl, 
         fileInputRef,
-        error
+        error,
+        description,
+        setDescription,
     } = useCreateName();
 
     return (
@@ -112,10 +112,10 @@ const CreateNameBio = () => {
                             placeholder="Describe yourself in 160 characters or less"
                             rows={4}
                             maxLength={160}
-                            value={bio}
-                            onChange={(e) => setBio(e.target.value)}
+                            value={description}
+                            onChange={(e) => setDescription(e.target.value)}
                         />
-                        <div className="text-xs text-gray-400 text-right">{bio.length}/160</div>
+                        <div className="text-xs text-gray-400 text-right">{description.length}/160</div>
                     </div>
                 </div>
             </div>
