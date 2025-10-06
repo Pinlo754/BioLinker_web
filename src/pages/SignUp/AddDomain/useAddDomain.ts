@@ -18,7 +18,7 @@ const AddDomain = () => {
     };
 
     const handleBack = () => {
-        navigate('/signup');
+        navigate('/get-started');
     };
 
     const handleSkip = () => {

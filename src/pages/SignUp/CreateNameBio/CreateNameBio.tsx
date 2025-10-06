@@ -131,7 +131,7 @@ const CreateNameBio = () => {
                 </button>
                 <Button
                     onClick={handleContinue}
-                    className="w-40% h-14"
+                    className="w-[50%] h-14 bg-gradient-to-r from-green1 to-green2 text-white rounded-full"
                     disabled={!displayName}
                 >
                     Continue

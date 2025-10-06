@@ -23,8 +23,9 @@ const useCreateName = () => {
         try {
             const response = true;
             // await postData("/user/create-name-bio", data);
+            console.log(data);
             if(response){
-                navigate('/');
+                // navigate('/');
             }
         } catch (error) {
             console.log(error);

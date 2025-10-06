@@ -89,8 +89,9 @@ const handleSignUp = async (email: string) => {
         setLoading(true);
         try {
             const response = await postData("Auth/Register", data);
+            console.log(response);
             if(response){
-                navigate("/signup/add-domain", { state: { username: data.firstName + data.lastName} });
+                navigate("/get-started", { state: { username: data.firstName + data.lastName} });
             }
         } catch (error) {
             setErrorMessage("Something went wrong, please try again later");
