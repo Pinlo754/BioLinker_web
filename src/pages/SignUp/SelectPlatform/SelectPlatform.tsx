@@ -2,7 +2,7 @@ import { useNavigate } from "react-router-dom";
 import useSelectPlatform from "./useSelectplatform";
 import { PLATFORM_ICONS } from "../../../constants/platformIcons";
 import logo from "../../../assets/logo.png";
-import Button from "../../../components/ui/button";
+import {Button} from "../../../components/ui/button";
 
 const SelectPlatform = () => {
     const { 
@@ -50,7 +50,7 @@ const SelectPlatform = () => {
             </div>
 
             {/* Main Content */}
-            <div className="flex-1 flex flex-col items-center justify-start px-6 py-2 ">
+            <div className="flex-1 flex flex-col items-center max-h-[79vh] justify-start px-6 py-2 ">
                 {/* Title */}
                 <div className="text-center mb-8">
                     <h1 className="text-3xl font-bold text-black mb-4">
@@ -62,7 +62,7 @@ const SelectPlatform = () => {
                 </div>
 
                 {/* Platform Grid */}
-                <div className="w-full max-w-2xl mb-8 max-h-[55vh] overflow-y-auto pr-2 scrollbar-hide">
+                <div className="w-full max-w-2xl mb-8 h-full overflow-y-auto pr-2 scrollbar-hide">
                     <div className="grid grid-cols-3 gap-4 animate-fadeInUp">
                         {platforms.map((platform) => (
                             <button
@@ -93,7 +93,7 @@ const SelectPlatform = () => {
                 </div>
 
                 {/* Selection Counter */}
-                <div className="text-sm text-gray-500 mb-8">
+                <div className="text-sm text-gray-500 ">
                     {selectedPlatforms.length} of {maxSelectedPlatforms} platforms selected
                 </div>
 
@@ -106,17 +106,17 @@ const SelectPlatform = () => {
                 {/* Back Button */}
                 <button
                     onClick={handleBack}
-                    className="px-6 py-3 text-lg hover:text-green-500 font-medium"
+                    className="px-6 py-3 text-lg hover:text-green-500 font-medium w-40% h-14"
                 >
                     Back
                 </button>
                 <Button
                     onClick={handleContinue}
-                    text="Continue"
-                    width="40%"
-                    height="56px"
+                    className="w-[50%] h-14 bg-gradient-to-r from-green1 to-green2 text-white rounded-full"
                     disabled={selectedPlatforms.length === 0}
-                />
+                >
+                    Continue
+                </Button>
                 {/* Skip Button */}
                 <button
                     onClick={handleSkip}

@@ -1,5 +1,4 @@
-
-import Button from '../../../components/ui/button';
+import { Button } from '../../../components/ui/button';
 import logo from "../../../assets/logo.png";
 import useAddDomain from './useAddDomain';
 const AddDomain = () => {
@@ -84,12 +83,12 @@ const { domain, showError, navigate, handleContinue, handleBack, handleSkip,  se
                     {/* Continue Button */}
                     <div className="">
                         <Button
-                            text="Continue"
                             onClick={handleContinue}
-                            width="100%"
-                            height="56px"
+                            className="w-full h-14 bg-gradient-to-r from-green1 to-green2 text-white rounded-full"
                             disabled={domain.trim() === ''}
-                        />
+                        >
+                            Continue
+                        </Button>
                     </div>
                 </div>
             </div>

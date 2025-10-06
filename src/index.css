@@ -16,6 +16,14 @@ code {
     monospace;
 }
 
+html, body {
+  scrollbar-width: none;
+  -ms-overflow-style: none; 
+}
+
+html::-webkit-scrollbar,
+body::-webkit-scrollbar {
+  display: none;          
 /* Custom Animations */
 @keyframes fadeInUp {
   from {
@@ -39,4 +47,5 @@ code {
 }
 .scrollbar-hide::-webkit-scrollbar {
   display: none; /* Chrome, Safari, Opera */
+}
 }

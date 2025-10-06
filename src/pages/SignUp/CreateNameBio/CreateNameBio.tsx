@@ -1,7 +1,7 @@
 import { useRef, useState } from "react";
 import useCreateName from "./useCreateName";
 import logo from "../../../assets/logo.png";
-import Button from "../../../components/ui/button";
+import {Button} from "../../../components/ui/button";
 import avatar from "../../../assets/avatar.png";
 import ErrorOverlay from "../../../components/ui/error";
 const CreateNameBio = () => {
@@ -125,17 +125,17 @@ const CreateNameBio = () => {
                 {/* Back Button */}
                 <button
                     onClick={handleBack}
-                    className="px-6 py-3 text-lg hover:text-green-500 font-medium"
+                    className="px-6 py-3 text-lg hover:text-green-500 font-medium w-40% h-14"
                 >
                     Back
                 </button>
                 <Button
                     onClick={handleContinue}
-                    text="Continue"
-                    width="40%"
-                    height="56px"
+                    className="w-40% h-14"
                     disabled={!displayName}
-                />
+                >
+                    Continue
+                </Button>
                 {/* Skip Button */}
                 <button
                     onClick={handleContinue}

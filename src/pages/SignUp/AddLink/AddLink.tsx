@@ -2,7 +2,7 @@ import { useNavigate } from "react-router-dom";
 import logo from "../../../assets/logo.png";
 import useAddLink from "./useAddLink";
 import { PLATFORM_ICONS } from "../../../constants/platformIcons";
-import Button from "../../../components/ui/button";
+import { Button } from "../../../components/ui/button";
 const AddLink = () => {
     const navigate = useNavigate();
     const { 
@@ -117,21 +117,21 @@ const AddLink = () => {
                 {/* Back Button */}
                 <button
                     onClick={handleBack}
-                    className="px-6 py-3 text-lg hover:text-green-500 font-medium"
+                    className="px-6 py-3 text-lg hover:text-green-500 font-medium w-40% h-14"
                 >
                     Back
                 </button>
                 <Button
                     onClick={handleContinue}
-                    text="Continue"
-                    width="40%"
-                    height="56px"
+                    className="w-40% h-14"
                     disabled={Object.values(platformLink || {}).some((value) => value === '') || additionalLinks.length === 0}
-                />
+                >
+                    Continue
+                </Button>
                 {/* Skip Button */}
                 <button
                     onClick={handleSkip}
-                    className="px-6 py-3 text-lg hover:text-green-500 font-medium"
+                    className="px-6 py-3 text-lg hover:text-green-500 font-medium w-40% h-14"
                 >
                     Skip
                 </button>
