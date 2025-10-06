@@ -65,7 +65,7 @@ const Header = () => {
           </button>
           <button
             className="w-33 h-12 p-1 rounded-3xl bg-gradient-to-r from-[#16C875] to-[#6CDFAB] flex justify-center items-center"
-            onClick={() => navigate("/signup")}
+            onClick={() => navigate("/create-account")}
           >
             <div className="w-32 h-10 rounded-3xl px-auto py-4 bg-white font-helvetica font-bold text-md flex justify-center items-center">
               Sign Up

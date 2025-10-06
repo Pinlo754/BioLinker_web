@@ -1,8 +1,8 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 const AddDomain = () => {
-    const [name, setName] = useState('Khoa');
+    const { username, job } = useLocation().state;
     const [domain, setDomain] = useState('');
     const [showError, setShowError] = useState(false);
     const navigate = useNavigate();
@@ -12,27 +12,26 @@ const AddDomain = () => {
             setShowError(true);
             return;
         }
-        // Handle continue logic here
-        navigate('/signup/select-platform', { state: { username: name, domain: domain } } );
+        console.log("domain",job);
+        {/*còn logic check domain có tồn tại trong db hay không*/}
+        navigate('/signup/select-platform', { state: { username: username, domain: domain, job: job } } );
     };
 
     const handleBack = () => {
-        navigate(-1); // Go back to previous page
+        navigate('/get-started');
     };
 
     const handleSkip = () => {
-        // Handle skip logic here
-        navigate('/signup/select-platform', { state: { username: name, domain: '' } } );
+        navigate('/signup/select-platform', { state: { username: username, domain: '', job: job } } );
     };
     return {
-        name,
+        username,
         domain,
         showError,
         navigate,
         handleContinue,
         handleBack,
         handleSkip,
-        setName,
         setDomain,
         setShowError
     }
