@@ -7,18 +7,19 @@ import { FiDownload } from "react-icons/fi";
 import { HiUsers } from "react-icons/hi2";
 import Phone from "../../assets/phone.png";
 import bgImage from "../../assets/background.jpg";
+import TubesCursor from "../../components/sections/banner/TubesCursor";
 
 const Home = () => {
   const navigate = useNavigate();
   return (
-    <div className="flex flex-col min-h-screen">
+    <div className="flex flex-col min-h-screen overflow-hidden">
       <Header />
-
+      <TubesCursor />
       <div
         className="pt-8 mt-10 flex flex-col lg:flex-row items-center justify-between bg-cover bg-center flex-1 px-9 sm:px-16 lg:px-32"
-        style={{ backgroundImage: `url(${bgImage})` }}
+        
       > 
-      <span className="absolute inset-0 top-16 left-10">        
+      <span className="absolute inset-0 top-16 left-10 hidden md:visible lg:visible ">        
         <Dot />
       </span>
 
@@ -28,7 +29,7 @@ const Home = () => {
             BioLinker
           </h1>
 
-          <p className="mt-4 text-base sm:text-lg lg:text-xl font-helvetica text-gray-600 opacity-80 mb-6">
+          <p className="mt-4 text-base sm:text-lg lg:text-xl font-helvetica text-white opacity-80 mb-6">
             Biolinker is a smart link-in-bio tool that helps users create a personalized landing page to showcase all their important links, social profiles, and content in one place. Perfect for creators, businesses, and influencers.
           </p>
 
@@ -41,7 +42,7 @@ const Home = () => {
           </button>
 
           {/* Stats Section */}
-          <div className="flex flex-wrap sm:flex-nowrap sm:flex-row justify-start gap-6 sm:gap-0 sm:justify-between md:items-center mt-12">
+          <div className="text-white flex flex-wrap sm:flex-nowrap sm:flex-row justify-start gap-6 sm:gap-0 sm:justify-between md:items-center mt-12">
             {/* Active Users */}
             <div className="flex gap-3 items-center">
               <button className="w-20 h-20 sm:w-24 sm:h-24 rounded-2xl bg-gradient-to-r from-[#16C875] to-[#6CDFAB] flex justify-center items-center transition-transform duration-300 hover:scale-110 hover:rotate-6">
