@@ -7,7 +7,7 @@ export default function Footer() {
   const languages = ["English (United States)", "Tiếng Việt"];
 
   return (
-    <footer className="bg-white text-black pt-10 pb-4">
+    <footer className="bg-white text-black">
       <div className="container mx-auto px-4">
         {/* Top section */}
         <div className="flex flex-col md:flex-row md:justify-between border-t border-gray-300 pt-10 gap-8">

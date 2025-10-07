@@ -1,4 +1,4 @@
-import type { ProfileData } from "../../page"
+import type { ProfileData } from "../../../../types/bio"
 import { TemplatesPanel } from "./panels/templates-panel"
 import { ContentPanel } from "./panels/content-panel"
 import { BackgroundPanel } from "./panels/background-panel"

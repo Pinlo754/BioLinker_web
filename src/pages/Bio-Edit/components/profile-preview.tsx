@@ -1,11 +1,10 @@
 "use client"
 
-import { getContentValue, type LayoutElement } from "../page"
 import { ProfileComponentRenderer } from "../components/profile-component-renderer"
 import { Card, CardContent } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Share2, Download, ExternalLink } from "lucide-react"
-
+import {getContentValue, type LayoutElement} from "../../../types/bio"
 interface ProfilePreviewProps {
   components: LayoutElement[]
 }

@@ -1,6 +1,6 @@
 "use client"
 
-import type { ProfileData } from "../../../page"
+import type { ProfileData } from "../../../../../types/bio"
 import { Input } from "../../../../../components/ui/input"
 import { Label } from "../../../../../components/ui/label"
 import { Search, LayoutGrid, Rows, Maximize2 } from "lucide-react"

@@ -1,12 +1,11 @@
 "use client"
 
-import type { ProfileData } from "../../../page"
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "../../../../../components/ui/tabs"
 import { Input } from "../../../../../components/ui/input"
 import { Label } from "../../../../../components/ui/label"
 import { Search } from "lucide-react"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../../../../../components/ui/select"
-import { LayoutElement } from "../../../page"
+import { ProfileData, LayoutElement } from "../../../../../types/bio"
 
 interface BackgroundPanelProps {
   profileData: ProfileData

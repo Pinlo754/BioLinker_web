@@ -2,7 +2,7 @@
 
 import type React from "react"
 import { useState, useRef, useCallback } from "react"
-import type { LayoutElement } from "../page"
+import type { LayoutElement } from "../../../types/bio"
 import { ProfileComponentRenderer } from "../components/profile-component-renderer"
 import { Trash2, Move } from "lucide-react"
 import { Button } from "@/components/ui/button"
