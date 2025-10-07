@@ -4,6 +4,7 @@ import logo from "../../../assets/logo.png";
 import {Button} from "../../../components/ui/button";
 import avatar from "../../../assets/avatar.png";
 import ErrorOverlay from "../../../components/ui/error";
+import { LoadingOverlay } from "../../../components/ui/loading";
 const CreateNameBio = () => {
     const { 
         username, 
@@ -13,11 +14,14 @@ const CreateNameBio = () => {
         displayName, 
         setDisplayName, 
         avatarUrl, 
-        setAvatarUrl, 
         fileInputRef,
         error,
         description,
         setDescription,
+        avatarFile,
+        setAvatarFile,
+        setAvatarUrl,
+        loading,
     } = useCreateName();
 
     return (
@@ -86,6 +90,7 @@ const CreateNameBio = () => {
                             const file = e.target.files?.[0];
                             if (!file) return;
                             const url = URL.createObjectURL(file);
+                            setAvatarFile(file);
                             setAvatarUrl(url);
                         }}
                         className="hidden"
@@ -145,6 +150,7 @@ const CreateNameBio = () => {
                 </button>
             </div>
             {error && <ErrorOverlay visible={error} />}
+            {loading && <LoadingOverlay visible={loading} />}
         </div>
     );
 };

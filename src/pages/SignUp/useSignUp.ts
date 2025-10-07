@@ -86,7 +86,8 @@ const handleSignUp = async (email: string) => {
         setLoading(true);
         try {
             const response = await postData("Auth/Register", data);
-            console.log(response);
+            const userId = response.message.userId;
+            localStorage.setItem("userId", userId);
             if(response){
                 navigate("/get-started", { state: { username: data.firstName+ " " + data.lastName} });
             }
