@@ -3,7 +3,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { postData } from "../../../api/fetchers";
 
 const useAddLink = () => {
-    const { username, domain, platforms, job } = useLocation().state || {};
+    const { username, domain, platforms, job, email, password } = useLocation().state || {};
     const navigate = useNavigate();
     const [showError, setShowError] = useState(false);
     const [additionalLinks, setAdditionalLinks] = useState<string[]>(['', '']);
@@ -78,7 +78,9 @@ const useAddLink = () => {
                 state: { 
                     username: username, 
                         domain: domain, 
-                        job: job
+                        job: job,
+                        email: email,
+                        password: password
                     } 
                 });
             }
@@ -92,7 +94,9 @@ const useAddLink = () => {
             state: { 
                 username: username, 
                 domain: domain, 
-                job: job
+                job: job,
+                email: email,
+                password: password
             } 
         });
     };
@@ -103,6 +107,8 @@ const useAddLink = () => {
                 username: username, 
                 domain: domain,
                 job: job,
+                email: email,
+                password: password
             } 
         });
     };

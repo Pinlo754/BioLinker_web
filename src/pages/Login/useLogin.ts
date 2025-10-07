@@ -55,16 +55,13 @@ const useLogin = () => {
         if (res.status === 200) {
           toast.success("Đăng nhập Google thành công!");
           const user = res.data;
-          localStorage.setItem("token", user.token);
-          localStorage.setItem("userId", user.userId);
-          localStorage.setItem("role", user.role);
-
+          localStorage.setItem("user", user);
           if (user.role === "Admin") {
             navigate("/admin");
           } else if (user.role === "Staff") {
             navigate("/staff");
           } else if (user.role === "User") {
-            navigate("/");
+            navigate("/get-started");
           } else {
             navigate("/");
           }
@@ -93,11 +90,10 @@ const useLogin = () => {
         localStorage.setItem("token", res.data.token);
         localStorage.setItem("userId", res.data.userId || "");
         localStorage.setItem("role", res.data.role?.[0] || "User");
-
         toast.success("Login with Facebook successful!");
         if (res.data.role?.[0] === "Admin") navigate("/admin");
         else if (res.data.role?.[0] === "staff") navigate("/staff");
-        else navigate("/");
+        else navigate("/get-started");
       } else {
         toast.error("Facebook login failed: invalid response");
       }
@@ -121,14 +117,11 @@ const useLogin = () => {
       );
       const data = response.data;
       if (data?.token) {
-        localStorage.setItem("token", data.token);
-        localStorage.setItem("userId", data.userId);
-        localStorage.setItem("role", data.role);
-
+        localStorage.setItem("user", data);
         toast.success("Login successful!");
         if (data.role?.[0] === "Admin") navigate("/admin");
         else if (data.role?.[0] === "staff") navigate("/staff");
-        else navigate("/");
+        else navigate("/get-started");
       } else {
         toast.error("Login failed: invalid response from server.");
       }

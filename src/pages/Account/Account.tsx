@@ -18,7 +18,7 @@ const Account = () => {
       };
     const ActiveTabView = tabViewByKey[activeTab];
     return (
-        <div className="h-screen overflow-hidden flex flex-col font-roboto">
+        <div className="h-screen overflow-hidden flex flex-col font-roboto mt-[8vh]">
             <Header/>
             <main className="w-full flex flex-1 overflow-hidden">
                 {/* Left sidebar */}
