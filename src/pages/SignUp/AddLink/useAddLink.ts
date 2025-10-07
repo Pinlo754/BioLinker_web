@@ -78,8 +78,8 @@ const useAddLink = () => {
         }
     };
 
-    const handleContinue = () => {
-        handlePostSuccess();
+    const handleContinue = async () => {
+        await handlePostSuccess();
         console.log(postSuccess);
         if(postSuccess) {
             navigate('/signup/create-name-bio', { 
