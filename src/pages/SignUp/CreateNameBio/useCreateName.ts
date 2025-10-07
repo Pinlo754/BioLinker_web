@@ -1,6 +1,7 @@
 import { useRef, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { postData } from "../../../api/fetchers";
+import axios from "axios";
 
 const useCreateName = () => {
     const { username, domain, additionalLinks, platformLink, job } = useLocation().state || {};
@@ -21,23 +22,19 @@ const useCreateName = () => {
     }
     const handleContinue = async () => {
         try {
-            console.log(data);
             const userId = localStorage.getItem("userId");
-            const response = await postData("/Auth/profile-customize", {
+            const response = await axios.patch("https://biolinker.onrender.com/api/Auth/profile-customize", {
                 userId: userId,
                 job: job,
                 nickname: displayName,
                 description: description,
                 customDomain: domain,
             });
-
-            console.log(response);
             if(response){
                 navigate('/dashboard');
             }
         } catch (error) {
             console.log(error);
-            // setError(true);
         }
     }
 
