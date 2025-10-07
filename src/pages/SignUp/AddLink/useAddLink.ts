@@ -31,7 +31,7 @@ const useAddLink = () => {
         setAdditionalLinks(prev => prev.map((v, i) => (i === index ? value : v)));
     };
 
-    const handlePostSuccess = async () => {
+    const handleContinue = async () => {
         const userId = localStorage.getItem("userId");
         try {
             Object.entries(platformLink).forEach(async ([key, value]) => {
@@ -53,7 +53,6 @@ const useAddLink = () => {
             
 
             if(additionalLinks.length > 0) {
-                console.log("additionalLinks", additionalLinks);
                 additionalLinks.forEach(async (value) => {
                     if(value !== "") { 
                         const response = await postData("/StaticLinks", {
@@ -73,22 +72,18 @@ const useAddLink = () => {
                     }
                 });
             }
+
+            if(postSuccess) {
+                navigate('/signup/create-name-bio', { 
+                state: { 
+                    username: username, 
+                        domain: domain, 
+                        job: job
+                    } 
+                });
+            }
         } catch (error) {
             setShowError(true);
-        }
-    };
-
-    const handleContinue = async () => {
-        await handlePostSuccess();
-        console.log(postSuccess);
-        if(postSuccess) {
-            navigate('/signup/create-name-bio', { 
-            state: { 
-                username: username, 
-                    domain: domain, 
-                    job: job
-                } 
-            });
         }
     };
 
