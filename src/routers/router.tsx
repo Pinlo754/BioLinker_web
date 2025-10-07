@@ -15,6 +15,7 @@ import AddLink from "../pages/SignUp/AddLink/AddLink";
 import AddDomain from "../pages/SignUp/AddDomain/AddDomain";
 import CreateNameBio from "../pages/SignUp/CreateNameBio/CreateNameBio";
 import SelectPlatform from "../pages/SignUp/SelectPlatform/SelectPlatform";
+import ProfilePage from "../pages/Bio/page";
 
 const routers = createBrowserRouter([
   {
@@ -85,6 +86,10 @@ const routers = createBrowserRouter([
     path: "/account",
     element: <Account />,
   },
+  {
+    path: "/profile/:userid",
+    element: <ProfilePage />,
+  }
 ]);
 
 export default routers;

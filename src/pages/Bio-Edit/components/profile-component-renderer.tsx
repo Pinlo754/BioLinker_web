@@ -1,6 +1,6 @@
 "use client";
 
-import { getContentValue, type LayoutElement } from "../page";
+import { getContentValue, type LayoutElement } from "../../../types/bio";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
@@ -91,7 +91,7 @@ export function ProfileComponentRenderer({
 
       return (
         <div style={{ ...baseStyles, gap: "8px", flexWrap: "wrap" }}>
-          {links.map((link, index) => {
+          {links.map((link: any, index: any) => {
             const IconComponent = getSocialIcon(link.platform);
             return (
               <Button
@@ -126,7 +126,7 @@ export function ProfileComponentRenderer({
 
       return (
         <div style={{ ...baseStyles, gap: "8px", flexWrap: "wrap" }}>
-          {skills.map((skill, index) => (
+          {skills.map((skill: any, index: any) => (
             <Badge key={index} variant="secondary">
               {skill}
             </Badge>

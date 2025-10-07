@@ -2,10 +2,10 @@
 
 import type React from "react";
 import {
-  type ProfileData,
-  type LayoutElement,
+  ProfileData,
+  LayoutElement,
   getContentValue,
-} from "../../page";
+} from "../../../../types/bio";
 import { GripVertical, Move } from "lucide-react";
 import { useState, useRef } from "react";
 
@@ -223,14 +223,13 @@ function ProfileContent({
             onMouseDown={(e) => handleMouseDown(e, element)}
             onClick={() => setSelectedElement(element.id)}
             style={{
-               ...absoluteStyle,
+              ...absoluteStyle,
               width: isAbsoluteMode ? `${element.position.width}%` : "7rem",
               backgroundImage: `url(${
                 getContentValue(element.content) || "/placeholder.svg"
               })`,
               backgroundSize: "cover",
               backgroundPosition: "center",
-              
             }}
           />
         );
@@ -274,12 +273,19 @@ function ProfileContent({
             onClick={() => setSelectedElement(element.id)}
           >
             <h1
-              className={`text-2xl font-bold text-gray-900 text-${
-                element.alignment || "center"
-              }`}
+              className={`text-${element.alignment || "center"}`}
+              style={{
+                color: element.content.textColor || "#000",
+                fontSize: element.content.fontSize
+                  ? `${element.content.fontSize}px`
+                  : "24px",
+                fontWeight: element.content.fontWeight || "bold",
+                fontFamily: element.content.fontFamily || "Poppins, sans-serif",
+              }}
             >
               {getContentValue(element.content)}
             </h1>
+
             {isAbsoluteMode && (
               <div className="absolute top-0 right-0 opacity-0 group-hover:opacity-100 transition-opacity">
                 <Move className="w-4 h-4 text-gray-600 cursor-move" />
@@ -298,12 +304,19 @@ function ProfileContent({
             onClick={() => setSelectedElement(element.id)}
           >
             <p
-              className={`text-sm text-gray-600 text-${
-                element.alignment || "center"
-              }`}
+              className={`text-${element.alignment || "center"}`}
+              style={{
+                color: element.content.textColor || "#555",
+                fontSize: element.content.fontSize
+                  ? `${element.content.fontSize}px`
+                  : "16px",
+                fontWeight: element.content.fontWeight || "normal",
+                fontFamily: element.content.fontFamily || "Poppins, sans-serif",
+              }}
             >
               {getContentValue(element.content)}
             </p>
+
             {isAbsoluteMode && (
               <div className="absolute top-0 right-0 opacity-0 group-hover:opacity-100 transition-opacity">
                 <Move className="w-4 h-4 text-gray-600 cursor-move" />
@@ -343,12 +356,21 @@ function ProfileContent({
             onClick={() => setSelectedElement(element.id)}
           >
             <p
-              className={`text-sm text-gray-600 whitespace-pre-line leading-relaxed text-${
+              className={`whitespace-pre-line leading-relaxed text-${
                 element.alignment || "center"
               }`}
+              style={{
+                color: element.content.textColor || "#555",
+                fontSize: element.content.fontSize
+                  ? `${element.content.fontSize}px`
+                  : "14px",
+                fontWeight: element.content.fontWeight || "normal",
+                fontFamily: element.content.fontFamily || "Poppins, sans-serif",
+              }}
             >
               {getContentValue(element.content)}
             </p>
+
             {isAbsoluteMode && (
               <div className="absolute top-0 right-0 opacity-0 group-hover:opacity-100 transition-opacity">
                 <Move className="w-4 h-4 text-gray-600 cursor-move" />
@@ -366,7 +388,9 @@ function ProfileContent({
             onDragOver={(e) => handleDragOver(e, index)}
             onDragEnd={handleDragEnd}
             onDrop={handleDrop}
-            className={`relative group ${commonClasses}`}
+            className={`relative group ${commonClasses} ${
+              profileData.layoutMode === "flex-vertical" ? "w-[85%]" : "w-full"
+            }`}
             style={absoluteStyle}
             onMouseDown={(e) => isAbsoluteMode && handleMouseDown(e, element)}
             onClick={() => setSelectedElement(element.id)}
@@ -378,10 +402,21 @@ function ProfileContent({
             )}
 
             <button
-              className={`w-full py-3 px-6 text-white font-medium text-sm transition-all hover:scale-105 ${getButtonClass()}`}
+              className={`text-white font-medium text-sm transition-all hover:scale-105 flex items-center justify-between px-20 ${getButtonClass()}  w-full`}
               style={{ backgroundColor: profileData.globalStyles.buttonColor }}
             >
-              {getContentValue(element.content)}
+              {element.content.icon && (
+                <img
+                  src={element.content.icon}
+                  alt="icon"
+                  className="w-9 h-9 object-contain"
+                  loading="lazy"
+                />
+              )}
+
+              <span className="mx-auto my-3">
+                {getContentValue(element.content)}
+              </span>
             </button>
 
             {isAbsoluteMode && (
@@ -404,7 +439,7 @@ function ProfileContent({
   return (
     <div
       ref={containerRef}
-      className="w-full h-full relative pt-8"
+      className="w-full h-full relative"
       onMouseMove={handleMouseMove}
       onMouseUp={handleMouseUp}
       onMouseLeave={handleMouseUp}
@@ -412,43 +447,98 @@ function ProfileContent({
         cursor: isDraggingPosition ? "grabbing" : "default",
         height: containerHeight,
         width: containerWidth,
-        overflow: "hidden", // chặn element tràn
+        overflow: "hidden",
       }}
     >
+      {/* ✅ Nếu là absolute thì giữ nguyên */}
       {profileData.layoutMode === "absolute" ? (
-        // Absolute positioning mode
-        <div
-          className="relative w-full h-full"
-          style={{ minHeight: containerHeight, maxHeight: containerHeight }}
-        >
+        <div className="relative w-full h-full">
           {sortedElements.map((element, index) =>
             renderElement(element, index)
           )}
         </div>
+      ) : profileData.layoutMode === "flex-vertical" ? (
+        // ✅ Bắt đầu layout vertical giống ProfileRenderer
+        <div className="relative flex flex-col items-center justify-start gap-4 h-full w-full">
+          {/* Background full màn */}
+          {profileData.elements
+            .filter((el) => el.type === "background")
+            .map((el, index) => (
+              <img
+                key={el.id}
+                src={getContentValue(el.content) || "/placeholder.svg"}
+                alt="background"
+                className="absolute top-0 left-0 w-full h-full object-cover z-0"
+              />
+            ))}
+
+          {/* Nội dung */}
+          <div className="relative z-10 flex flex-col items-center justify-center gap-3 w-full px-4">
+            {sortedElements
+              .filter((el) => el.type === "avatar")
+              .map((el, i) => renderElement(el, i))}
+
+            {sortedElements
+              .filter((el) => el.type === "name")
+              .map((el, i) => renderElement(el, i))}
+
+            {sortedElements
+              .filter((el) => el.type === "title")
+              .map((el, i) => renderElement(el, i))}
+
+            {sortedElements
+              .filter((el) => el.type === "bio")
+              .map((el, i) => renderElement(el, i))}
+
+            {sortedElements
+              .filter((el) => el.type === "link")
+              .map((el, i) => renderElement(el, i))}
+
+            {sortedElements
+              .filter((el) => el.type === "divider")
+              .map((el, i) => renderElement(el, i))}
+          </div>
+        </div>
       ) : (
-        // Flex mode (vertical or horizontal)
-        <div
-          className={`${
-            profileData.layoutMode === "flex-horizontal"
-              ? "flex flex-row items-start gap-4 p-6"
-              : "flex flex-col"
-          } h-full overflow-hidden`} // ép chiều cao + ẩn tràn
-        >
-          {sortedElements.map((element, index) => {
-            if (element.type === "background") {
-              return renderElement(element, index);
-            }
-            return (
-              <div
-                key={element.id}
-                className={
-                  profileData.layoutMode === "flex-vertical" ? "px-6" : ""
-                }
-              >
-                {renderElement(element, index)}
-              </div>
-            );
-          })}
+        <div className="relative w-full h-full">
+          {/* Background full màn */}
+          {profileData.elements
+            .filter((el) => el.type === "background")
+            .map((el) => (
+              <img
+                key={el.id}
+                src={getContentValue(el.content) || "/placeholder.svg"}
+                alt="background"
+                className="absolute top-0 left-0 w-full h-full object-cover z-0"
+              />
+            ))}
+
+          {/* Nội dung */}
+          <div className="relative z-10 flex flex-row flex-wrap items-start justify-center gap-4 p-6 w-full h-full overflow-auto">
+            {sortedElements
+              .filter((el) => el.type === "avatar")
+              .map((el, i) => renderElement(el, i))}
+
+            {sortedElements
+              .filter((el) => el.type === "name")
+              .map((el, i) => renderElement(el, i))}
+
+            {sortedElements
+              .filter((el) => el.type === "title")
+              .map((el, i) => renderElement(el, i))}
+
+            {sortedElements
+              .filter((el) => el.type === "bio")
+              .map((el, i) => renderElement(el, i))}
+
+            {sortedElements
+              .filter((el) => el.type === "link")
+              .map((el, i) => renderElement(el, i))}
+
+            {sortedElements
+              .filter((el) => el.type === "divider")
+              .map((el, i) => renderElement(el, i))}
+          </div>
         </div>
       )}
     </div>
