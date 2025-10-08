@@ -41,43 +41,59 @@ const useLogin = () => {
   };
 
   const postGoogleLogin = async (id_token : string) => {
-    return axios.post(`${BASE_URL}/Auth/login-google`, { idToken: id_token });
+    const response = await axios.post(`${BASE_URL}/Auth/login-google`, { idToken: id_token });
+    if(response.data){
+      localStorage.setItem("email", response.data.email);
+      localStorage.setItem("user", JSON.stringify(response.data));
+      localStorage.setItem("userId", response.data.userId);
+      if(response.data.nickName === null){
+        console.log(response.data.nickName);
+        navigate("/create-account",{state: {emailGg: response.data.email, setPassword: true}});
+      }
+      else{
+        navigate("/dashboard");
+      }
+    }
+    else{
+      toast.error("Đăng nhập Google thất bại!");
+    }
   };
 
   // Login bằng Google
-  const loginByGoogle = useGoogleLogin({
-    flow: 'auth-code', // 👈 dùng Authorization Code flow
-   scope: 'openid email profile',
-    onSuccess: async (response: any) => {
-      console.log("Google login response:", response);
-      try {
-        const res = await postGoogleLogin(response);
-        if (res.status === 200) {
-          toast.success("Đăng nhập Google thành công!");
-          const user = res.data;
-          localStorage.setItem("user", user);
-          if (user.role === "Admin") {
-            navigate("/admin");
-          } else if (user.role === "Staff") {
-            navigate("/staff");
-          } else if (user.role === "User") {
-            navigate("/get-started");
-          } else {
-            navigate("/");
-          }
-        } else {
-          toast.error("Đăng nhập Google thất bại 11111 !");
-        }
-      } catch (error: any) {
-        toast.error(
-          error?.response?.data?.message || "Đăng nhập Google thất bại 222222222!"
-        );
-      }
-    },
-    onError: () => {
-      toast.error("Đăng nhập Google thất bại 33333333!");
-    },
-  });
+  // const loginByGoogle = useGoogleLogin({
+  //   flow: 'auth-code', // 👈 dùng Authorization Code flow
+  //  scope: 'openid email profile',
+  //   onSuccess: async (response: any) => {
+  //     console.log("Google login response:", response);
+  //     try {
+  //       const res = await postGoogleLogin(response);
+  //       if (res.status === 200) {
+  //         toast.success("Đăng nhập Google thành công!");
+  //         const user = res.data;
+  //         console.log("Google login user:", user.role);
+  //         localStorage.setItem("user", user.role);
+  //         if (user.role === "Admin") {
+  //           navigate("/admin");
+  //         } else if (user.role === "Staff") {
+  //           navigate("/staff");
+  //         } else if (user.role === "User") {
+  //           navigate("/get-started");
+  //         } else {
+  //           navigate("/");
+  //         }
+  //       } else {
+  //         toast.error("Đăng nhập Google thất bại 11111 !");
+  //       }
+  //     } catch (error: any) {
+  //       toast.error(
+  //         error?.response?.data?.message || "Đăng nhập Google thất bại 222222222!"
+  //       );
+  //     }
+  //   },
+  //   onError: () => {
+  //     toast.error("Đăng nhập Google thất bại 33333333!");
+  //   },
+  // });
 
   // Login bằng Facebook
   const loginByFacebook = async () => {
@@ -144,8 +160,8 @@ const useLogin = () => {
       case "Facebook":
         loginByFacebook();
         break;
-      case "Google":
-        loginByGoogle();
+      // case "Google":
+      //   loginByGoogle();
         break;
       case "Apple":
       case "LinkedIn":

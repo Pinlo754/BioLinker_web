@@ -19,6 +19,8 @@ const Header = () => {
   useEffect(() => {
     const checkUserData = () => {
       const user = localStorage.getItem("user");
+      console.log("user", user);
+      
       if (user) {
         try {
           const parsedUser = JSON.parse(user);
@@ -35,7 +37,8 @@ const Header = () => {
 
     // Check ngay lập tức
     checkUserData();
-
+    console.log("userData", userData);
+    
     // Listen for storage changes (khi user login/logout ở tab khác)
     const handleStorageChange = (e: any) => {
       if (e.key === "user") {

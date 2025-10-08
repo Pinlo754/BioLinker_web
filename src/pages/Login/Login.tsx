@@ -91,7 +91,7 @@ const Login = () => {
               onSuccess={(credentialResponse) => {
                 const idToken = credentialResponse.credential;
                 if (idToken) {
-                  console.log("Google ID Token:", idToken);
+                  // console.log("Google ID Token:", idToken);
                   toast.success("Google login success!");
                   postGoogleLogin(idToken);
                 } else {
