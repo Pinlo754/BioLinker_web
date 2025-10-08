@@ -15,7 +15,7 @@ const MyCollection = () => {
   const username = "Thanh Phong";
   const userTag = "@ThanhPhong";
   const job = "Digital Artist"
-  const bioLink = "www.biolinker.thanhphong.com";
+  const bioLink = "biolinker.io.vn/bio/thanhphong";
   const avatar = "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=600&q=80";
 
   const [activeTab, setActiveTab] = useState<'owned' | 'created' | 'collections' | 'insight'>('collections')
