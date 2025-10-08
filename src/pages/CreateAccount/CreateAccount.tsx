@@ -4,6 +4,7 @@ import background from "../../assets/background.jpg";
 import logo_big from "../../assets/logo_big.png";
 import { Link } from "react-router-dom";
 import useCreateAccount from "./useCreateAccount";
+import SetPassword from "../SignUp/SetPassword/SetPassword";
 const CreateAccount = () => {
     const { 
         validEmail, 
@@ -82,6 +83,7 @@ const CreateAccount = () => {
 						</form>
 					</div>
                 </div>
+                {true && <SetPassword visible={true} />}    
             </div>
             <Footer />
         </div>
