@@ -117,11 +117,11 @@ const useLogin = () => {
       );
       const data = response.data;
       if (data?.token) {
-        localStorage.setItem("user", data);
+        localStorage.setItem("user", JSON.stringify(data));
         toast.success("Login successful!");
         if (data.role?.[0] === "Admin") navigate("/admin");
         else if (data.role?.[0] === "staff") navigate("/staff");
-        else navigate("/get-started");
+        else navigate("/dashboard");
       } else {
         toast.error("Login failed: invalid response from server.");
       }
