@@ -222,7 +222,7 @@ export default function BioBuilder() {
 
   // ---- Render ----
   return (
-    <div className="h-screen flex flex-col bg-background mt-14">
+    <div className="h-screen flex flex-col  mt-14">
       <Header />
 
       <div className="flex-1 flex overflow-hidden">

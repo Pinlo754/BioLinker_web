@@ -16,7 +16,7 @@ export const getContentValue = (content: any) => {
 
 export default function Page() {
   const [profileData] = useState<ProfileData>({
-  "layoutMode": "flex-vertical",
+  "layoutMode": "absolute",
   "elements": [
     {
       "id": "bg-1",
@@ -41,11 +41,11 @@ export default function Page() {
       "id": "avatar-1",
       "type": "avatar",
       "content": {
-        "value": "/avatar.svg"
+        "value": "/avatar.png"
       },
       "position": {
-        "x": 19.164265129682995,
-        "y": 9.260204081632653,
+        "x": 50,
+        "y": 15,
         "width": 28,
         "zIndex": 10
       },
@@ -60,15 +60,11 @@ export default function Page() {
       "id": "name-1",
       "type": "name",
       "content": {
-        "value": "Thanh Phong",
-        "fontWeight": "700",
-        "fontSize": 23,
-        "textColor": "#c3f708",
-        "fontFamily": "cursive"
+        "value": "Thanh Phong"
       },
       "position": {
-        "x": 67.57925072046109,
-        "y": 6.147959183673468,
+        "x": 50,
+        "y": 30,
         "width": 100,
         "zIndex": 5
       },
@@ -83,14 +79,11 @@ export default function Page() {
       "id": "title-1",
       "type": "title",
       "content": {
-        "value": "Banhmixiumai owner",
-        "fontWeight": "500",
-        "textColor": "#f3c9c9",
-        "fontFamily": "fantasy"
+        "value": "Banhmixiumai owner"
       },
       "position": {
-        "x": 68.15561959654178,
-        "y": 12.806122448979593,
+        "x": 50,
+        "y": 35,
         "width": 100,
         "zIndex": 5
       },
@@ -122,14 +115,11 @@ export default function Page() {
       "id": "bio-1",
       "type": "bio",
       "content": {
-        "value": "Hi! My name is Phong.\nI am a Banhmixiumai owner.",
-        "fontWeight": "500",
-        "fontSize": 19,
-        "fontFamily": "Roboto, sans-serif"
+        "value": "Hi! My name is Phong.\nI am a Banhmixiumai owner."
       },
       "position": {
-        "x": 64.98559077809799,
-        "y": 18.02040816326531,
+        "x": 50,
+        "y": 42,
         "width": 80,
         "zIndex": 5
       },
@@ -145,8 +135,7 @@ export default function Page() {
       "type": "link",
       "content": {
         "text": "WEBSITE",
-        "url": "#",
-        "icon": "/instagram.png"
+        "url": "#"
       },
       "position": {
         "x": 50,

@@ -25,7 +25,7 @@ const Home = () => {
 
         {/* Left content */}
         <div className="max-w-xl text-center lg:text-left">
-          <h1 className="mt-6 text-4xl sm:text-6xl lg:text-7xl font-bold">
+          <h1 className="mt-6 text-4xl sm:text-6xl lg:text-7xl font-bold text-white">
             BioLinker
           </h1>
 
