@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import logo from "../../assets/logo.png";
 import { useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -13,14 +13,45 @@ import avatar from "../../assets/avatar.png";
 const Header = () => {
   const navigate = useNavigate();
   const [search, setSearch] = useState("");
-  const user = localStorage.getItem("user");
-  const userData = JSON.parse(user || "{}");
+  const [userData, setUserData] = useState<any>(null);
+  
+  // Check user data mỗi lần render
+  useEffect(() => {
+    const checkUserData = () => {
+      const user = localStorage.getItem("user");
+      if (user) {
+        try {
+          const parsedUser = JSON.parse(user);
+          setUserData(parsedUser);
+          console.log("User data updated:", parsedUser);
+        } catch (error) {
+          console.error("Error parsing user data:", error);
+          setUserData(null);
+        }
+      } else {
+        setUserData(null);
+      }
+    };
+
+    // Check ngay lập tức
+    checkUserData();
+
+    // Listen for storage changes (khi user login/logout ở tab khác)
+    const handleStorageChange = (e: any) => {
+      if (e.key === "user") {
+        checkUserData();
+      }
+    };
+    window.addEventListener("storage", handleStorageChange);
+    return () => {
+      window.removeEventListener("storage", handleStorageChange);
+    };
+  }, []);
   const navItems = [
     { label: "Template", path: "/marketplace" },
     { label: "Support", path: "/*" },
     { label: "About", path: "/about" },
   ];
-  console.log(user);
   return (
     <header className="bg-white shadow-md w-full px-4 md:px-8 py-2 fixed top-0 z-50">
       <div className="flex items-center justify-between w-full">
@@ -54,7 +85,7 @@ const Header = () => {
         </div>
 
         {/* Desktop buttons */}
-        {user!==null ? (
+        {userData === null ? (
         <div className="hidden md:flex items-center gap-4">
           {/* <Button className="w-32 h-12 px-10 px-4 rounded-3xl bg-gradient-to-r from-[#16C875] to-[#6CDFAB] flex justify-center items-center font-bold text-white">
             Support
@@ -84,8 +115,8 @@ const Header = () => {
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <Button className="w-10 h-10 md:w-12 md:h-12 rounded-full overflow-hidden p-0 flex items-center justify-center">
-                  {userData.avatar ? (
-                    <img src={userData.avatar} alt="avatar" className="w-full h-full object-cover rounded-full" />
+                  {userData?.userImage ? (
+                    <img src={userData.userImage} alt="avatar" className="w-full h-full object-cover rounded-full" />
                   ) : (
                     <img src={avatar} alt="avatar" className="w-full h-full object-cover rounded-full" />
                   )}
