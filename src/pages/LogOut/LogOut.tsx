@@ -13,6 +13,9 @@ const LogOut = () => {
   const handleLogout = () => {
     try {
       localStorage.removeItem('user');
+      localStorage.removeItem('userId');
+      localStorage.removeItem('email');
+      localStorage.removeItem('password');
     } catch {}
     navigate('/');
   };

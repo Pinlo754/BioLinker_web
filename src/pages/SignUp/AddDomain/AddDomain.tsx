@@ -40,19 +40,20 @@ const AddDomain = () => {
           </div>
           {/* Welcome Message */}
           <div className="text-gray-600 font-medium">
-              Welcome, {username}!
+              Chào mừng, {username}!
           </div>
       </div>
       {/* Main Content */}
-      <div className="flex flex-col items-center justify-center px-6 ">
-          <div className="w-full max-w-xl space-y-8 animate-fadeInUp">
+      <div className="flex flex-col items-center justify-center px-6 w-full">
+          <div className="w-full max-w-[50%] space-y-8 animate-fadeInUp">
               {/* Title */}
-              <div className="text-center">
+              <div className="text-center  w-full">
                   <h1 className="text-4xl font-bold text-gray-800 mb-4">
-                      Your BioLinker Username
+                      Tạo domain mới cho hồ sơ của bạn
                   </h1>
                   <p className="text-xl">
-                      Advice: Use at the same time like on your Network
+                      Lời khuyên: Sử dụng như trên mạng xã hội của bạn <br />
+                      (chỉ miễn phí cho lần đầu tiên)
                   </p>
               </div>
               {/* Input Fields */}
@@ -80,18 +81,18 @@ const AddDomain = () => {
                   </div>
                   {showError && (
                       <span className="text-red-500 text-base text-center mt-1 block">
-                          This domain is already in use. Please try another one.
+                          Domain này đã được sử dụng. Vui lòng thử một domain khác.
                       </span>
                   )}
                </div>
               {/* Continue Button */}
-              <div className="">
+              <div className="flex justify-center items-center">
                   <Button
                       onClick={handleContinue}
-                      className="w-full h-14 bg-gradient-to-r from-green1 to-green2 text-white rounded-full"
+                      className="w-[100%] h-14 bg-gradient-to-r from-green1 to-green2 text-white text-xl rounded-full"
                       disabled={domain.trim() === ''}
                   >
-                      Continue
+                      Tiếp tục
                   </Button>
               </div>
           </div>
@@ -103,7 +104,7 @@ const AddDomain = () => {
               onClick={handleBack}
               className="px-6 py-3 text-lg hover:text-green-500 font-medium "
           >
-              Back
+              Quay lại
           </button>
                 
           {/* Skip Button */}
@@ -111,7 +112,7 @@ const AddDomain = () => {
               onClick={handleSkip}
               className="px-6 py-3 text-lg hover:text-green-500 font-medium"
           >
-              Skip
+              Bỏ qua
           </button>
       </div>
     </div>

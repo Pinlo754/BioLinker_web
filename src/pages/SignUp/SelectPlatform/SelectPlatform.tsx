@@ -54,10 +54,10 @@ const SelectPlatform = () => {
                 {/* Title */}
                 <div className="text-center mb-8">
                     <h1 className="text-3xl font-bold text-black mb-4">
-                        Which platforms are you on?
+                        Những nền tảng mà bạn đang sử dụng?
                     </h1>
                     <p className="text-lg text-gray-600">
-                        Pick up to {maxSelectedPlatforms} to get started. You can update at any time.
+                        Chọn tối đa {maxSelectedPlatforms} để bắt đầu. Bạn có thể cập nhật bất cứ lúc nào.
                     </p>
                 </div>
 
@@ -94,7 +94,7 @@ const SelectPlatform = () => {
 
                 {/* Selection Counter */}
                 <div className="text-sm text-gray-500 ">
-                    {selectedPlatforms.length} of {maxSelectedPlatforms} platforms selected
+                    {selectedPlatforms.length} của {maxSelectedPlatforms} nền tảng đã chọn
                 </div>
 
                 {/* Continue Button */}
@@ -108,21 +108,21 @@ const SelectPlatform = () => {
                     onClick={handleBack}
                     className="px-6 py-3 text-lg hover:text-green-500 font-medium w-40% h-14"
                 >
-                    Back
+                    Quay lại
                 </button>
                 <Button
                     onClick={handleContinue}
-                    className="w-[50%] h-14 bg-gradient-to-r from-green1 to-green2 text-white rounded-full"
+                    className="w-[50%] h-14 bg-gradient-to-r from-green1 to-green2 text-white rounded-full text-white text-xl"
                     disabled={selectedPlatforms.length === 0}
                 >
-                    Continue
+                    Tiếp tục
                 </Button>
                 {/* Skip Button */}
                 <button
                     onClick={handleSkip}
-                    className="px-6 py-3 text-lg hover:text-green-500 font-medium"
+                    className="px-6 py-3 text-lg hover:text-green-500 font-medium  "
                 >
-                    Skip
+                    Bỏ qua
                 </button>
             </div>
         </div>

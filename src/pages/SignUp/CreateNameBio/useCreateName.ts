@@ -19,18 +19,23 @@ const useCreateName = () => {
             if(avatarFile){
                 setLoading(true);
                 const userId = localStorage.getItem("userId");
+                console.log(userId);
                 const fileUrl = await upload(avatarFile);
                 console.log(fileUrl);
-                const response = await axios.patch("https://biolinker.onrender.com/api/Auth/profile-customize", {
+                const data = {
                     userId: userId,
                     job: job,
                     nickname: displayName,
                     description: description,
                     customDomain: domain,
                     userImage: fileUrl,
-                });
+                }
+                const response = await axios.patch("https://biolinker.onrender.com/api/Auth/profile-customize", data);
                 if(response){
+                    console.log(email,password);
                     const login = await postData("Auth/Login", {email: email, password: password});
+                    localStorage.setItem("password", password); {/** dung tam out come 1 */}
+                    localStorage.setItem("email", email); {/** dung tam out come 1 */}
                     console.log(login);
                     if(login){
                         const user = JSON.stringify(login);

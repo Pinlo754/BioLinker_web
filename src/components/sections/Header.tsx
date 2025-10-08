@@ -19,6 +19,8 @@ const Header = () => {
   useEffect(() => {
     const checkUserData = () => {
       const user = localStorage.getItem("user");
+      console.log("user", user);
+      
       if (user) {
         try {
           const parsedUser = JSON.parse(user);
@@ -35,7 +37,8 @@ const Header = () => {
 
     // Check ngay lập tức
     checkUserData();
-
+    console.log("userData", userData);
+    
     // Listen for storage changes (khi user login/logout ở tab khác)
     const handleStorageChange = (e: any) => {
       if (e.key === "user") {
@@ -49,8 +52,8 @@ const Header = () => {
   }, []);
   const navItems = [
     { label: "Template", path: "/marketplace" },
-    { label: "Support", path: "/*" },
-    { label: "About", path: "/about" },
+    { label: "Hỗ trợ", path: "/*" },
+    { label: "Giới thiệu", path: "/about" },
   ];
   return (
     <header className="bg-white shadow-md w-full px-4 md:px-8 py-2 fixed top-0 z-50">
@@ -94,23 +97,23 @@ const Header = () => {
             className="w-33 h-12 py-2 px-1 rounded-3xl bg-gradient-to-r from-[#16C875] to-[#6CDFAB] flex justify-center items-center"
             onClick={() => navigate("/login")}
           >
-            <div className="w-32 h-10 rounded-3xl px-10 py-4 bg-white font-helvetica font-bold text-md flex justify-center items-center">
-              Login
+            <div className="w-40 h-10 rounded-3xl px-6 py-4 bg-white font-helvetica font-bold text-md flex justify-center items-center">
+              Đăng nhập
             </div>
           </button>
           <button
-            className="w-33 h-12 p-1 rounded-3xl bg-gradient-to-r from-[#16C875] to-[#6CDFAB] flex justify-center items-center"
+            className="w-40 h-12 p-1 rounded-3xl bg-gradient-to-r from-[#16C875] to-[#6CDFAB] flex justify-center items-center"
             onClick={() => navigate("/create-account")}
           >
-            <div className="w-32 h-10 rounded-3xl px-auto py-4 bg-white font-helvetica font-bold text-md flex justify-center items-center">
-              Sign Up
+            <div className="w-40 h-10 rounded-3xl px-auto py-4 bg-white font-helvetica font-bold text-md flex justify-center items-center">
+              Đăng ký
             </div>
           </button>
         </div>
         ) : (
           <div className=" w-[18%] flex items-center justify-between">
             <Button className="w-[70%] h-12 text-base px-8 rounded-3xl bg-gradient-to-r from-[#16C875] to-[#6CDFAB] flex justify-center items-center font-bold text-white">
-              Create New Bio
+              Tạo hồ sơ mới
             </Button>
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
@@ -123,8 +126,8 @@ const Header = () => {
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end" className="w-48 bg-white">
-                <DropdownMenuItem className="font-helvetica text-base hover:bg-green-100" onSelect={() => navigate("/account")}>Information</DropdownMenuItem>
-                <DropdownMenuItem className="font-helvetica text-base hover:bg-green-100" onSelect={() => navigate("/my-collection")}>Collection</DropdownMenuItem>
+                <DropdownMenuItem className="font-helvetica text-base hover:bg-green-100" onSelect={() => navigate("/account")}>Thông tin</DropdownMenuItem>
+                <DropdownMenuItem className="font-helvetica text-base hover:bg-green-100" onSelect={() => navigate("/my-collection")}>Bộ sưu tập</DropdownMenuItem>
                 <DropdownMenuItem
                   className="font-helvetica text-base hover:bg-green-100"
                   variant="destructive"
@@ -133,7 +136,7 @@ const Header = () => {
                     navigate("/logout");
                   }}
                 >
-                  Logout
+                  Đăng xuất
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>

@@ -130,32 +130,25 @@ const Login = () => {
           {/* Social login */}
           <div className="flex flex-col items-center w-full mt-6 gap-3">
             {/* Google Login UI */}
-            <div className="w-full">
-              <GoogleLogin
-                onSuccess={(credentialResponse) => {
-                  const idToken = credentialResponse.credential;
-                  if (idToken) {
-                    console.log("Google ID Token:", idToken);
-                    toast.success("Google login success!");
-                    postGoogleLogin(idToken);
-                  } else {
-                    toast.error("No ID token received");
-                  }
-                }}
-                onError={() => {
-                  toast.error("Google login failed!");
-                }}
-                theme="outline"
-                shape="rectangular"
-                text="signin_with"
-                width="full"
-                containerProps={{
-                  style: {
-                    width: "100%",
-                  },
-                }}
-              />
-            </div>
+            <GoogleLogin
+              onSuccess={(credentialResponse) => {
+                const idToken = credentialResponse.credential;
+                if (idToken) {
+                  // console.log("Google ID Token:", idToken);
+                  toast.success("Google login success!");
+                  postGoogleLogin(idToken);
+                } else {
+                  toast.error("No ID token received");
+                }
+              }}
+              onError={() => {
+                toast.error("Google login failed!");
+              }}
+              theme="outline"
+              size="large"
+              shape="rectangular"
+              text="signin_with"
+            />
 
             {/* Các nút social khác */}
             <div className="flex justify-between items-center w-full gap-1 md:gap-3">
