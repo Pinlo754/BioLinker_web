@@ -43,9 +43,9 @@ const useLogin = () => {
     if(response.data){
       localStorage.setItem("email", response.data.email);
       localStorage.setItem("user", JSON.stringify(response.data));
-      localStorage.setItem("userId", response.data.userId);
-      if(response.data.nickname === null){
-        console.log(response.data.nickName);
+      localStorage.setItem("userId", response.data.userId);      
+      if(response.data.customDomain === null){
+        console.log(response.data.customDomain);
         navigate("/create-account",{state: {emailGg: response.data.email, setPassword: true}});
       }
       else{

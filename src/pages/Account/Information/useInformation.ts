@@ -1,4 +1,4 @@
-import { postData } from "../../../api/fetchers";
+import { fetcherWithParams, postData } from "../../../api/fetchers";
 import axios from "axios";
 import { useRef, useState } from "react";
 import avatar from "../../../assets/avatar.png";
@@ -20,7 +20,9 @@ const useInformation = () => {
         localStorage.removeItem("user");
         const email = localStorage.getItem("email");
         const password = localStorage.getItem("password");
-        const user = await postData("Auth/Login", {email: email, password: password});
+        const userId = localStorage.getItem("userId");
+        const user = await fetcherWithParams(`Auth/${userId}`, {userId: userId});
+
         if (user) {
           localStorage.setItem("user", JSON.stringify(user));
           try {
