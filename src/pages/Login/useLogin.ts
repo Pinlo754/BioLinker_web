@@ -117,6 +117,8 @@ const useLogin = () => {
       );
       const data = response.data;
       if (data?.token) {
+        localStorage.setItem("password", password); {/** dung tam out come 1 */}
+        localStorage.setItem("email", email); {/** dung tam out come 1 */}
         localStorage.setItem("user", JSON.stringify(data));
         toast.success("Login successful!");
         if (data.role?.[0] === "Admin") navigate("/admin");

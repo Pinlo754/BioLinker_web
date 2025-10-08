@@ -1,15 +1,33 @@
-import { useState } from "react";
-
+import { useEffect, useState } from "react";
+import useInformation from "./useInformation";
+import { LoadingOverlay } from "../../../components/ui/loading";
 const Information = () => {
-    const [name, setName] = useState("");
-    const [email, setEmail] = useState("");
-    const [description, setDescription] = useState("");
-    const avatar = "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=600&q=80";
-    const [plan, setPlan] = useState("Free");
-    const [username, setUsername] = useState("@ocschos455");
+
+    const { 
+        userData, 
+        checkUserData, 
+        name, 
+        setName, 
+        email, 
+        setEmail, 
+        description, 
+        setDescription, 
+        plan, 
+        handleSaveDetails , 
+        username, 
+        userImage, 
+        loading, 
+        error,
+        fileInputRef,
+        handleChangeImage,
+    } = useInformation();
+    useEffect(() => {
+        checkUserData();
+    }, []);
     return (
         <div className="w-full flex flex-col gap-4 bg-[#F3F3F1] pb-10 ">
             <div className="max-w-[50%] mx-auto flex flex-col gap-4 w-full font-roboto text-[#4F4F4F] ">
+                {loading && <LoadingOverlay visible={loading} message="Saving details..." />}
                 {/* personal information */}
                 <div className="w-full gap-10 text-2xl mt-6 text-black">
                     <span className="text-2xl font-bold ">My Information</span>
@@ -22,45 +40,46 @@ const Information = () => {
                                 <input
                                     id="email"
                                     type="text"
-                                    className="peer block w-full border-b border-gray-300 bg-transparent pt-4 pb-2 text-base text-gray-900 placeholder-transparent focus:border-green2 focus:border-b focus:ring-green2 focus:outline-none"
+                                    className="peer block w-full border-b border-gray-300 bg-transparent pt-2 pb-2 text-base text-gray-900 placeholder-transparent focus:border-green2 focus:border-b focus:ring-green2 focus:outline-none"
                                     value={email}
                                     placeholder="Email"
                                     onChange={(e) => setEmail(e.target.value)}
+                                    disabled={true}
                                 />
                                 <label
                                     htmlFor="email"
-                                    className="pointer-events-none absolute left-0 top-1/2 -translate-y-1/2 bg-white text-gray-500 transition-all duration-500
+                                    className="pointer-events-none absolute left-0 top-1/2 -translate-y-1/2 bg-white text-gray-500 transition-all duration-500 origin-left
                                     peer-placeholder-shown:top-1/2 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2
-                                    peer-focus:top-0 peer-focus:-translate-y-1/2 peer-focus:scale-75 peer-focus:text-green2
-                                    peer-[&:not(:placeholder-shown)]:top-0 peer-[&:not(:placeholder-shown)]:-translate-y-1/2 peer-[&:not(:placeholder-shown)]:scale-75"
+                                    peer-focus:top-0 peer-focus:-translate-y-[65%] peer-focus:scale-75 peer-focus:text-green2
+                                    peer-[&:not(:placeholder-shown)]:top-0 peer-[&:not(:placeholder-shown)]:-translate-y-[70%] peer-[&:not(:placeholder-shown)]:scale-75"
                                 >
                                     Email
                                 </label>
                             </div>
                             
                             {/* name input field */}
-                            <div className="relative">
+                            <div className="relative mt-2">
                                 <input
                                     id="name"
                                     type="text"
                                     className="peer block w-full border-b border-gray-300 bg-transparent pt-4 pb-2 text-base text-gray-900 placeholder-transparent focus:border-green2 focus:border-b focus:ring-green2 focus:outline-none"
-                                    placeholder="Name"
+                                    placeholder="Display Name"
                                     value={name}
                                     onChange={(e) => setName(e.target.value)}
                                 />
                                 <label
                                     htmlFor="name"
-                                    className="pointer-events-none absolute left-0 top-1/2 -translate-y-1/2 bg-white text-gray-500 transition-all duration-500
+                                    className="pointer-events-none absolute left-0 top-1/2 -translate-y-1/2 bg-white text-gray-500 transition-all duration-500 origin-left
                                     peer-placeholder-shown:top-1/2 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2
-                                    peer-focus:top-0 peer-focus:-translate-y-1/2 peer-focus:scale-75 peer-focus:text-green2
-                                    peer-[&:not(:placeholder-shown)]:top-0 peer-[&:not(:placeholder-shown)]:-translate-y-1/2 peer-[&:not(:placeholder-shown)]:scale-75"
+                                    peer-focus:top-0 peer-focus:-translate-y-[65%] peer-focus:scale-75 peer-focus:text-green2
+                                    peer-[&:not(:placeholder-shown)]:top-0 peer-[&:not(:placeholder-shown)]:-translate-y-[70%] peer-[&:not(:placeholder-shown)]:scale-75"
                                 >
-                                    Name
+                                    Display Name
                                 </label>
                             </div>
 
                             {/* description input field */}
-                            <div className="relative">
+                            <div className="relative mt-2">
                                 <input
                                     id="description"
                                     type="text"
@@ -71,10 +90,10 @@ const Information = () => {
                                 />
                                 <label
                                     htmlFor="description"
-                                    className="pointer-events-none absolute left-0 top-1/2 -translate-y-1/2 bg-white text-gray-500 transition-all duration-500
+                                    className="pointer-events-none absolute left-0 top-1/2 -translate-y-1/2 bg-white text-gray-500 transition-all duration-500 origin-left
                                     peer-placeholder-shown:top-1/2 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2
-                                    peer-focus:top-0 peer-focus:-translate-y-1/2 peer-focus:scale-75 peer-focus:text-green2
-                                    peer-[&:not(:placeholder-shown)]:top-0 peer-[&:not(:placeholder-shown)]:-translate-y-1/2 peer-[&:not(:placeholder-shown)]:scale-75"
+                                    peer-focus:top-0 peer-focus:-translate-y-[65%] peer-focus:scale-75 peer-focus:text-green2
+                                    peer-[&:not(:placeholder-shown)]:top-0 peer-[&:not(:placeholder-shown)]:-translate-y-[70%] peer-[&:not(:placeholder-shown)]:scale-75"
                                 >
                                     Description
                                 </label>
@@ -83,7 +102,8 @@ const Information = () => {
                             <span className="text-base font-medium text-start">Your email can`t be changed as you signed up using your Google account.</span>
                         </div>
                     </div>
-                    <button className="bg-[#EBEEF1] rounded-3xl px-6 py-4 h-[65px] font-semibold mt-6 text-[#4F4F4F]">
+                    <button className="bg-[#EBEEF1] rounded-3xl px-6 py-4 h-[65px] font-semibold mt-6 text-[#4F4F4F]"
+                            onClick={handleSaveDetails}>
                         Save Details
                     </button>                   
                 </div>
@@ -110,17 +130,28 @@ const Information = () => {
                     <span className="text-xl font-medium text-start mt-2">BioLinker you own</span>
                     <div className="flex flex-row rounded-3xl py-8 px-6 shadow-emerald-500/50 bg-white shadow-2xl mt-8">
                         {/* side bar image */}
-                        <div className="border-r border-black pr-6">
-                            <img src={avatar} alt="avatar" className="w-[45px] object-cover rounded-full" />
-                        </div>
-
+                        <button className="border-r border-black pr-6 w-[20%] flex items-start justify-center" onClick={() => fileInputRef.current?.click()}>
+                            <img src={userImage} alt="avatar" className="w-20 h-20 object-cover rounded-full" />
+                        </button>
+                        <input
+                            type="file"
+                            ref={fileInputRef}
+                            className="hidden"
+                            accept="image/*"
+                            onChange={(e) => {
+                                const file = e.target.files?.[0];
+                                if (file) {
+                                    handleChangeImage(file);
+                                }
+                            }}
+                        />
                         {/* side bar content */}
-                        <div className="flex flex-1 flex-col">
-                            <div className="px-6 py-8 border-b border-black">
+                        <div className="flex flex-1 flex-col w-[70%]">
+                            <div className="px-4 pb-4 border-b border-black items-start ">
                                 <span className="text-base text-start">{username}</span>
                             </div>
                             <div className="px-6 py-8 border-b border-black gap-4 text-base text-start font-bold">
-                                <span className="">Plan</span>
+                                <div className="">Plan</div>
                                 <span className="">{plan}</span>
                             </div>
                             <div className="px-6 py-10 text-center text-base font-bold border-black flex flex-col items-center justify-center">
