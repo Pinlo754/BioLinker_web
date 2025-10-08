@@ -3,11 +3,10 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { postData } from "../../../api/fetchers";
 
 const useAddLink = () => {
-    const { username, domain, platforms, job } = useLocation().state || {};
+    const { username, domain, platforms, job, email, password } = useLocation().state || {};
     const navigate = useNavigate();
     const [showError, setShowError] = useState(false);
     const [additionalLinks, setAdditionalLinks] = useState<string[]>(['', '']);
-    const [postSuccess, setPostSuccess] = useState(false);
     // Initialize value map for selected platforms
     const initialMap = useMemo(() => {
         if (!Array.isArray(platforms)) return {} as Record<string, string>;
@@ -32,6 +31,7 @@ const useAddLink = () => {
     };
 
     const handleContinue = async () => {
+        let checkSuccess = false;
         const userId = localStorage.getItem("userId");
         try {
             Object.entries(platformLink).forEach(async ([key, value]) => {
@@ -44,10 +44,10 @@ const useAddLink = () => {
                 });
                 if(response) {
                     console.log("Link posted successfully 1");
-                    setPostSuccess(true);
+                    checkSuccess = true;
                 } else {
                     console.log("Link posted failed 1");
-                    setPostSuccess(false);
+                    checkSuccess = false;
                 }
             });
             
@@ -64,24 +64,25 @@ const useAddLink = () => {
                         });
                         if(response) {
                             console.log("Link posted successfully 2");
-                            setPostSuccess(true);
+                            checkSuccess = true;
                         } else {
                             console.log("Link posted failed 2");
-                            setPostSuccess(false);
+                            checkSuccess = false;
                         }
                     }
                 });
             }
 
-            if(postSuccess) {
-                navigate('/signup/create-name-bio', { 
-                state: { 
-                    username: username, 
-                        domain: domain, 
-                        job: job
-                    } 
-                });
-            }
+           
+            navigate('/signup/create-name-bio', { 
+            state: { 
+                username: username, 
+                    domain: domain, 
+                    job: job,
+                    email: email,
+                    password: password
+                } 
+            });
         } catch (error) {
             setShowError(true);
         }
@@ -92,7 +93,9 @@ const useAddLink = () => {
             state: { 
                 username: username, 
                 domain: domain, 
-                job: job
+                job: job,
+                email: email,
+                password: password
             } 
         });
     };
@@ -103,6 +106,8 @@ const useAddLink = () => {
                 username: username, 
                 domain: domain,
                 job: job,
+                email: email,
+                password: password
             } 
         });
     };

@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 const useGetStarted = () => {
     const navigate = useNavigate(); 
-    const { username } = useLocation().state || {};
+    const { username, email, password } = useLocation().state || {};
     const options = [
         {
           title: "Artist",
@@ -45,6 +45,7 @@ const useGetStarted = () => {
         state: { 
             username: username,
             job: choose,
+            email: email, password: password
           } 
       });
     }
@@ -54,6 +55,7 @@ const useGetStarted = () => {
         state: { 
           username: username,
           job: "",
+          email: email, password: password
         } 
       });
     }

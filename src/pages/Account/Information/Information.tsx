@@ -8,12 +8,11 @@ const Information = () => {
     const [plan, setPlan] = useState("Free");
     const [username, setUsername] = useState("@ocschos455");
     return (
-        <div className="w-full flex flex-col gap-4 mt-[3px] bg-[#F3F3F1] pb-10">
+        <div className="w-full flex flex-col gap-4 bg-[#F3F3F1] pb-10 ">
             <div className="max-w-[50%] mx-auto flex flex-col gap-4 w-full font-roboto text-[#4F4F4F] ">
-
                 {/* personal information */}
-                <div className="w-full gap-10 text-2xl mt-6 ">
-                    <h1 className="text-2xl font-bold">My Information</h1>
+                <div className="w-full gap-10 text-2xl mt-6 text-black">
+                    <span className="text-2xl font-bold ">My Information</span>
                     <div className="flex flex-col rounded-3xl py-8 px-6 shadow-emerald-500/50  shadow-2xl mt-8 bg-white">
 
                         {/* input field */}
@@ -81,7 +80,7 @@ const Information = () => {
                                 </label>
                             </div>
                             
-                            <h2 className="text-base font-medium text-start">Your email can`t be changed as you signed up using your Google account.</h2>
+                            <span className="text-base font-medium text-start">Your email can`t be changed as you signed up using your Google account.</span>
                         </div>
                     </div>
                     <button className="bg-[#EBEEF1] rounded-3xl px-6 py-4 h-[65px] font-semibold mt-6 text-[#4F4F4F]">
@@ -91,14 +90,14 @@ const Information = () => {
                 
                 {/* change password */}
                 <div className="w-full gap-10 text-2xl mt-6">
-                    <h1 className="text-2xl font-bold">Security and Privacy</h1>
+                    <span className="text-2xl font-bold">Security and Privacy</span>
                     <div className="flex flex-col rounded-3xl py-8 px-6 shadow-emerald-500/50 bg-white shadow-2xl mt-8">
-                        <h2 className="text-xl font-medium text-start">
+                        <span className="text-xl font-medium text-start">
                             Change your password
-                        </h2>
-                        <p className="text-base text-start mt-2">
+                        </span>
+                        <span className="text-base text-start mt-2">
                             You can change your password by clicking the button below.
-                        </p>
+                        </span>
                         <button className="rounded-3xl border px-6 py-4 h-[65px] font-semibold mt-6 text-[#4F4F4F] hover:bg-[#EBEEF1]">
                             Change Password
                         </button>
@@ -107,8 +106,8 @@ const Information = () => {
 
                 {/*Account management*/}
                 <div className="w-full gap-10 text-2xl mt-6">
-                    <h1 className="text-2xl font-bold">Account management</h1>
-                    <h2 className="text-xl font-medium text-start mt-2">BioLinker you own</h2>
+                    <span className="text-2xl font-bold">Account management</span>
+                    <span className="text-xl font-medium text-start mt-2">BioLinker you own</span>
                     <div className="flex flex-row rounded-3xl py-8 px-6 shadow-emerald-500/50 bg-white shadow-2xl mt-8">
                         {/* side bar image */}
                         <div className="border-r border-black pr-6">
@@ -118,21 +117,16 @@ const Information = () => {
                         {/* side bar content */}
                         <div className="flex flex-1 flex-col">
                             <div className="px-6 py-8 border-b border-black">
-                                <h2 className="text-base text-start">{username}</h2>
+                                <span className="text-base text-start">{username}</span>
                             </div>
                             <div className="px-6 py-8 border-b border-black gap-4 text-base text-start font-bold">
-                                <h2 className="">Plan</h2>
-                                <h2 className="">{plan}</h2>
+                                <span className="">Plan</span>
+                                <span className="">{plan}</span>
                             </div>
                             <div className="px-6 py-10 text-center text-base font-bold border-black flex flex-col items-center justify-center">
-                                <h2 className="">Upgrade to Pro to unlock more function in BioLinker</h2>
+                                <span className="">Upgrade to Pro to unlock more function in BioLinker</span>
                                 <button className="align-center gap-4 justify-center flex flex-row rounded-3xl border px-6 py-4 w-[70%] font-semibold mt-2 text-[#4F4F4F]  bg-gradient-to-r from-green1 to-green2 text-white">
-                                    <div className="flex items-center justify-center">
-                                    <svg width="13" height="23" viewBox="0 0 13 23" fill="none" xmlns="http://www.w3.org/2000/svg" className="mr-2">
-                                        <path d="M5.49296 14.1061H0.455078L7.50811 0V8.06061H12.546L5.49296 22.1667V14.1061Z" fill="#FBFBFB"/>
-                                    </svg>
-                                    </div>
-                                    <p className="text-base text-white font-semibold">Upgrade to Pro</p>
+                                    <span className="text-base text-white font-semibold">Upgrade to Pro</span>
                                 </button>
                             </div>
                         </div>
@@ -142,12 +136,12 @@ const Information = () => {
                 {/* delete account */}
                 <div className="w-full gap-10 text-2xl mt-6">       
                     <div className="flex flex-col rounded-3xl py-8 px-6 shadow-emerald-500/50 bg-white shadow-2xl mt-8">
-                        <h2 className="text-xl font-medium text-start">
+                        <span className="text-xl font-medium text-start">
                         Delete forever
-                        </h2>
-                        <p className="text-base text-start mt-2">
+                        </span>
+                        <span className="text-base text-start mt-2">
                             Permanently delete your account and all your link-in-bio.
-                        </p>
+                        </span>
                         <button className="rounded-3xl border border-red-500/80 px-6 py-4 h-[65px] font-semibold mt-6 text-red-500/80 hover:bg-red-500/10">
                             Delete Account
                         </button>

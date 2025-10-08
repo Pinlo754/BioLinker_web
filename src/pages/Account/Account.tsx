@@ -3,7 +3,7 @@ import useAccount from "./useAccount";
 import PageNotFound from "../NotFound/NotFoundScreen";
 import Information from "./Information/Information";
 import { useState } from "react";
-
+import LogOut from "../LogOut/LogOut";
 type AccountTabKey = "BioLinker" | "Personal Information" | "Setting" | "My QR" | "Support" | "Logout";
 const Account = () => {
     const { menuComponent } = useAccount();
@@ -14,11 +14,11 @@ const Account = () => {
         "Setting": PageNotFound,
         "My QR": PageNotFound,
         "Support": PageNotFound,
-        "Logout": PageNotFound,
+        "Logout": LogOut,
       };
     const ActiveTabView = tabViewByKey[activeTab];
     return (
-        <div className="h-screen overflow-hidden flex flex-col font-roboto">
+        <div className="h-screen overflow-hidden flex flex-col font-roboto mt-[8vh]">
             <Header/>
             <main className="w-full flex flex-1 overflow-hidden">
                 {/* Left sidebar */}

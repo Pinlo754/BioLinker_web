@@ -1,23 +1,57 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import logo from "../../assets/logo.png";
 import { useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSearch, faBars} from "@fortawesome/free-solid-svg-icons";
 import { Button } from "../ui/button";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "../ui/dropdown-menu";
 import { Sheet, SheetContent, SheetTrigger } from "../ui/sheet";
+import avatar from "../../assets/avatar.png";
 
 const Header = () => {
   const navigate = useNavigate();
   const [search, setSearch] = useState("");
+  const [userData, setUserData] = useState<any>(null);
+  
+  // Check user data mỗi lần render
+  useEffect(() => {
+    const checkUserData = () => {
+      const user = localStorage.getItem("user");
+      if (user) {
+        try {
+          const parsedUser = JSON.parse(user);
+          setUserData(parsedUser);
+          console.log("User data updated:", parsedUser);
+        } catch (error) {
+          console.error("Error parsing user data:", error);
+          setUserData(null);
+        }
+      } else {
+        setUserData(null);
+      }
+    };
 
+    // Check ngay lập tức
+    checkUserData();
+
+    // Listen for storage changes (khi user login/logout ở tab khác)
+    const handleStorageChange = (e: any) => {
+      if (e.key === "user") {
+        checkUserData();
+      }
+    };
+    window.addEventListener("storage", handleStorageChange);
+    return () => {
+      window.removeEventListener("storage", handleStorageChange);
+    };
+  }, []);
   const navItems = [
-    { label: "Marketplace", path: "/marketplace" },
-    { label: "Template", path: "/template" },
+    { label: "Template", path: "/marketplace" },
+    { label: "Support", path: "/*" },
     { label: "About", path: "/about" },
   ];
-
   return (
     <header className="bg-white shadow-md w-full px-4 md:px-8 py-2 fixed top-0 z-50">
       <div className="flex items-center justify-between w-full">
@@ -26,7 +60,7 @@ const Header = () => {
           <img src={logo} alt="logo" className="h-12 md:h-14" />
         </button>
         {/* Desktop Navigation */}
-        <nav className="hidden md:flex items-center gap-16 w-1/2 justify-center">
+        <nav className="hidden md:flex items-center gap-16 w-[40%] justify-center">
           {navItems.map((item) => (
             <button
               key={item.label}
@@ -51,10 +85,11 @@ const Header = () => {
         </div>
 
         {/* Desktop buttons */}
+        {userData === null ? (
         <div className="hidden md:flex items-center gap-4">
-          <Button className="w-32 h-12 px-10 px-4 rounded-3xl bg-gradient-to-r from-[#16C875] to-[#6CDFAB] flex justify-center items-center font-bold text-white">
+          {/* <Button className="w-32 h-12 px-10 px-4 rounded-3xl bg-gradient-to-r from-[#16C875] to-[#6CDFAB] flex justify-center items-center font-bold text-white">
             Support
-          </Button>
+          </Button> */}
           <button
             className="w-33 h-12 py-2 px-1 rounded-3xl bg-gradient-to-r from-[#16C875] to-[#6CDFAB] flex justify-center items-center"
             onClick={() => navigate("/login")}
@@ -72,6 +107,38 @@ const Header = () => {
             </div>
           </button>
         </div>
+        ) : (
+          <div className=" w-[18%] flex items-center justify-between">
+            <Button className="w-[70%] h-12 text-base px-8 rounded-3xl bg-gradient-to-r from-[#16C875] to-[#6CDFAB] flex justify-center items-center font-bold text-white">
+              Create New Bio
+            </Button>
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button className="w-10 h-10 md:w-12 md:h-12 rounded-full overflow-hidden p-0 flex items-center justify-center">
+                  {userData?.userImage ? (
+                    <img src={userData.userImage} alt="avatar" className="w-full h-full object-cover rounded-full" />
+                  ) : (
+                    <img src={avatar} alt="avatar" className="w-full h-full object-cover rounded-full" />
+                  )}
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end" className="w-48 bg-white">
+                <DropdownMenuItem className="font-helvetica text-base hover:bg-green-100" onSelect={() => navigate("/account")}>Information</DropdownMenuItem>
+                <DropdownMenuItem className="font-helvetica text-base hover:bg-green-100" onSelect={() => navigate("/my-collection")}>Collection</DropdownMenuItem>
+                <DropdownMenuItem
+                  className="font-helvetica text-base hover:bg-green-100"
+                  variant="destructive"
+                  onSelect={() => {
+                    localStorage.removeItem("user");
+                    navigate("/logout");
+                  }}
+                >
+                  Logout
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          </div>
+        )}
 
         {/* Mobile Hamburger Menu */}
         <div className="md:hidden flex items-center">

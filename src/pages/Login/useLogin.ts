@@ -41,7 +41,6 @@ const useLogin = () => {
   const postGoogleLogin = async (id_token: string) => {
     return axios.post(`${BASE_URL}/Auth/login-google`, { idToken: id_token });
   };
-
   // // Login bằng Google
   // const loginByGoogle = useGoogleLogin({
   //   flow: "auth-code",
@@ -132,14 +131,11 @@ const useLogin = () => {
       );
       const data = response.data;
       if (data?.token) {
-        localStorage.setItem("token", data.token);
-        localStorage.setItem("userId", data.userId);
-        localStorage.setItem("role", data.role);
-
+        localStorage.setItem("user", JSON.stringify(data));
         toast.success("Login successful!");
         if (data.role?.[0] === "Admin") navigate("/admin");
         else if (data.role?.[0] === "staff") navigate("/staff");
-        else navigate("/");
+        else navigate("/dashboard");
       } else {
         toast.error("Login failed: invalid response from server.");
       }

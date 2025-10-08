@@ -2,9 +2,10 @@ import { useRef, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
 import upload from "../../../lib/upload";
+import { postData } from "../../../api/fetchers";
 
 const useCreateName = () => {
-    const { username, domain, additionalLinks, platformLink, job } = useLocation().state || {};
+    const { username, domain, additionalLinks, platformLink, job, email, password } = useLocation().state || {};
     const [displayName, setDisplayName] = useState<string>(username || "");
     const [description, setDescription] = useState<string>("");
     const [avatarUrl, setAvatarUrl] = useState<string>("");
@@ -29,12 +30,18 @@ const useCreateName = () => {
                     userImage: fileUrl,
                 });
                 if(response){
-                    setLoading(false);
-                    navigate('/dashboard');
+                    const login = await postData("Auth/Login", {email: email, password: password});
+                    console.log(login);
+                    if(login){
+                        const user = JSON.stringify(login);
+                        localStorage.setItem("user", user);
+                        setLoading(false);
+                        navigate('/dashboard');
+                    }  
                 }
             }
         } catch (error) {
-            setError(true);
+            // setError(true);
             setLoading(false);
         }
     }

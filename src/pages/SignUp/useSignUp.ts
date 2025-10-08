@@ -89,7 +89,7 @@ const handleSignUp = async (email: string) => {
             const userId = response.message.userId;
             localStorage.setItem("userId", userId);
             if(response){
-                navigate("/get-started", { state: { username: data.firstName+ " " + data.lastName} });
+                navigate("/get-started", { state: { username: data.firstName+ " " + data.lastName, email: email, password: password} });
             }
         } catch (error) {
             setErrorMessage("Something went wrong, please try again later");
