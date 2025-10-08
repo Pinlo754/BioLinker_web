@@ -4,8 +4,51 @@ import { FaLock } from "react-icons/fa";
 import useLogin from "./useLogin";
 import { ToastContainer, toast } from "react-toastify";
 import { GoogleLogin } from "@react-oauth/google";
+import { useEffect } from "react";
+// declare global {
+//   interface Window {
+//     fbAsyncInit: () => void;
+//     FB: any;
+//   }
+// }
 
 const Login = () => {
+  // useEffect(() => {
+  //   if (!document.getElementById("facebook-jssdk")) {
+  //     const script = document.createElement("script");
+  //     script.id = "facebook-jssdk";
+  //     script.src = "https://connect.facebook.net/vi_VN/sdk.js";
+  //     script.async = true;
+  //     script.defer = true;
+  //     document.body.appendChild(script);
+  //   }
+
+  //   // Khởi tạo SDK khi script load xong
+  //   window.fbAsyncInit = function () {
+  //     window.FB.init({
+  //       appId: "1196014345700555",
+  //       cookie: true,
+  //       xfbml: true,
+  //       version: "v23.0",
+  //     });
+  //   };
+  // }, []);
+
+  // const handleClick = () => {
+  //   window.FB.login(
+  //     (response: any) => {
+  //       if (response.status === "connected") {
+  //         console.log("Access Token:", response.authResponse);
+
+  //         // Gọi backend để login bằng token
+  //       } else {
+  //         console.log("Login cancelled or not authorized");
+  //       }
+  //     },
+  //     { scope: "email,public_profile" }
+  //   );
+  // };
+
   const {
     email,
     setEmail,
@@ -14,7 +57,7 @@ const Login = () => {
     handleLogin,
     LoginBy,
     errorMessage,
-    postGoogleLogin
+    postGoogleLogin,
   } = useLogin();
 
   return (
@@ -87,32 +130,39 @@ const Login = () => {
           {/* Social login */}
           <div className="flex flex-col items-center w-full mt-6 gap-3">
             {/* Google Login UI */}
-            <GoogleLogin
-              onSuccess={(credentialResponse) => {
-                const idToken = credentialResponse.credential;
-                if (idToken) {
-                  console.log("Google ID Token:", idToken);
-                  toast.success("Google login success!");
-                  postGoogleLogin(idToken);
-                } else {
-                  toast.error("No ID token received");
-                }
-              }}
-              onError={() => {
-                toast.error("Google login failed!");
-              }}
-              theme="outline"
-              size="large"
-              shape="rectangular"
-              text="signin_with"
-            />
+            <div className="w-full">
+              <GoogleLogin
+                onSuccess={(credentialResponse) => {
+                  const idToken = credentialResponse.credential;
+                  if (idToken) {
+                    console.log("Google ID Token:", idToken);
+                    toast.success("Google login success!");
+                    postGoogleLogin(idToken);
+                  } else {
+                    toast.error("No ID token received");
+                  }
+                }}
+                onError={() => {
+                  toast.error("Google login failed!");
+                }}
+                theme="outline"
+                shape="rectangular"
+                text="signin_with"
+                width="full"
+                containerProps={{
+                  style: {
+                    width: "100%",
+                  },
+                }}
+              />
+            </div>
 
             {/* Các nút social khác */}
             <div className="flex justify-between items-center w-full gap-1 md:gap-3">
               {[
                 {
                   name: "Facebook",
-                  src: "https://upload.wikimedia.org/wikipedia/commons/5/51/Facebook_f_logo_%282019%29.svg",
+                  src: "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b9/2023_Facebook_icon.svg/900px-2023_Facebook_icon.svg.png",
                 },
                 {
                   name: "Apple",
@@ -138,7 +188,6 @@ const Login = () => {
               ))}
             </div>
           </div>
-
           {/* SSO login */}
           <div
             className="w-full h-14 rounded-2xl bg-white flex items-center justify-center mt-4 text-black text-center border border-black cursor-pointer"
@@ -146,6 +195,10 @@ const Login = () => {
           >
             {FaLock({ className: "mr-4" })} Log in with SSO
           </div>
+          <a href="/privacy-policy" className="mt-2">
+            Chính sách quyền riêng tư
+          </a>
+          <a href="/terms-of-service">Điều khoản dịch vụ</a>
         </div>
       </div>
       <Footer />
