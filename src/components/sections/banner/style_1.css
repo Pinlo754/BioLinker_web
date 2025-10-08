@@ -33,27 +33,6 @@ body {
   gap: 10px;
 }
 
-h1, h2, p {
-  margin: 0;
-  padding: 0;
-  color: white;
-  text-shadow: 0 0 20px rgba(0, 0, 0, 1);
-  line-height: 100%;
-  user-select: none;
-}
-
-h1 {
-  font-size: 80px;
-  font-weight: 700;
-  text-transform: uppercase;
-}
-
-h2 {
-  font-size: 60px;
-  font-weight: 500;
-  text-transform: uppercase;
-}
-
 #canvas {
   position: fixed;
   top: 0;
