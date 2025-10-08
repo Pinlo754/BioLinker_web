@@ -16,7 +16,9 @@ import AddDomain from "../pages/SignUp/AddDomain/AddDomain";
 import CreateNameBio from "../pages/SignUp/CreateNameBio/CreateNameBio";
 import SelectPlatform from "../pages/SignUp/SelectPlatform/SelectPlatform";
 import ProfilePage from "../pages/Bio/page";
-import LogOut from "../pages/LogOut/LogOut";
+import PrivacyPolicy from "../pages/PrivacyPolicy";
+import TermsOfService from "../pages/TermsOfService";=
+import LogOut from "../pages/LogOut/LogOut";=
 
 const routers = createBrowserRouter([
   {
@@ -90,6 +92,14 @@ const routers = createBrowserRouter([
   {
     path: "/profile/:userid",
     element: <ProfilePage />,
+  },
+  {
+    path: "/privacy-policy",
+    element: <PrivacyPolicy />,
+  },
+  {
+    path: "/terms-of-service",
+    element: <TermsOfService />,
   },
   {
     path: "/logout",

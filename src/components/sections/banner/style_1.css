@@ -1,18 +1,3 @@
-body, html, #app {
-  margin: 0;
-  width: 100%;
-  height: 100%;
-}
-
-body {
-  position: relative;           /* cần có để z-index hoạt động */
-  z-index: 50;
-  touch-action: none;
-  background-image: url("./background.svg");
-  background-size: cover;        /* ảnh phủ toàn màn hình */
-  background-position: center;   /* căn giữa */
-  background-repeat: no-repeat;  /* không lặp lại */
-}
 
 #canvas {
   background: transparent !important;
@@ -21,16 +6,6 @@ body {
 #app {
   height: 100%;
   font-family: "Montserrat", serif;
-}
-
-.hero {
-  position: relative;
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 10px;
 }
 
 #canvas {
