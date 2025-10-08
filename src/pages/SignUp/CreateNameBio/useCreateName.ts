@@ -31,15 +31,17 @@ const useCreateName = () => {
                 });
                 if(response){
                     const login = await postData("Auth/Login", {email: email, password: password});
+                    console.log(login);
                     if(login){
-                        localStorage.setItem("user", login);
+                        const user = JSON.stringify(login);
+                        localStorage.setItem("user", user);
                         setLoading(false);
                         navigate('/dashboard');
                     }  
                 }
             }
         } catch (error) {
-            setError(true);
+            // setError(true);
             setLoading(false);
         }
     }

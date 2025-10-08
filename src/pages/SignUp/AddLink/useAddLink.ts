@@ -7,7 +7,6 @@ const useAddLink = () => {
     const navigate = useNavigate();
     const [showError, setShowError] = useState(false);
     const [additionalLinks, setAdditionalLinks] = useState<string[]>(['', '']);
-    const [postSuccess, setPostSuccess] = useState(false);
     // Initialize value map for selected platforms
     const initialMap = useMemo(() => {
         if (!Array.isArray(platforms)) return {} as Record<string, string>;
@@ -32,6 +31,7 @@ const useAddLink = () => {
     };
 
     const handleContinue = async () => {
+        let checkSuccess = false;
         const userId = localStorage.getItem("userId");
         try {
             Object.entries(platformLink).forEach(async ([key, value]) => {
@@ -44,10 +44,10 @@ const useAddLink = () => {
                 });
                 if(response) {
                     console.log("Link posted successfully 1");
-                    setPostSuccess(true);
+                    checkSuccess = true;
                 } else {
                     console.log("Link posted failed 1");
-                    setPostSuccess(false);
+                    checkSuccess = false;
                 }
             });
             
@@ -64,26 +64,25 @@ const useAddLink = () => {
                         });
                         if(response) {
                             console.log("Link posted successfully 2");
-                            setPostSuccess(true);
+                            checkSuccess = true;
                         } else {
                             console.log("Link posted failed 2");
-                            setPostSuccess(false);
+                            checkSuccess = false;
                         }
                     }
                 });
             }
 
-            if(postSuccess) {
-                navigate('/signup/create-name-bio', { 
-                state: { 
-                    username: username, 
-                        domain: domain, 
-                        job: job,
-                        email: email,
-                        password: password
-                    } 
-                });
-            }
+           
+            navigate('/signup/create-name-bio', { 
+            state: { 
+                username: username, 
+                    domain: domain, 
+                    job: job,
+                    email: email,
+                    password: password
+                } 
+            });
         } catch (error) {
             setShowError(true);
         }
