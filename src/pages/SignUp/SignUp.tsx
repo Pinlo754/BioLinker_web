@@ -136,7 +136,7 @@ const SignUp = () => {
               {/* Họ tên */}
               <div className="flex gap-4">
                 <div className="flex-1">
-                  <label className="block mb-1 text-gray-700">First name</label>
+                  <label className="block mb-1 text-gray-700">Tên</label>
                   <input
                     onChange={(e) => setFirstName(e.target.value)}
                     type="text"
@@ -145,7 +145,7 @@ const SignUp = () => {
                   />
                 </div>
                 <div className="flex-1">
-                  <label className="block mb-1 text-gray-700">Last name</label>
+                  <label className="block mb-1 text-gray-700">Họ</label>
                   <input
                     onChange={(e) => setLastName(e.target.value)}
                     type="text"
@@ -161,7 +161,7 @@ const SignUp = () => {
               <div>
 
                 <label className="block mb-1 text-gray-700">
-                  What's your gender?
+                  Giới tính của bạn là ?
                   {checkField && gender === "" ? <span className=" ml-2 text-red-500">(*)</span> : ""}
                 </label>
                 <div className="flex gap-8 mt-1">
@@ -172,7 +172,7 @@ const SignUp = () => {
                       className="accent-green-500"
                       onClick={() => setGender("female")}
                     />
-                    Female
+                    Nữ
                   </label>
                   <label className="flex items-center gap-1">
                     <input
@@ -181,7 +181,7 @@ const SignUp = () => {
                       className="accent-green-500"
                       onClick={() => setGender("male")}
                     />
-                    Male
+                    Nam
                   </label>
                   <label className="flex items-center gap-1">
                     <input
@@ -190,21 +190,21 @@ const SignUp = () => {
                       className="accent-green-500"
                       onClick={() => setGender("other")}
                     />
-                    Other
+                    Khác
                   </label>
                 </div>
               </div>
 
               {/* Ngày sinh */}
               <div>
-                <label className="block mb-1 text-gray-700">What's your date of birth?
+                <label className="block mb-1 text-gray-700">Ngày sinh của bạn là ?
                   {checkField &&validDate === false ? <span className=" ml-2 text-red-500">(Please fill correct date)</span> : ""}
                 </label>
                 <div className="flex gap-4">
                   <div className="flex-1">
                   <Select
                       options={monthOptions as any}
-                      placeholder="Month"
+                      placeholder="Tháng"
                       styles={customStyles}
                       onChange={(e: any) => setMonth(e.value)}
                     />
@@ -212,7 +212,7 @@ const SignUp = () => {
                   <div className="flex-1">
                     <Select
                       options={dateOptions as any}
-                      placeholder="Date"
+                      placeholder="Ngày"
                       styles={customStyles}
                       onChange={(e: any) => setDay(e.value)}
                     />
@@ -220,7 +220,7 @@ const SignUp = () => {
                   <div className="flex-1">
                     <Select
                       options={yearOptions as any}
-                      placeholder="Year"
+                      placeholder="Năm"
                       styles={customStyles}
                       onChange={(e: any) => setYear(e.value)}
                     />
@@ -231,12 +231,12 @@ const SignUp = () => {
 
               {/* Password */}
               <div>
-                <label className="block mb-1 text-gray-700">Password</label>
+                <label className="block mb-1 text-gray-700">Mật khẩu</label>
                 <div className="relative">
                   <input
                     type={showPassword ? "text" : "password"}
                     onChange={(e) => setPassword(e.target.value)}
-                    placeholder="Enter your password"
+                    placeholder="Nhập mật khẩu"
 
                     className={`w-full border  rounded-xl px-4 py-3 text-gray-700 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-green-300 pr-16 ${checkField && !validatePassword(password) ? "border-red-500" : "border-gray-300"}`}
                   ></input>
@@ -248,11 +248,11 @@ const SignUp = () => {
                     tabIndex={-1}
                   >
                     {FaEyeSlash({ className: "w-5 h-5" })}
-                    <span className="ml-1 text-sm">{showPassword ? "Hide" : "Show"}</span>
+                    <span className="ml-1 text-sm">{showPassword ? "Ẩn" : "Hiện"}</span>
                   </button>
                 </div>
                 <div className="text-gray-400 text-xs mt-1">
-                  Use 8 or more characters with a mix of letters, numbers & symbols
+                  Sử dụng 8 hoặc nhiều hơn ký tự với sự kết hợp của chữ cái, số và ký tự đặc biệt
 
                   {checkField && !validatePassword(password) ? <span className=" ml-2 text-red-500">(*)</span> : ""}
                 </div>
@@ -269,7 +269,7 @@ const SignUp = () => {
 
                 <label className={`text-black text-sm ${checkField && !agree ? "text-red-500" : "text-black"}`}>
 
-                  Share my registration data with our content providers for marketing purposes.
+                  Chia sẻ dữ liệu đăng ký của tôi với các nhà cung cấp nội dung cho mục đích marketing.
                 </label>
               </div>
 
@@ -280,18 +280,18 @@ const SignUp = () => {
                 disabled={loading}
                 className="w-full py-3 rounded-full bg-gradient-to-r from-[#16C875] to-[#6CDFAB] text-white text-lg font-semibold mt-2 hover:opacity-90 transition"
               >
-                Sign up
+                Đăng ký
               </button>
               <ErrorOverlay visible={error} message={errorMessage} />
               <LoadingOverlay visible={loading} message="loading..." />
               {/* Đã có tài khoản */}
               <div className="text-center text-gray-500 text-sm mt-2">
-                Already have an account?
+                Đã có tài khoản?
                 <Link
                   to="/login"
                   className="ml-1 text-black underline hover:text-green-500"
                 >
-                  Log in
+                  Đăng nhập
                 </Link>
               </div>
             </form>

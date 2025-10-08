@@ -53,15 +53,15 @@ const CreateNameBio = () => {
                 
                 {/* Welcome Message */}
                 <div className="text-gray-600 font-medium">
-                    Welcome, {username}!
+                    Chào mừng, {username}!
                 </div>
             </div>
             
             {/* Main Content */}
             <div className="flex flex-col items-center px-6 py-8 animate-fadeInUp h-[80vh] ">
                 <div className="text-center mb-8">
-                    <h1 className="text-4xl font-extrabold text-black mb-2">Add profile details</h1>
-                    <p className="text-gray-600">Add your profile image, name, and bio.</p>
+                    <h1 className="text-4xl font-extrabold text-black mb-2">Thêm chi tiết hồ sơ của bạn</h1>
+                    <p className="text-gray-600">Thêm ảnh đại diện, tên, và mô tả của bạn.</p>
                 </div>
 
                 {/* Avatar uploader */}
@@ -102,7 +102,7 @@ const CreateNameBio = () => {
                     <div className="p-3 border border-gray-200 rounded-xl">
                         <input
                             className="w-full outline-none"
-                            placeholder="Display Name"
+                            placeholder="Tên hiển thị"
                             value={displayName}
                             onChange={(e) => setDisplayName(e.target.value)}
                         />
@@ -114,7 +114,7 @@ const CreateNameBio = () => {
                     <div className="p-3 border border-gray-200 rounded-xl">
                         <textarea
                             className="w-full outline-none resize-none"
-                            placeholder="Describe yourself in 160 characters or less"
+                            placeholder="Mô tả bản thân trong 160 ký tự hoặc ít hơn"
                             rows={4}
                             maxLength={160}
                             value={description}
@@ -132,21 +132,21 @@ const CreateNameBio = () => {
                     onClick={handleBack}
                     className="px-6 py-3 text-lg hover:text-green-500 font-medium w-40% h-14"
                 >
-                    Back
+                    Quay lại
                 </button>
                 <Button
                     onClick={handleContinue}
-                    className="w-[50%] h-14 bg-gradient-to-r from-green1 to-green2 text-white rounded-full"
+                    className="w-[50%] h-14 bg-gradient-to-r from-green1 to-green2 text-white rounded-full text-white text-xl"
                     disabled={!displayName}
                 >
-                    Continue
+                    Tiếp tục
                 </Button>
                 {/* Skip Button */}
                 <button
                     onClick={handleContinue}
                     className="px-6 py-3 text-lg hover:text-green-500 font-medium"
                 >
-                    Skip
+                    Bỏ qua
                 </button>
             </div>
             {error && <ErrorOverlay visible={error} />}

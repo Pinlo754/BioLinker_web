@@ -53,14 +53,14 @@ const AddLink = () => {
             {/* Main Content */}
             <div className="flex flex-col items-center px-6 py-8 h-[80vh] overflow-y-auto pr-2 scrollbar-hide animate-fadeInUp">
                 <div className="text-center mb-8 ">
-                    <h1 className="text-3xl font-bold text-black mb-2">Add your links</h1>
-                    <p className="text-gray-600">Complete the fields below to add your content to your new bio.</p>
+                    <h1 className="text-3xl font-bold text-black mb-2">Thêm liên kết của bạn</h1>
+                    <p className="text-gray-600">Hoàn thành các trường bên dưới để thêm nội dung của bạn vào hồ sơ mới của bạn.</p>
                 </div>
 
                 {/* Your selections */}
                 {platforms.length > 0 && (  
                 <div className="w-full max-w-2xl mb-8">
-                    <h2 className="text-base font-semibold text-black mb-3">Your selections</h2>
+                    <h2 className="text-base font-semibold text-black mb-3">Các nền tảng mà bạn đang sử dụng</h2>
                     <div className="space-y-4">
                         {platforms.map((name: string) => (
                             <div key={name} className="flex items-center gap-3 p-3 border border-gray-200 rounded-xl">
@@ -95,7 +95,7 @@ const AddLink = () => {
 
                 {/* Additional links */}
                 <div className="w-full max-w-2xl">
-                    <h2 className="text-base font-semibold text-black mb-3">Additional links</h2>
+                    <h2 className="text-base font-semibold text-black mb-3">Các liên kết thêm</h2>
                     <div className="space-y-3">
                         {additionalLinks.map((val, idx) => (
                             <div key={idx} className="flex items-center gap-3 p-3 border border-gray-200 rounded-xl">
@@ -119,21 +119,21 @@ const AddLink = () => {
                     onClick={handleBack}
                     className="px-6 py-3 text-lg hover:text-green-500 font-medium w-40% h-14"
                 >
-                    Back
+                    Quay lại
                 </button>
                 <Button
                     onClick={handleContinue}
                     className="w-[50%] h-14 bg-gradient-to-r from-green1 to-green2 text-white rounded-full"
                     disabled={Object.values(platformLink || {}).some((value) => value === '') || additionalLinks.length === 0}
                 >
-                    Continue
+                    Tiếp tục
                 </Button>
                 {/* Skip Button */}
                 <button
                     onClick={handleSkip}
                     className="px-6 py-3 text-lg hover:text-green-500 font-medium w-40% h-14"
                 >
-                    Skip
+                    Bỏ qua
                 </button>
             </div>
         </div>

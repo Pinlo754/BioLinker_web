@@ -33,14 +33,13 @@ const Getstarted = () => {
           
           {/* Welcome Message */}
           <div className="text-gray-600 font-medium">
-              Welcome, {username}!
+              Chào mừng, {username}!
           </div>
       </div>
 
       {/* Title */}
       <h1 className="mt-2 text-center font-bold leading-tight font-['Helvetica'] text-3xl md:text-4xl text-[#4F4F4F]">
-        Which best describes<br />
-        your goal for using BioLinker?
+        Mục đích sử dụng BioLinker của bạn là?
       </h1>
 
       {/* Options */}

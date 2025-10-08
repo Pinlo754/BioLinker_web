@@ -5,34 +5,34 @@ const useGetStarted = () => {
     const { username, email, password } = useLocation().state || {};
     const options = [
         {
-          title: "Artist",
+          title: "Nghệ sĩ",
           description:
-            "Showcase my work, grow my audience, and connect with fans or clients.",
+            "Trưng bày nghệ thuật, tăng độ phủ sóng, và kết nối với khách hàng hoặc khách hàng.",
         },
         {
-          title: "Producer",
+          title: "Lập trình viên",
           description:
-            "Showcase my projects, manage content distribution, and find new ways to connect with audiences and collaborators.",
+            "Trưng bày dự án, quản lý phân phối nội dung, và tìm các cách mới để kết nối với khách hàng và đối tác.",
         },
         {
-          title: "Producer",
+          title: "Nhà sản xuất âm nhạc",
           description:
-            "Showcase my services, attract new clients, and manage my online presence in one easy-to-share link.",
+            "Trưng bày dịch vụ, thu hút khách hàng mới, và quản lý sự hiện diện trực tuyến của tôi trong một liên kết dễ chia sẻ.",
         },
         {
-          title: "Creator",
+          title: "Nhà sáng tạo nội dung",
           description:
-            "Build and engage my audience while exploring tools to share content, grow my brand, and generate income from my creative work.",
+            "Xây dựng và tương tác với khách hàng trong khi khai phá các công cụ mới để chia sẻ nội dung, phát triển thương hiệu của tôi, và tạo ra thu nhập từ công việc sáng tạo.",
         },
         {
-          title: "Owner",
+          title: "Chủ doanh nghiệp",
           description:
-            "Promote my business, drive traffic to key platforms, and manage my brand presence in one central place.",
+            "Thúc đẩy doanh nghiệp, chia sẻ đến các nền tảng quan trọng, và mở rộng phạm vi nhận diện của thương hiệu.",
         },
         {
-          title: "Personal",
+          title: "Cá nhân",
           description:
-            "Share everything that matters to me — from social profiles to passions — all in one simple, personalized link.",
+            "Chia sẻ mọi thứ quan trọng — từ mậng xã hội đến sở thích — tất cả trong một liên kết đơn giản, cá nhân hóa.",
         },
       ];
 
