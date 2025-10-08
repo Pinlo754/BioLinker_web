@@ -7,7 +7,8 @@ import { LeftSidebar } from "./components/bio/left-sidebar";
 import { MobilePreview } from "./components/bio/mobile-preview";
 import { RightPanel } from "./components/bio/right-panel";
 import Header from "../../components/sections/Header";
-import {ProfileData, LayoutElement } from "@/types/bio";
+import { ProfileData, LayoutElement } from "@/types/bio";
+import axios from "axios";
 // ---- Component chính ----
 export default function BioBuilder() {
   const updateElementSize = (
@@ -22,13 +23,37 @@ export default function BioBuilder() {
     }));
   };
 
+  const handlePublish = async () => {
+    const userId = localStorage.getItem("userId");
+    if (!userId) {
+      alert("Vui lòng đăng nhập trước khi publish!");
+      return;
+    }
+
+    try {
+      const payload = {
+        userId,
+        profileData,
+      };
+
+      const res = await axios.post(
+        "https://68e6641521dd31f22cc56979.mockapi.io//template",
+        payload,
+        { headers: { "Content-Type": "application/json" } }
+      );     
+    } catch (error: any) {
+      console.error("Publish error:", error.response?.data || error.message);
+      alert("Lỗi khi publish profile!");
+    }
+  };
+
   const [activePanel, setActivePanel] = useState<
     "templates" | "content" | "background" | "style" | "settings"
   >("content");
   const [viewMode, setViewMode] = useState<"mobile" | "desktop">("mobile");
 
   const [profileData, setProfileData] = useState<ProfileData>({
-    layoutMode: "absolute",
+    layoutMode: "flex-vertical",
     elements: [
       {
         id: "bg-1",
@@ -86,7 +111,7 @@ export default function BioBuilder() {
       {
         id: "link-1",
         type: "link",
-        content: { text: "WEBSITE", url: "#", icon: "/instagram.png" },
+        content: { text: "INSTAGRAM", url: "#", icon: "/instagram.png" },
         position: { x: 50, y: 55, width: 90, zIndex: 5 },
         size: { width: 320, height: 40 },
         alignment: "center",
@@ -95,7 +120,7 @@ export default function BioBuilder() {
       {
         id: "link-2",
         type: "link",
-        content: { text: "PORTFOLIO", url: "#" },
+        content: { text: "FACEBOOK", url: "#", icon: "/facebook.svg" },
         position: { x: 50, y: 62, width: 90, zIndex: 5 },
         size: { width: 320, height: 40 },
         alignment: "center",
@@ -104,7 +129,7 @@ export default function BioBuilder() {
       {
         id: "link-3",
         type: "link",
-        content: { text: "ABOUT ME", url: "#" },
+        content: { text: "TIKTOK", url: "#", icon: "/tiktok.svg" },
         position: { x: 50, y: 69, width: 90, zIndex: 5 },
         size: { width: 320, height: 40 },
         alignment: "center",
@@ -113,17 +138,8 @@ export default function BioBuilder() {
       {
         id: "link-4",
         type: "link",
-        content: { text: "MY STORE", url: "#" },
+        content: { text: "YOUTUBE", url: "#", icon: "/youtube.svg" },
         position: { x: 50, y: 76, width: 90, zIndex: 5 },
-        size: { width: 320, height: 40 },
-        alignment: "center",
-        visible: true,
-      },
-      {
-        id: "link-5",
-        type: "link",
-        content: { text: "CONTACT ME", url: "#" },
-        position: { x: 50, y: 83, width: 90, zIndex: 5 },
         size: { width: 320, height: 40 },
         alignment: "center",
         visible: true,
@@ -249,9 +265,9 @@ export default function BioBuilder() {
               <Monitor className="w-4 h-4" />
               <span className="text-sm font-medium">Desktop</span>
             </button>
-            <Button variant="outline" size="sm" onClick={handleImportJSON}>
+            <Button variant="outline" size="sm" onClick={handlePublish}>
               <Upload className="w-4 h-4 mr-2" />
-              Import
+              Publish
             </Button>
             <Button variant="outline" size="sm" onClick={handleExportJSON}>
               <Download className="w-4 h-4 mr-2" />
@@ -277,4 +293,3 @@ export default function BioBuilder() {
     </div>
   );
 }
-
