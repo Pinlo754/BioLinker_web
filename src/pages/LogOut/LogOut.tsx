@@ -31,7 +31,7 @@ const LogOut = () => {
             <circle cx="12" cy="17" r="1.25" fill="currentColor" />
           </svg>
           <div className="flex-1">
-            <div className="text-base md:text-lg font-semibold text-gray-800">Are you sure you want to log out?</div>
+            <div className="text-base md:text-lg font-semibold text-gray-800">Bạn có chắc chắn muốn đăng xuất không?</div>
           </div>
         </div>
         <div className="mt-5 flex items-center justify-end gap-2">
@@ -40,14 +40,14 @@ const LogOut = () => {
             onClick={handleClose}
             className="px-4 py-2 rounded-lg text-gray-700 bg-gray-100 hover:bg-gray-200"
           >
-            Close
+            Đóng
           </button>
           <button
             type="button"
             onClick={handleLogout}
             className="px-4 py-2 rounded-lg text-white bg-gradient-to-r from-[#16C875] to-[#6CDFAB] cursor-pointer"
           >
-            Log out
+            Đăng xuất
           </button>
         </div>
       </div>
