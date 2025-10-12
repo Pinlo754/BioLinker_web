@@ -18,16 +18,12 @@ const Header = () => {
   // Check user data mỗi lần render
   useEffect(() => {
     const checkUserData = () => {
-      const user = localStorage.getItem("user");
-      console.log("user", user);
-      
+      const user = localStorage.getItem("user");      
       if (user) {
         try {
           const parsedUser = JSON.parse(user);
           setUserData(parsedUser);
-          console.log("User data updated:", parsedUser);
         } catch (error) {
-          console.error("Error parsing user data:", error);
           setUserData(null);
         }
       } else {
@@ -37,7 +33,6 @@ const Header = () => {
 
     // Check ngay lập tức
     checkUserData();
-    console.log("userData", userData);
     
     // Listen for storage changes (khi user login/logout ở tab khác)
     const handleStorageChange = (e: any) => {
@@ -55,13 +50,29 @@ const Header = () => {
     { label: "Hỗ trợ", path: "/*" },
     { label: "Giới thiệu", path: "/about" },
   ];
+
+  const handleHome = () => {
+    if(userData === null){
+      navigate("/");
+    }
+    else{
+      window.location.reload();
+      navigate("/dashboard");
+    }
+  }
   return (
     <header className="bg-white shadow-md w-full px-4 md:px-8 py-2 fixed top-0 z-50">
       <div className="flex items-center justify-between w-full">
         {/* Logo */}
-        <button onClick={() => navigate("/")} className="flex items-center">
+        {userData === null ? (
+        <button onClick={() => handleHome()} className="flex items-center">
           <img src={logo} alt="logo" className="h-12 md:h-14" />
         </button>
+        ) : (
+          <button onClick={() => handleHome()} className="flex items-center">
+            <img src={logo} alt="logo" className="h-12 md:h-14" />
+          </button>
+        )}
         {/* Desktop Navigation */}
         <nav className="hidden md:flex items-center gap-16 w-[40%] justify-center">
           {navItems.map((item) => (
