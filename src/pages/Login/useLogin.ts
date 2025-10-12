@@ -3,6 +3,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { toast } from "react-toastify";
 import { useGoogleLogin } from "@react-oauth/google";
+import { fetcherWithParams } from "../../api/fetchers";
 
 export interface GoogleLoginResponse {
   access_token: string;
@@ -31,7 +32,7 @@ const useLogin = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [errorMessage, setErrorMessage] = useState<string>("");
-
+  const [loading, setLoading] = useState(false);
   const passwordInputRef = useRef<HTMLInputElement>(null);
   const BASE_URL = "https://biolinker.onrender.com/api";
   const resetPassword = () => {
@@ -39,20 +40,25 @@ const useLogin = () => {
   };
 
   const postGoogleLogin = async (id_token : string) => {
+    setLoading(true);
     const response = await axios.post(`${BASE_URL}/Auth/login-google`, { idToken: id_token });
     if(response.data){
-      localStorage.setItem("email", response.data.email);
-      localStorage.setItem("user", JSON.stringify(response.data));
-      localStorage.setItem("userId", response.data.userId);      
+      localStorage.setItem("userId", response.data.userId);
+      const userId = response.data.userId
+      const user = await fetcherWithParams(`Auth/${userId}`, {userId: userId});
+      localStorage.setItem("user", JSON.stringify(user));
       if(response.data.customDomain === null){
         console.log(response.data.customDomain);
+        setLoading(false);
         navigate("/create-account",{state: {emailGg: response.data.email, setPassword: true}});
       }
       else{
+        setLoading(false);
         navigate("/dashboard");
       }
     }
     else{
+      setLoading(false);
       toast.error("Đăng nhập Google thất bại!");
     }
   };
@@ -139,6 +145,7 @@ const useLogin = () => {
       return;
     }
     try {
+      setLoading(true);
       const response = await axios.post(
         "https://biolinker.onrender.com/api/Auth/Login",
         { email, password },
@@ -146,9 +153,9 @@ const useLogin = () => {
       );
       const data = response.data;
       if (data?.token) {
-        localStorage.setItem("password", password); {/** dung tam out come 1 */}
-        localStorage.setItem("email", email); {/** dung tam out come 1 */}
-        localStorage.setItem("user", JSON.stringify(data));
+        const user = await fetcherWithParams(`Auth/${data.userId}`, {userId: data.userId});
+        localStorage.setItem("user", JSON.stringify(user));
+        setLoading(false);
         toast.success("Login successful!");
         if (data.role?.[0] === "Admin") navigate("/admin");
         else if (data.role?.[0] === "staff") navigate("/staff");
@@ -198,6 +205,7 @@ const useLogin = () => {
     setErrorMessage,
     toast,
     postGoogleLogin,
+    loading,
   };
 };
 
