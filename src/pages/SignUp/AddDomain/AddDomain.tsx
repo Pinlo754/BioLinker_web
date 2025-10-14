@@ -1,6 +1,7 @@
 import { Button } from '../../../components/ui/button';
 import logo from "../../../assets/logo.png";
 import useAddDomain from './useAddDomain';
+import { LoadingOverlay } from '../../../components/ui/loading';
 const AddDomain = () => {
   const { 
     domain, 
@@ -11,7 +12,9 @@ const AddDomain = () => {
     handleSkip,  
     setDomain, 
     setShowError, 
-    username 
+    username,
+    errorMessage,
+    isLoading
   } = useAddDomain();
   return (
     <div className="min-h-screen bg-white ">
@@ -44,7 +47,7 @@ const AddDomain = () => {
           </div>
       </div>
       {/* Main Content */}
-      <div className="flex flex-col items-center justify-center px-6 w-full">
+      <div className="flex flex-col items-center justify-center px-6 w-full h-full">
           <div className="w-full max-w-[50%] space-y-8 animate-fadeInUp">
               {/* Title */}
               <div className="text-center  w-full">
@@ -57,10 +60,10 @@ const AddDomain = () => {
                   </p>
               </div>
               {/* Input Fields */}
-              <div className="space-y-4 items-center">
-                  <div className="flex items-center space-x-0 gap-4">
+              <div className="space-y-4 items-center min-h-[20%]">
+                  <div className="flex justify-start space-x-0 gap-4">
                       {/* Prefix */}
-                      <div className="bg-white border border-green-500 rounded-full px-6 py-2 text-xl  text-green-500">
+                      <div className="bg-white border border-green-500 rounded-full px-6 py-2 text-xl align-start h-[52%]  text-green-500">
                           biolinker/
                       </div>
                       {/* Username Input */}
@@ -77,13 +80,14 @@ const AddDomain = () => {
                            }}
                            className={`flex-1 w-full bg-white border rounded-full px-4 py-2 text-xl placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-green1 focus:border-green1 ${showError ? 'border-red-500' : 'border-green-500'}`}
                            />
-                      </div>
-                  </div>
-                  {showError && (
-                      <span className="text-red-500 text-base text-center mt-1 block">
-                          Domain này đã được sử dụng. Vui lòng thử một domain khác.
+                           {showError && (
+                      <span className="text-red-500 text-base text-start pl-2 pt-2 block">
+                          {errorMessage}
                       </span>
                   )}
+                      </div>
+                  </div>
+                  
                </div>
               {/* Continue Button */}
               <div className="flex justify-center items-center">
@@ -115,6 +119,7 @@ const AddDomain = () => {
               Bỏ qua
           </button>
       </div>
+      <LoadingOverlay visible={isLoading} />
     </div>
   );
 };

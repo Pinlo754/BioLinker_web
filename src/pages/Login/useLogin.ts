@@ -47,7 +47,9 @@ const useLogin = () => {
       const userId = response.data.userId
       const user = await fetcherWithParams(`Auth/${userId}`, {userId: userId});
       localStorage.setItem("user", JSON.stringify(user));
-      if(response.data.customDomain === null){
+      console.log(response.data);
+      
+      if(response.data.customerDomain === null){
         console.log(response.data.customDomain);
         setLoading(false);
         navigate("/create-account",{state: {emailGg: response.data.email, setPassword: true}});
