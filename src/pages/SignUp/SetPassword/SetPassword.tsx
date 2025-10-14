@@ -12,7 +12,7 @@ const SetPassword: React.FC<SetPasswordProps>= ({ visible, emailGg}) => {
     const isMatch = password.length > 0 && confirmPassword.length > 0 && password === confirmPassword && validatePassword(password);
     return (
         <div className="fixed inset-0 z-[9999] bg-black/25 backdrop-blur-[1px] flex items-center justify-center">
-            <div className="bg-white rounded-3xl p-8 shadow-xl flex flex-col items-center gap-4 w-[40%] h-[50%]">
+            <div className="bg-white rounded-3xl p-8 shadow-xl flex flex-col items-center gap-4 w-[40%] h-[65vh]">
               <h1 className="text-2xl md:text-3xl font-semibold tracking-tight text-gray-900">Tạo Mật Khẩu mới</h1>
               <div className="w-full max-w-md flex flex-col gap-2">
                 <label className="text-sm font-medium text-gray-700">Mật khẩu</label>
