@@ -27,7 +27,7 @@ const CreateNameBio = () => {
     return (
         <div className="min-h-screen bg-white ">
              {/* Header Section */}
-             <div className="flex justify-between items-center px-6 py-4">
+             <div className="flex justify-between items-center px-6 pb-4">
                 {/* Logo */}
                 <button className="flex justify-center items-center h-full">
                     <img
@@ -36,10 +36,14 @@ const CreateNameBio = () => {
                       alt="logo"
                       onClick={() => navigate("/")}
                     />
-                </button>
-
-                {/* Progress Bar */}
-                <div className="w-full max-w-md mx-auto px-6 align-middle">
+                </button>              
+                {/* Welcome Message */}
+                <div className="text-gray-600 font-medium">
+                    Chào mừng, {username}!
+                </div>
+            </div>
+             {/* Progress Bar */}
+             <div className="w-full max-w-md mx-auto px-6 align-middle">
                     <div className="flex space-x-2">
                         {/* Step 1 - Completed */}
                         <div className="flex-1 h-2 bg-gradient-to-r from-green1 to-green2 rounded-full"></div>
@@ -49,14 +53,7 @@ const CreateNameBio = () => {
                         <div className="flex-1 h-2 bg-gradient-to-r from-green1 to-green2 rounded-full"></div>
                         {/* Step 2 - Current */}
                     </div>
-                </div>
-                
-                {/* Welcome Message */}
-                <div className="text-gray-600 font-medium">
-                    Chào mừng, {username}!
-                </div>
-            </div>
-            
+                </div>            
             {/* Main Content */}
             <div className="flex flex-col items-center px-6 py-8 animate-fadeInUp h-[80vh] ">
                 <div className="text-center mb-8">

@@ -10,7 +10,7 @@ const Getstarted = () => {
   return (
     <div className="min-h-screen bg-white  overflow-hidden font-normal font-['Helvetica']">
       {/* Header Section */}
-      <div className="flex justify-between items-center px-6 py-4">
+      <div className="flex justify-between items-center px-6 p-4">
           {/* Logo */}
           <button className="flex justify-center items-center h-full">
               <img
@@ -19,9 +19,14 @@ const Getstarted = () => {
                 alt="logo"
                 onClick={() => navigate("/")}
               />
-          </button>
-          {/* Progress Bar */}
-          <div className="w-full max-w-md mx-auto px-6 align-middle">
+          </button>          
+          {/* Welcome Message */}
+          <div className="text-gray-600 font-medium">
+              Chào mừng, {username}!
+          </div>
+      </div>
+      {/* Progress Bar */}
+      <div className="w-full max-w-md mx-auto px-6 align-middle pb-4">
               <div className="flex space-x-2">
                 <div className="flex-1 h-2 bg-gradient-to-r from-green1 to-green2 rounded-full"></div>
                 <div className="flex-1 h-2 bg-gray-300 rounded-full"></div>
@@ -29,14 +34,7 @@ const Getstarted = () => {
                 <div className="flex-1 h-2 bg-gray-300 rounded-full"></div>
                 <div className="flex-1 h-2 bg-gray-300 rounded-full"></div>
               </div>
-          </div>
-          
-          {/* Welcome Message */}
-          <div className="text-gray-600 font-medium">
-              Chào mừng, {username}!
-          </div>
       </div>
-
       {/* Title */}
       <h1 className="mt-2 text-center font-bold leading-tight font-['Helvetica'] text-3xl md:text-4xl text-[#4F4F4F]">
         Mục đích sử dụng BioLinker của bạn là?

@@ -19,7 +19,7 @@ const AddDomain = () => {
   return (
     <div className="min-h-screen bg-white ">
         {/* Header Section */}
-      <div className="flex justify-between items-center px-6 py-4">
+      <div className="flex justify-between items-center px-6 pb-4">
           {/* Logo */}
           <button className="flex justify-center items-center h-full">
               <img
@@ -29,8 +29,13 @@ const AddDomain = () => {
                 onClick={() => navigate("/")}
               />
           </button>
-          {/* Progress Bar */}
-          <div className="w-full max-w-md mx-auto px-6 align-middle">
+          {/* Welcome Message */}
+          <div className="text-gray-600 font-medium">
+              Chào mừng, {username}!
+          </div>
+      </div>
+                {/* Progress Bar */}
+                <div className="w-full max-w-md mx-auto px-6 align-middle pb-6">
               <div className="flex space-x-2">
                   {/* Step 1 - Completed */}
                   <div className="flex-1 h-2 bg-gradient-to-r from-green1 to-green2 rounded-full"></div>
@@ -41,11 +46,6 @@ const AddDomain = () => {
                   {/* Step 2 - Current */}
               </div>
           </div>
-          {/* Welcome Message */}
-          <div className="text-gray-600 font-medium">
-              Chào mừng, {username}!
-          </div>
-      </div>
       {/* Main Content */}
       <div className="flex flex-col items-center justify-center px-6 w-full h-full">
           <div className="w-full max-w-[50%] space-y-8 animate-fadeInUp">
