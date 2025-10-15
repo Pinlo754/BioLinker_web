@@ -23,7 +23,7 @@ const Account = () => {
             <Header/>
             <main className="w-full flex flex-1 overflow-hidden">
                 {/* Left sidebar */}
-                <aside className="w-full max-w-xs bg-gradient-to-br from-green1 to-green2 pt-5 flex flex-col gap-4 sticky top-0 self-start h-screen">
+                <aside className="w-full max-w-[280px] bg-gradient-to-br from-green1 to-green2 pt-5 flex flex-col gap-4 sticky top-0 self-start h-screen">
                     <div className="flex flex-col gap-2">
                         {menuComponent.map((item) => (
                             <button
