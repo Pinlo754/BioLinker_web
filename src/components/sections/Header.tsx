@@ -19,7 +19,7 @@ const Header = () => {
   useEffect(() => {
     const checkUserData = () => {
       const user = localStorage.getItem("user");
-      console.log("user", user);
+      console.log("userId", user);
       
       if (user) {
         try {
@@ -112,7 +112,11 @@ const Header = () => {
         </div>
         ) : (
           <div className=" w-[18%] flex items-center justify-between">
-            <Button className="w-[70%] h-12 text-base px-8 rounded-3xl bg-gradient-to-r from-[#16C875] to-[#6CDFAB] flex justify-center items-center font-bold text-white">
+            <Button className="w-[70%] h-12 text-base px-8 rounded-3xl bg-gradient-to-r from-[#16C875] to-[#6CDFAB] flex justify-center items-center font-bold text-white"
+            onClick={() => {
+              sessionStorage.removeItem("profileData");
+              navigate('/bio-edit')
+            }}>
               Tạo hồ sơ mới
             </Button>
             <DropdownMenu>

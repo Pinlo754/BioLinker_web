@@ -3,6 +3,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { toast } from "react-toastify";
 import { useGoogleLogin } from "@react-oauth/google";
+import { fetcherWithParams } from "../../api/fetchers";
 
 export interface GoogleLoginResponse {
   access_token: string;
@@ -38,21 +39,24 @@ const useLogin = () => {
     navigate("verify-email-reset-password?email=" + email);
   };
 
-  const postGoogleLogin = async (id_token : string) => {
-    const response = await axios.post(`${BASE_URL}/Auth/login-google`, { idToken: id_token });
-    if(response.data){
-      localStorage.setItem("email", response.data.email);
-      localStorage.setItem("user", JSON.stringify(response.data));
-      localStorage.setItem("userId", response.data.userId);      
-      if(response.data.customDomain === null){
-        console.log(response.data.customDomain);
-        navigate("/create-account",{state: {emailGg: response.data.email, setPassword: true}});
-      }
-      else{
+  const postGoogleLogin = async (id_token: string) => {
+    const response = await axios.post(`${BASE_URL}/Auth/login-google`, {
+      idToken: id_token,
+    });
+    if (response.data) {
+      localStorage.setItem("email", response.data.email);      
+      localStorage.setItem("userId", response.data.userId);
+      const user = await fetcherWithParams(`Auth/${response.data.userId}`, {userId: response.data.userId});
+      localStorage.setItem("user", JSON.stringify(user));
+      if (user.customerDomain === null) {
+        console.log("domain:", user.customerDomain);
+        navigate("/create-account", {
+          state: { emailGg: user.email, setPassword: true },
+        });
+      } else {
         navigate("/dashboard");
       }
-    }
-    else{
+    } else {
       toast.error("Đăng nhập Google thất bại!");
     }
   };
@@ -105,31 +109,38 @@ const useLogin = () => {
 
   // Hàm gọi backend facebook-response
   const handleFacebookResponse = async () => {
-      // Bước 2: nhận lại token và thông tin user từ URL
-      const params = new URLSearchParams(location.search);
-      const token = params.get("token");
-      const email = params.get("email");
-      const userId = params.get("userId");
-      const name = params.get("name");
-      const role = params.get("role") || "FreeUser";
+    // Bước 2: nhận lại token và thông tin user từ URL
+    const params = new URLSearchParams(location.search);
+    const token = params.get("token");
+    const email = params.get("email");
+    const userId = params.get("userId");
+    const name = params.get("name");
+    const role = params.get("role") || "FreeUser";
+    const avatar = params.get("avatar");
 
-      if (token) {
-        localStorage.setItem("token", token);
-        localStorage.setItem("userId", userId || "");
-        localStorage.setItem("email", email || "");
-        localStorage.setItem("name", name || "");
-        localStorage.setItem("role", role);
-        toast.success("Đăng nhập bằng Facebook thành công!");
-        if (role === "Admin") navigate("/admin");
-        else if (role === "staff") navigate("/staff");
-        else navigate("/");
-        toast.success("Đăng nhập bằng Facebook thành công!");
+    if (token) {
+      const user = {
+        token,
+        userId: userId || "",
+        email: email || "",
+        name: name || "",
+        role,
+        avatar: avatar || "/avatar.svg",
+      };
+
+      localStorage.setItem("user", JSON.stringify(user));
+      toast.success("Đăng nhập bằng Facebook thành công!");
+      if (role === "Admin") navigate("/admin");
+      else if (role === "staff") navigate("/staff");
+      else navigate("/");
+      toast.success("Đăng nhập bằng Facebook thành công!");
     }
   };
 
   // Khi click login -> chuyển hướng đến backend (để bắt đầu quy trình OAuth)
   const loginByFacebook = () => {
-    window.location.href = "https://biolinker.onrender.com/api/Auth/login-facebook";
+    window.location.href =
+      "https://biolinker.onrender.com/api/Auth/login-facebook";
   };
 
   // Login bằng Email/Password
@@ -146,8 +157,14 @@ const useLogin = () => {
       );
       const data = response.data;
       if (data?.token) {
-        localStorage.setItem("password", password); {/** dung tam out come 1 */}
-        localStorage.setItem("email", email); {/** dung tam out come 1 */}
+        localStorage.setItem("password", password);
+        {
+          /** dung tam out come 1 */
+        }
+        localStorage.setItem("email", email);
+        {
+          /** dung tam out come 1 */
+        }
         localStorage.setItem("user", JSON.stringify(data));
         toast.success("Login successful!");
         if (data.role?.[0] === "Admin") navigate("/admin");
@@ -173,8 +190,8 @@ const useLogin = () => {
       case "Facebook":
         loginByFacebook();
         break;
-      // case "Google":
-      //   loginByGoogle();
+        // case "Google":
+        //   loginByGoogle();
         break;
       case "Apple":
       case "LinkedIn":

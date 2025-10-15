@@ -17,8 +17,10 @@ import {
   ChevronUp,
   Eye,
   EyeOff,
+  Sparkles,
 } from "lucide-react";
 import { useState } from "react";
+import axios from "axios";
 import {
   Select,
   SelectContent,
@@ -26,6 +28,8 @@ import {
   SelectTrigger,
   SelectValue,
 } from "../../../../../components/ui/select";
+import upload from "../../../../../lib/upload";
+import { LuUpload } from "react-icons/lu";
 
 interface ContentPanelProps {
   profileData: ProfileData;
@@ -103,9 +107,167 @@ export function ContentPanel({
     }
   };
 
+  // 🚀 Nút Fast Design (tự động sinh bố cục + load social link từ API)
+  const handleFastDesign = async () => {
+  const userString = localStorage.getItem("user");
+  if (!userString) {
+    alert("Chưa có thông tin người dùng!");
+    return;
+  }
+
+  const user = JSON.parse(userString);
+  const userId = user.userId;
+
+  // Gọi API để lấy social links
+  let staticLinks = [];
+  try {
+    const res = await axios.get(
+      `https://biolinker.onrender.com/api/StaticLinks/user/${userId}`
+    );
+    staticLinks = res.data || [];
+  } catch (error) {
+    console.error("Lỗi khi lấy social links:", error);
+  }
+
+  // Lọc chỉ lấy link có status = "public"
+  const publicLinks = staticLinks.filter((link: any) => link.status === "public");
+
+  // Map platform → icon
+  const platformIcons: Record<string, string> = {
+    Facebook: "/facebook.svg",
+    Instagram: "/instagram.svg",
+    TikTok: "/tiktok.svg",
+    YouTube: "/youtube.svg",
+    Twitter: "/x.svg",
+  };
+
+  // Sao chép danh sách element hiện tại
+  const updatedElements = [...profileData.elements];
+
+  // Helper: tìm element theo type
+  const findElement = (type: string) =>
+    updatedElements.find((el) => el.type === type);
+
+  // === Avatar ===
+  const existingAvatar = findElement("avatar");
+  if (existingAvatar) {
+    // Nếu đã có avatar thì chỉ cập nhật khi chưa có ảnh
+    if (!existingAvatar.content?.value && user.userImage) {
+      existingAvatar.content.value = user.userImage;
+    }
+  } else {
+    // Chưa có → thêm mới
+    updatedElements.push({
+      id: `avatar-${Date.now()}`,
+      type: "avatar",
+      content: { value: user.userImage || "/default-avatar.png" },
+      position: { x: 50, y: 10, width: 40, zIndex: 1 },
+      alignment: "center",
+      visible: true,
+    });
+  }
+
+  // === Name ===
+  const existingName = findElement("name");
+  if (existingName) {
+    if (!existingName.content?.value && user.fullName) {
+      existingName.content.value = user.fullName;
+    }
+  } else {
+    updatedElements.push({
+      id: `name-${Date.now()}`,
+      type: "name",
+      content: {
+        value: user.fullName || "Unknown User",
+        textColor: "#000000",
+        fontSize: 20,
+        fontWeight: "600",
+        fontFamily: "Poppins, sans-serif",
+      },
+      position: { x: 50, y: 30, width: 90, zIndex: 2 },
+      alignment: "center",
+      visible: true,
+    });
+  }
+
+  // === Bio ===
+  const existingBio = findElement("bio");
+  if (existingBio) {
+    if (!existingBio.content?.value && user.description) {
+      existingBio.content.value = user.description;
+    }
+  } else {
+    updatedElements.push({
+      id: `bio-${Date.now()}`,
+      type: "bio",
+      content: {
+        value: user.description || "Welcome to my Biolinker page!",
+        textColor: "#666666",
+        fontSize: 14,
+        fontWeight: "400",
+        fontFamily: "Poppins, sans-serif",
+      },
+      position: { x: 50, y: 40, width: 90, zIndex: 3 },
+      alignment: "center",
+      visible: true,
+    });
+  }
+
+  // === Social Links ===
+  publicLinks.forEach((link: any, idx: number) => {
+    const existingLink = updatedElements.find(
+      (el) =>
+        el.type === "link" &&
+        el.content?.social?.toLowerCase() === link.platform.toLowerCase()
+    );
+
+    const newContent = {
+      text: link.title || link.platform,
+      url: link.defaultUrl,
+      social: link.platform.toLowerCase(),
+      icon: platformIcons[link.platform] || "",
+    };
+
+    if (existingLink) {
+      // Nếu link đã có → chỉ cập nhật URL & icon nếu trống
+      if (!existingLink.content?.url) existingLink.content.url = link.defaultUrl;
+      if (!existingLink.content?.icon)
+        existingLink.content.icon = platformIcons[link.platform] || "";
+    } else {
+      // Nếu chưa có → thêm mới
+      updatedElements.push({
+        id: `link-${link.platform.toLowerCase()}-${Date.now() + idx}`,
+        type: "link",
+        content: newContent,
+        position: { x: 50, y: 55 + idx * 10, width: 90, zIndex: 10 + idx },
+        alignment: "center",
+        visible: true,
+      });
+    }
+  });
+
+  // Cập nhật profile với danh sách element đã chỉnh sửa/thêm mới
+  onUpdateProfile({ elements: updatedElements });
+
+  alert("Fast Design đã cập nhật giao diện, giữ nguyên phần cũ và thêm phần còn thiếu!");
+};
+
+
+  // --- JSX ---
   return (
     <div className="p-6">
-      <h2 className="text-xl font-bold mb-6">Edit Content</h2>
+      <div className="flex items-center justify-between mb-6">
+        <h2 className="text-xl font-bold">Edit Content</h2>
+
+        <Button
+          variant="outline"
+          onClick={handleFastDesign}
+          className="bg-gradient-to-r from-[#16C875] to-[#6CDFAB] text-white font-semibold hover:scale-105 transition-transform duration-200 flex items-center gap-2"
+        >
+          <Sparkles className="w-4 h-4" />
+          Fast Design
+        </Button>
+      </div>
 
       <div className="mb-6">
         <Label className="mb-3 block">Add Elements</Label>
@@ -366,10 +528,16 @@ export function ContentPanel({
                         <option className="font-mono" value="monospace">
                           Monospace
                         </option>
-                        <option className="[font-family:cursive]" value="cursive">
+                        <option
+                          className="[font-family:cursive]"
+                          value="cursive"
+                        >
                           Cursive
                         </option>
-                        <option className="[font-family:fantasy]" value="fantasy">
+                        <option
+                          className="[font-family:fantasy]"
+                          value="fantasy"
+                        >
                           Fantasy
                         </option>
                         <option
@@ -390,18 +558,48 @@ export function ContentPanel({
                 )}
 
                 {element.type === "avatar" && (
-                  <div>
+                  <div className="flex flex-col gap-2">
                     <Label htmlFor={`avatar-${element.id}`}>Avatar URL</Label>
-                    <Input
-                      id={`avatar-${element.id}`}
-                      value={element.content.value || ""}
-                      onChange={(e) =>
-                        updateElement(element.id, {
-                          content: { value: e.target.value },
-                        })
-                      }
-                      placeholder="https://example.com/avatar.jpg"
-                      className="focus:ring-2 focus:ring-[#16C875] transition-all duration-200"
+                    <div className="flex gap-1 w-full">
+                      <Input
+                        id={`avatar-${element.id}`}
+                        value={element.content.value || ""}
+                        onChange={(e) =>
+                          updateElement(element.id, {
+                            content: { value: e.target.value },
+                          })
+                        }
+                        placeholder="https://example.com/avatar.jpg"
+                        className="focus:ring-2 focus:ring-[#16C875] transition-all duration-200 w-[80%]"
+                      />
+
+                      {/* Nút chọn ảnh */}
+                      <Button
+                        type="button"
+                        variant="outline"
+                        className="w-fit text-sm w-[15%]"
+                        onClick={() =>
+                          document.getElementById(`file-${element.id}`)?.click()
+                        }
+                      >
+                        {LuUpload({ className: "w-5 h-5 text-gray-600" })}
+                      </Button>
+                    </div>
+
+                    <input
+                      id={`file-${element.id}`}
+                      type="file"
+                      className="hidden"
+                      accept="image/*"
+                      onChange={async (e) => {
+                        const file = e.target.files?.[0];
+                        if (file) {
+                          const fileUrl = await upload(file);
+                          updateElement(element.id, {
+                            content: { value: fileUrl },
+                          });
+                        }
+                      }}
                     />
                   </div>
                 )}
@@ -447,11 +645,24 @@ export function ContentPanel({
                         <Label htmlFor={`social-${element.id}`}>Social</Label>
                         <Select
                           value={element.content.social || ""}
-                          onValueChange={(value) =>
+                          onValueChange={(value) => {
+                            const socialIcons: Record<string, string> = {
+                              facebook: "/facebook.svg",
+                              instagram: "/instagram.svg",
+                              tiktok: "/tiktok.svg",
+                              youtube: "/youtube.svg",
+                              twitter: "/x.svg",
+                            };
+
                             updateElement(element.id, {
-                              content: { ...element.content, social: value },
-                            })
-                          }
+                              content: {
+                                ...element.content,
+                                social: value,
+                                icon: socialIcons[value] || "", // tự động thêm đường dẫn icon
+                                text: value.toUpperCase(), // tự động cập nhật chữ trên nút
+                              },
+                            });
+                          }}
                         >
                           <SelectTrigger
                             id={`social-${element.id}`}
@@ -502,7 +713,11 @@ export function ContentPanel({
                             </SelectItem>
                             <SelectItem value="twitter">
                               <div className="flex items-center gap-2">
-                                <img src="/x.svg" alt="Twitter" className="w-4 h-4" />
+                                <img
+                                  src="/x.svg"
+                                  alt="Twitter"
+                                  className="w-4 h-4"
+                                />
                                 <span>X</span>
                               </div>
                             </SelectItem>

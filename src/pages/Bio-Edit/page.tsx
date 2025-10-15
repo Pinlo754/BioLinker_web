@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Button } from "../../components/ui/button";
 import { Settings, Smartphone, Monitor, Download, Upload } from "lucide-react";
 import { LeftSidebar } from "./components/bio/left-sidebar";
@@ -24,23 +24,39 @@ export default function BioBuilder() {
   };
 
   const handlePublish = async () => {
-    const userId = localStorage.getItem("userId");
-    if (!userId) {
+    const userString = localStorage.getItem("user");
+    const user = userString ? JSON.parse(userString) : null;
+    const userName = user?.customerDomain || "";
+
+    if (!userName) {
       alert("Vui lòng đăng nhập trước khi publish!");
       return;
     }
 
     try {
-      const payload = {
-        userId,
-        profileData,
-      };
+      // 1️⃣ Kiểm tra userName đã tồn tại chưa
+      const getRes = await axios.get(
+        `https://68e6641521dd31f22cc56979.mockapi.io/template?userName=${userName}`
+      );
 
-      const res = await axios.post(
-        "https://68e6641521dd31f22cc56979.mockapi.io//template",
+      const existingData = getRes.data;
+      if (existingData.length > 0) {
+        // 2️⃣ Nếu tồn tại, xóa bản ghi cũ
+        const oldId = existingData[0].id;
+        await axios.delete(
+          `https://68e6641521dd31f22cc56979.mockapi.io/template/${oldId}`
+        );
+      }
+
+      // 3️⃣ Tạo mới (ghi đè)
+      const payload = { userName, profileData };
+      await axios.post(
+        "https://68e6641521dd31f22cc56979.mockapi.io/template",
         payload,
         { headers: { "Content-Type": "application/json" } }
-      );     
+      );
+
+      alert("Publish thành công!");
     } catch (error: any) {
       console.error("Publish error:", error.response?.data || error.message);
       alert("Lỗi khi publish profile!");
@@ -52,117 +68,37 @@ export default function BioBuilder() {
   >("content");
   const [viewMode, setViewMode] = useState<"mobile" | "desktop">("mobile");
 
-  const [profileData, setProfileData] = useState<ProfileData>({
-    layoutMode: "flex-vertical",
-    elements: [
-      {
-        id: "bg-1",
-        type: "background",
-        content: { value: "/mountain-vista.png" },
-        position: { x: 0, y: 0, width: 100, height: 192, zIndex: 0 },
-        size: { width: 360, height: 192 },
-        visible: true,
-      },
-      {
-        id: "avatar-1",
-        type: "avatar",
-        content: { value: "/avatar.png" },
-        position: { x: 50, y: 15, width: 28, zIndex: 10 },
-        size: { width: 100, height: 100 },
-        alignment: "center",
-        visible: true,
-      },
-      {
-        id: "name-1",
-        type: "name",
-        content: { value: "Thanh Phong" },
-        position: { x: 50, y: 30, width: 100, zIndex: 5 },
-        size: { width: 300, height: 40 },
-        alignment: "center",
-        visible: true,
-      },
-      {
-        id: "title-1",
-        type: "title",
-        content: { value: "Banhmixiumai owner" },
-        position: { x: 50, y: 35, width: 100, zIndex: 5 },
-        size: { width: 300, height: 30 },
-        alignment: "center",
-        visible: true,
-      },
-      {
-        id: "divider-1",
-        type: "divider",
-        content: {},
-        position: { x: 50, y: 38, width: 8, zIndex: 5 },
-        size: { width: 80, height: 2 },
-        alignment: "center",
-        visible: true,
-      },
-      {
-        id: "bio-1",
-        type: "bio",
-        content: { value: "Hi! My name is Phong.\nI am a Banhmixiumai owner." },
-        position: { x: 50, y: 42, width: 80, zIndex: 5 },
-        size: { width: 280, height: 80 },
-        alignment: "center",
-        visible: true,
-      },
-      {
-        id: "link-1",
-        type: "link",
-        content: { text: "INSTAGRAM", url: "#", icon: "/instagram.png" },
-        position: { x: 50, y: 55, width: 90, zIndex: 5 },
-        size: { width: 320, height: 40 },
-        alignment: "center",
-        visible: true,
-      },
-      {
-        id: "link-2",
-        type: "link",
-        content: { text: "FACEBOOK", url: "#", icon: "/facebook.svg" },
-        position: { x: 50, y: 62, width: 90, zIndex: 5 },
-        size: { width: 320, height: 40 },
-        alignment: "center",
-        visible: true,
-      },
-      {
-        id: "link-3",
-        type: "link",
-        content: { text: "TIKTOK", url: "#", icon: "/tiktok.svg" },
-        position: { x: 50, y: 69, width: 90, zIndex: 5 },
-        size: { width: 320, height: 40 },
-        alignment: "center",
-        visible: true,
-      },
-      {
-        id: "link-4",
-        type: "link",
-        content: { text: "YOUTUBE", url: "#", icon: "/youtube.svg" },
-        position: { x: 50, y: 76, width: 90, zIndex: 5 },
-        size: { width: 320, height: 40 },
-        alignment: "center",
-        visible: true,
-      },
-    ],
-    globalStyles: {
-      buttonStyle: "rounded",
-      buttonColor: "#2d3748",
-      iconColor: "#2d3748",
-      textStyles: {
-        titles: "font-bold text-2xl",
-        headings: "font-semibold text-xl",
-        paragraphs: "text-sm",
-        buttons: "font-medium text-sm",
-      },
-    },
-    settings: {
-      thumbnail: "",
-      metaTitle: "",
-      metaDescription: "",
-      cookieBanner: false,
-    },
+  const [profileData, setProfileData] = useState<ProfileData>(() => {
+    // Nếu trong sessionStorage đã có dữ liệu trước đó thì lấy lại
+    const saved = sessionStorage.getItem("profileData");
+    return saved
+      ? JSON.parse(saved)
+      : {
+          layoutMode: "flex-vertical",
+          elements: [],
+          globalStyles: {
+            buttonStyle: "rounded",
+            buttonColor: "#2d3748",
+            iconColor: "#2d3748",
+            textStyles: {
+              titles: "font-bold text-2xl",
+              headings: "font-semibold text-xl",
+              paragraphs: "text-sm",
+              buttons: "font-medium text-sm",
+            },
+          },
+          settings: {
+            thumbnail: "",
+            metaTitle: "",
+            metaDescription: "",
+            cookieBanner: false,
+          },
+        };
   });
+
+  useEffect(() => {
+    sessionStorage.setItem("profileData", JSON.stringify(profileData));
+  }, [profileData]);
 
   // ---- Update helpers ----
   const updateProfileData = (updates: Partial<ProfileData>) => {
@@ -236,6 +172,71 @@ export default function BioBuilder() {
     input.click();
   };
 
+  // ---- Tutorial Overlay ----
+  const [showTutorial, setShowTutorial] = useState<boolean>(() => {
+    const beginner = localStorage.getItem("isBeginner");
+    return beginner === null || beginner === "true"; // nếu chưa có hoặc = true thì hiển thị
+  });
+
+  const handleNeverRemind = async () => {
+    try {
+      const userString = localStorage.getItem("user");
+      if (!userString) return;
+      const user = JSON.parse(userString);
+
+      // Gọi API PUT để set isBeginner = false
+      const response = await fetch(`https://yourapi.com/api/users/${user.id}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ ...user, isBeginner: false }),
+      });
+
+      if (!response.ok) throw new Error("Cập nhật thất bại");
+
+      // Cập nhật lại localStorage và ẩn tutorial
+      const updatedUser = { ...user, isBeginner: false };
+      localStorage.setItem("user", JSON.stringify(updatedUser));
+      setShowTutorial(false);
+    } catch (error) {
+      console.error("Lỗi khi cập nhật:", error);
+    }
+  };
+
+  const [step, setStep] = useState(0); // bước hiện tại
+
+  // Danh sách hình ảnh hướng dẫn
+  const tutorialImages = [
+    "/trial1.png",
+    "/trial2.png",
+    "/trial3.png",
+    "/trial4.png",
+    "/trial5.png",
+    "/trial6.png",
+    "/trial7.png",
+  ];
+
+  const handleNextStep = () => {
+    if (step < tutorialImages.length - 1) {
+      setStep(step + 1);
+    } else {
+      // Khi hết bước cuối → tắt hướng dẫn
+      handleSkipTutorial();
+    }
+  };
+
+  const handlePreviosStep = () => {
+    if (step > 0) {
+      setStep(step - 1);
+    }
+  };
+
+  const handleSkipTutorial = () => {
+    setShowTutorial(false);
+    localStorage.setItem("isBeginner", "false");
+  };
+
   // ---- Render ----
   return (
     <div className="h-screen flex flex-col  mt-14">
@@ -290,6 +291,54 @@ export default function BioBuilder() {
           onUpdateElement={updateElementContent}
         />
       </div>
+
+      {showTutorial && (
+        <div className="fixed inset-0 z-50 bg-black/80 flex flex-col items-center justify-center text-center text-white p-4">
+          <img
+            src={tutorialImages[step]}
+            alt={`Step ${step + 1}`}
+            className="max-w-[80%] max-h-[70%] rounded-lg shadow-lg mb-6"
+          />
+
+          <div className="flex gap-4">
+            <Button
+              variant="secondary"
+              onClick={handlePreviosStep}
+              disabled={step === 0}
+              className={`${
+                step > 0
+                  ? "bg-white text-black hover:bg-gray-200"
+                  : "bg-gray-400 text-gray-200 cursor-not-allowed"
+              }`}
+            >
+              Trước
+            </Button>
+            <Button
+              variant="secondary"
+              onClick={handleNextStep}
+              className="bg-white text-black hover:bg-gray-200"
+            >
+              {step < tutorialImages.length - 1 ? "Next" : "Finish"}
+            </Button>
+            <Button
+              variant="outline"
+              onClick={handleSkipTutorial}
+              className="text-white border-white hover:bg-white/20"
+            >
+              Skip
+            </Button>
+          </div>
+          <Button
+            onClick={() => {
+              handleSkipTutorial();
+              handleNeverRemind();
+            }}
+            className="mt-2 bg-gray-300 hover:bg-gray-400 text-black"
+          >
+            Không nhắc lại
+          </Button>
+        </div>
+      )}
     </div>
   );
 }

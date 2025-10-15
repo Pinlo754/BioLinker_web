@@ -27,7 +27,7 @@ const useCreateName = () => {
                     job: job,
                     nickname: displayName,
                     description: description,
-                    customDomain: domain,
+                    customerDomain: domain,
                     userImage: fileUrl,
                 }
                 const response = await axios.patch("https://biolinker.onrender.com/api/Auth/profile-customize", data);
