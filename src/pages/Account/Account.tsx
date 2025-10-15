@@ -2,6 +2,7 @@ import Header from "../../components/sections/Header";
 import useAccount from "./useAccount";
 import PageNotFound from "../NotFound/NotFoundScreen";
 import Information from "./Information/Information";
+import Links from "./Links/Links";
 import { useState } from "react";
 import LogOut from "../LogOut/LogOut";
 type AccountTabKey = "BioLinker" | "Thông tin cá nhân" | "Cài đặt" | "QR của tôi" | "Hỗ trợ" | "Đăng xuất";
@@ -9,7 +10,7 @@ const Account = () => {
     const { menuComponent } = useAccount();
     const [activeTab, setActiveTab] = useState<AccountTabKey>("BioLinker");
     const tabViewByKey: Record<AccountTabKey, React.ComponentType<any>> = {
-        "BioLinker": PageNotFound,
+        "BioLinker": Links,
         "Thông tin cá nhân": Information,
         "Cài đặt": PageNotFound,
         "QR của tôi": PageNotFound,

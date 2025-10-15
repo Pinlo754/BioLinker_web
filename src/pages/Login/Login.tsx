@@ -5,6 +5,7 @@ import useLogin from "./useLogin";
 import { ToastContainer, toast } from "react-toastify";
 import { GoogleLogin } from "@react-oauth/google";
 import { useEffect } from "react";
+import { LoadingOverlay } from "../../components/ui/loading";
 // declare global {
 //   interface Window {
 //     fbAsyncInit: () => void;
@@ -58,6 +59,7 @@ const Login = () => {
     LoginBy,
     errorMessage,
     postGoogleLogin,
+    loading,
   } = useLogin();
 
   return (
@@ -194,6 +196,7 @@ const Login = () => {
           <a href="/terms-of-service">Điều khoản dịch vụ</a>
         </div>
       </div>
+      <LoadingOverlay visible={loading} /> 
       <Footer />
     </div>
   );

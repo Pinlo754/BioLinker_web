@@ -34,8 +34,6 @@ const useCreateName = () => {
                 if(response){
                     console.log(email,password);
                     const login = await postData("Auth/Login", {email: email, password: password});
-                    localStorage.setItem("password", password); {/** dung tam out come 1 */}
-                    localStorage.setItem("email", email); {/** dung tam out come 1 */}
                     console.log(login);
                     if(login){
                         const user = JSON.stringify(login);

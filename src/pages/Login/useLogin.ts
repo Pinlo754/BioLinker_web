@@ -32,31 +32,35 @@ const useLogin = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [errorMessage, setErrorMessage] = useState<string>("");
-
+  const [loading, setLoading] = useState(false);
   const passwordInputRef = useRef<HTMLInputElement>(null);
   const BASE_URL = "https://biolinker.onrender.com/api";
   const resetPassword = () => {
     navigate("verify-email-reset-password?email=" + email);
   };
 
-  const postGoogleLogin = async (id_token: string) => {
-    const response = await axios.post(`${BASE_URL}/Auth/login-google`, {
-      idToken: id_token,
-    });
-    if (response.data) {
-      localStorage.setItem("email", response.data.email);      
+  const postGoogleLogin = async (id_token : string) => {
+    setLoading(true);
+    const response = await axios.post(`${BASE_URL}/Auth/login-google`, { idToken: id_token });
+    if(response.data){
       localStorage.setItem("userId", response.data.userId);
-      const user = await fetcherWithParams(`Auth/${response.data.userId}`, {userId: response.data.userId});
+      const userId = response.data.userId
+      const user = await fetcherWithParams(`Auth/${userId}`, {userId: userId});
       localStorage.setItem("user", JSON.stringify(user));
-      if (user.customerDomain === null) {
-        console.log("domain:", user.customerDomain);
-        navigate("/create-account", {
-          state: { emailGg: user.email, setPassword: true },
-        });
-      } else {
+      console.log(response.data);
+      
+      if(response.data.customerDomain === null){
+        console.log(response.data.customDomain);
+        setLoading(false);
+        navigate("/create-account",{state: {emailGg: response.data.email, setPassword: true}});
+      }
+      else{
+        setLoading(false);
         navigate("/dashboard");
       }
-    } else {
+    }
+    else{
+      setLoading(false);
       toast.error("Đăng nhập Google thất bại!");
     }
   };
@@ -150,6 +154,7 @@ const useLogin = () => {
       return;
     }
     try {
+      setLoading(true);
       const response = await axios.post(
         "https://biolinker.onrender.com/api/Auth/Login",
         { email, password },
@@ -157,15 +162,9 @@ const useLogin = () => {
       );
       const data = response.data;
       if (data?.token) {
-        localStorage.setItem("password", password);
-        {
-          /** dung tam out come 1 */
-        }
-        localStorage.setItem("email", email);
-        {
-          /** dung tam out come 1 */
-        }
-        localStorage.setItem("user", JSON.stringify(data));
+        const user = await fetcherWithParams(`Auth/${data.userId}`, {userId: data.userId});
+        localStorage.setItem("user", JSON.stringify(user));
+        setLoading(false);
         toast.success("Login successful!");
         if (data.role?.[0] === "Admin") navigate("/admin");
         else if (data.role?.[0] === "staff") navigate("/staff");
@@ -215,6 +214,7 @@ const useLogin = () => {
     setErrorMessage,
     toast,
     postGoogleLogin,
+    loading,
   };
 };
 

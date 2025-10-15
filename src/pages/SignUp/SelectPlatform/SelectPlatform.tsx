@@ -20,7 +20,7 @@ const SelectPlatform = () => {
     return (
         <div className="min-h-screen bg-white flex flex-col">
             {/* Header Section */}
-            <div className="flex justify-between items-center px-6 py-4">
+            <div className="flex justify-between items-center px-6 pt-4">
                 {/* Logo */}
                 <div className="flex justify-center items-center h-full">
                     <img
@@ -28,10 +28,14 @@ const SelectPlatform = () => {
                       className="h-[49px]"
                       alt="logo"
                     />
+                </div>                
+                {/* Welcome Message */}
+                <div className="text-gray-600 font-medium">
+                    Welcome, {username}!
                 </div>
-
-                {/* Progress Bar */}
-                <div className="w-full max-w-md mx-auto px-6 align-middle">
+            </div>
+            {/* Progress Bar */}
+            <div className="w-full max-w-md mx-auto px-6 align-middle pb-6">
                     <div className="flex space-x-2">
                         {/* Step 1 - Completed */}
                         <div className="flex-1 h-2 bg-gradient-to-r from-green1 to-green2 rounded-full"></div>
@@ -42,13 +46,6 @@ const SelectPlatform = () => {
                         {/* Step 2 - Current */}
                     </div>
                 </div>
-                
-                {/* Welcome Message */}
-                <div className="text-gray-600 font-medium">
-                    Welcome, {username}!
-                </div>
-            </div>
-
             {/* Main Content */}
             <div className="flex-1 flex flex-col items-center max-h-[79vh] justify-start px-6 py-2 ">
                 {/* Title */}
@@ -102,7 +99,7 @@ const SelectPlatform = () => {
             </div>
 
             {/* Bottom Navigation */}
-            <div className="flex justify-between items-center px-6 py-4">
+            <div className="flex justify-between items-center px-6 pb-4">
                 {/* Back Button */}
                 <button
                     onClick={handleBack}
