@@ -15,8 +15,8 @@ const ErrorIcon: React.FC = () => (
 );
 const ErrorOverlay: React.FC<ErrorOverlayProps> = ({
   visible,
-  message = 'An unexpected error occurred. Please try again.',
-  closeText = 'Close',
+  message = 'Đã có lỗi xảy ra. Vui lòng thử lại sau.',
+  closeText = 'Đóng',
 }) => {
     const navigate = useNavigate();
   if (!visible) return null;
@@ -33,7 +33,7 @@ const ErrorOverlay: React.FC<ErrorOverlayProps> = ({
           {(
             <button
               type="button"
-              onClick={() => navigate('/')}
+              onClick={() => navigate(-1)}
               className="px-4 py-2 rounded-lg text-white bg-gradient-to-r from-[#16C875] to-[#6CDFAB] opacity-70 cursor-pointer"
             >
               {closeText}

@@ -2,6 +2,8 @@ import { LoadingOverlay } from "../../../components/ui/loading";
 import useLinks from "./useLinks";
 import useInformation from "../Information/useInformation";
 import SearchLink from "./SearchLink/SearchLink";
+import ErrorOverlay from "../../../components/ui/error";
+import { useEffect } from "react";
 
 const Links = () => {
     const { 
@@ -14,25 +16,42 @@ const Links = () => {
         setTitle,
         url,
         setUrl,
-        isEditingTitle,
-        isEditingUrl,
+        editingTitleId,
+        editingUrlId,
         toggleEditTitle,
         toggleEditUrl,
         addLinkModal,
         setAddLinkModal,
         handleAddLink,
+        error,
+        getAllLinks,
+        links,
+        changeLinkTitle,
+        changeLinkUrl,
+        changeLinkStatus,
+        getUserInfo,
+        setLoading,
     } = useLinks();
 
     const { 
         fileInputRef,
         handleChangeImage,
     } = useInformation();
+
+
+    useEffect(() => {
+        setLoading(true);
+        getAllLinks();
+        getUserInfo();
+        setLoading(false);
+    }, []);
     return (
-        <div className="w-full flex flex-col gap-4 bg-[#F3F3F1] pb-10 mt-[3vh] h-full">
+        <div className="w-full flex flex-col gap-4 bg-[#F3F3F1] py-4 mt-[3vh] h-full overflow-y-auto pb-20">
             <h1 className="text-2xl font-bold ml-6">Links của bạn</h1>
-            <div className="max-w-[52%] mx-auto flex flex-col gap-4 w-full font-roboto text-[#4F4F4F]">
+            <div className="max-w-[52%] min-w-min mx-auto flex flex-col gap-4 w-full font-roboto text-[#4F4F4F] ">
                 <SearchLink visible={addLinkModal} onClose={() => setAddLinkModal(false)} onAddLink={(platform)=>handleAddLink(platform)}/>
                 <LoadingOverlay visible={loading}/>
+                <ErrorOverlay visible={error}/>
                 {/**personal information */}
                 <div className="w-full flex flex-col gap-4">
                     <div className="w-full flex flex-row gap-4 text-black">
@@ -73,30 +92,34 @@ const Links = () => {
                 </div>
 
                 {/**link list */}
-                <div className="w-full flex flex- gap-4 mt-10 justify-center">
+                <div className="w-full flex flex-col gap-8 mt-10 justify-center ">
                     {/**link item */}
-
-                    <div className="w-[100%] flex flex-row gap-4 border rounded-3xl shadow-emerald-500/50 pl-14 shadow-2xl pr-10 py-6 justify-between bg-[#ffffff]">
+                    {(links.reverse()).map((link) => (
+                    <div className="w-[100%] flex flex-1 flex-row gap-4 border rounded-3xl shadow-emerald-500/50 pl-14 shadow-2xl pr-10 py-6 justify-between bg-[#ffffff]" key={link.staticLinkId}>
                         {/**information */}
-                        <div className="flex flex-col gap-4 w-[60%]">
+                        <div className="flex flex-col gap-4 w-[70%]">
                             {/* Title row */}
-                            {isEditingTitle ? (
+                            {editingTitleId === link.staticLinkId ? (
                                 <input
                                     type="text"
                                     value={title}
                                     placeholder="Tiêu đề"
                                     onChange={(e) => setTitle(e.target.value)}
-                                    onBlur={toggleEditTitle}
+                                    onBlur={() => { changeLinkTitle(link.staticLinkId, title); toggleEditTitle(null); }}
+                                    onKeyDown={(e) => {
+                                        if (e.key === 'Enter') { changeLinkTitle(link.staticLinkId, title); toggleEditTitle(null); }
+                                        if (e.key === 'Escape') { toggleEditTitle(null); }
+                                    }}
                                     autoFocus
                                     className="text-black text-base max-w-full w-full whitespace-nowrap border-0 outline-none focus:outline-none focus:ring-0 focus:border-transparent bg-transparent p-0 overflow-hidden font-semibold"
                                 />
                             ) : (
                                 <button
                                     className="flex items-center max-w-full rounded-[2px] outline-offset-2 outline-2 focus-visible:outline"
-                                    onClick={toggleEditTitle}
+                                    onClick={() => toggleEditTitle(link.staticLinkId, link.title)}
                                 >
                                    <p className="text-black text-base max-w-full whitespace-nowrap font-semibold text-concrete text-ellipsis overflow-hidden">
-                                        {title !== "" ? title : "Tiêu đề"}
+                                        {link.title !== "" ? link.title : "Tiêu đề"}
                                     </p>
                                     <span className="flex  ml-2">
                                         <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"  role="img" aria-hidden="true"><path fill-rule="evenodd" d="M2 14v-2.3l7.5-7.5 2.3 2.3L4.3 14H2Zm10.5-8.2 1.3-1.3-2.3-2.3-1.3 1.3 2.3 2.3Zm-1.35-4.65-10 10-.15.35v3l.5.5h3l.35-.15 10-10v-.7l-3-3h-.7Z" fill="currentColor"></path></svg>
@@ -105,23 +128,27 @@ const Links = () => {
                             )}
 
                             {/* URL row */}
-                            {isEditingUrl ? (
+                            {editingUrlId === link.staticLinkId ? (
                                 <input
                                     type="text"
                                     value={url}
                                     onChange={(e) => setUrl(e.target.value)}
-                                    onBlur={toggleEditUrl}
+                                    onBlur={() => { changeLinkUrl(link.staticLinkId, url); toggleEditUrl(null); }}
+                                    onKeyDown={(e) => {
+                                        if (e.key === 'Enter') { changeLinkUrl(link.staticLinkId, url); toggleEditUrl(null); }
+                                        if (e.key === 'Escape') { toggleEditUrl(null); }
+                                    }}
                                     placeholder="URL"
                                     autoFocus
-                                    className="text-black text-base max-w-full w-full whitespace-nowrap border-0 outline-none focus:outline-none focus:ring-0 focus:border-transparent bg-transparent p-0 overflow-hidden"
+                                    className=" text-black text-base max-w-full w-full whitespace-nowrap border-0 outline-none focus:outline-none focus:ring-0 focus:border-transparent bg-transparent p-0 overflow-hidden"
                                 />
                             ) : (
                                 <button
                                     className="flex items-center max-w-full rounded-[2px] outline-offset-2 outline-2 focus-visible:outline"
-                                    onClick={toggleEditUrl}
+                                    onClick={() => toggleEditUrl(link.staticLinkId, link.defaultUrl)}
                                 >
                                    <p className="text-black text-base max-w-full whitespace-nowrap text-ellipsis overflow-hidden">
-                                        {url === "" ? "URL" : url}
+                                        {link.defaultUrl === "" ? "URL" : link.defaultUrl}
                                     </p>
                                     <span className="flex  ml-2">
                                         <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"  role="img" aria-hidden="true"><path fill-rule="evenodd" d="M2 14v-2.3l7.5-7.5 2.3 2.3L4.3 14H2Zm10.5-8.2 1.3-1.3-2.3-2.3-1.3 1.3 2.3 2.3Zm-1.35-4.65-10 10-.15.35v3l.5.5h3l.35-.15 10-10v-.7l-3-3h-.7Z" fill="currentColor"></path></svg>
@@ -142,7 +169,7 @@ const Links = () => {
                                 {/* Toggle Switch */}
                                 <div className="flex items-center gap-2">
                                     <label className="relative inline-flex items-center cursor-pointer">
-                                        <input type="checkbox" className="sr-only peer" />
+                                        <input type="checkbox" className="sr-only peer" checked={link.status === "public"} onChange={(e) => changeLinkStatus(link.staticLinkId, e.target.checked ? "public" : "private")}/>
                                         <div className="w-11 h-6 bg-gray-300 peer-focus:outline-none  rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-[#016E1A]">
                                         </div>
                                     </label>
@@ -156,6 +183,7 @@ const Links = () => {
                             </div>
                         </div>
                     </div>
+                    ))}
                 </div>
             </div>
         </div>
