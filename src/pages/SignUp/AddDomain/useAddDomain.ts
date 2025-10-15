@@ -46,7 +46,7 @@ const AddDomain = () => {
     };
 
     const handleBack = () => {
-        navigate('/get-started', { state: { email: email, password: password } });
+        navigate('/get-started', { state: { email: email, password: password, username: username } });
     };
 
     const handleSkip = () => {

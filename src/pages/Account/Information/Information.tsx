@@ -25,8 +25,8 @@ const Information = () => {
         checkUserData();
     }, []);
     return (
-        <div className="w-full flex flex-col gap-4 bg-[#F3F3F1] pb-10 ">
-            <div className="max-w-[50%] mx-auto flex flex-col gap-4 w-full font-roboto text-[#4F4F4F] ">
+        <div className="w-full flex flex-col gap-4 bg-[#F3F3F1] pb-10 mt-[3vh]">
+            <div className="max-w-[55%] mx-auto flex flex-col gap-4 w-full font-roboto text-[#4F4F4F] ">
                 {loading && <LoadingOverlay visible={loading} message="Saving details..." />}
                 {/* personal information */}
                 <div className="w-full gap-10 text-2xl mt-6 text-black">
