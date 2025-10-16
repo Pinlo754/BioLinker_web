@@ -41,10 +41,13 @@ const Links = () => {
 
 
     useEffect(() => {
-        setLoading(true);
-        getAllLinks();
-        getUserInfo();
-        setLoading(false);
+        const render = async () => {
+            setLoading(true);
+            await getAllLinks();
+            await getUserInfo();
+            setLoading(false);
+        }
+        render();
     }, []);
     return (
         <div className="w-full flex flex-col gap-4 bg-[#F3F3F1] py-4 mt-[3vh] h-full overflow-y-auto pb-20">
@@ -75,7 +78,7 @@ const Links = () => {
                         <div className="flex flex-col gap-2 ">
                             <p className="text-base font-bold">{displayName}</p>
                             <p className="text-base">{bio}</p>
-                                <p className="text-base text-green1"><a href={`https://links.biolinker.io.vn/${domain}`} target="_blank" rel="noopener noreferrer">https://links.biolinker.io.vn/{domain}</a></p>
+                            <p className="text-base text-green1"><a href={`https://links.biolinker.io.vn/${domain}`} className="hover:underline" target="_blank" rel="noopener noreferrer">https://links.biolinker.io.vn/{domain}</a></p>
                             </div>
                     </div>
                     <button className="rounded-3xl border  bg-gradient-to-r from-green1 to-green2 h-[65px] font-semibold mt-2 text-[#ffffff] hover:bg-[#33D08D] "
@@ -95,7 +98,7 @@ const Links = () => {
                 {/**link list */}
                 <div className="w-full flex flex-col gap-8 mt-10 justify-center ">
                     {/**link item */}
-                    {(links.reverse()).map((link) => (
+                    {links.map((link) => (
                     <div className="w-[100%] flex flex-1 flex-row gap-4 border rounded-3xl shadow-emerald-500/50 pl-14 shadow-2xl pr-10 py-6 justify-between bg-[#ffffff]" key={link.staticLinkId}>
                         {/**information */}
                         <div className="flex flex-col gap-4 w-[70%]">
@@ -156,6 +159,10 @@ const Links = () => {
                                     </span>
                                 </button>
                             )}
+                            {/* <div className="bg-[#BF000B] w-[50%] rounded-[2px] relative p-1">
+                                <div className="absolute w-0 h-0 border-l-4 border-l-transparent border-r-4 border-r-transparent border-b-4 border-b-[#BF000B] bottom-full"></div>
+                                <p className="text-black text-xs text-white font-semibold">Vui lòng nhập đúng định dạng URL</p>
+                            </div> */}
                         </div>
                         {/**button */}
                         <div className="flex flex-col gap-4">

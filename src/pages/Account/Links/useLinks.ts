@@ -1,6 +1,8 @@
 import { useState } from "react";
 import avatar from "../../../assets/avatar.png";
-import { fetcherWithParams } from "../../../api/fetchers";
+import { fetcherWithParams, postData, putDataWithParams, } from "../../../api/fetchers";
+import platformDetect from "../../../constants/platformDetect";
+import { toast } from "react-toastify";
 type Link = {
     staticLinkId:string;
     userId: string;
@@ -43,11 +45,10 @@ const useLinks = () => {
     }
     const getAllLinks = async () => {
         try {
-            setLoading(true);
             const userId = localStorage.getItem("userId");
-            const response = await fetcherWithParams(`StaticLinks/user/${userId}`,{userId})
+            const response = await fetcherWithParams(`StaticLinks/user/${userId}`,{userId: userId})
             if(response){
-                setLinks(response);
+                setLinks(response.reverse());
                 console.log(response);
             }else{
                 setError(true);
@@ -55,17 +56,52 @@ const useLinks = () => {
         }catch (error) {
             setError(true);
             console.log(error);
-        } finally {
-            setLoading(false);
         }
     }
 
     const changeLinkTitle = (linkId: string, title: string) => {
         setLinks(links.map((link) => link.staticLinkId === linkId ? { ...link, title } : link));
     }
-    const changeLinkUrl = (linkId: string, url: string) => {
+
+    const changeLinkUrl = async (linkId: string, url: string) => {
         setLinks(links.map((link) => link.staticLinkId === linkId ? { ...link, defaultUrl: url } : link));
+        setLoading(true);
+        try{
+            const userId = localStorage.getItem("userId");
+            const { detectPlatformFromUrl, isHttpUrl } = platformDetect(url);
+            var currentPlatform = detectPlatformFromUrl;
+            if(isHttpUrl){
+                if(currentPlatform === "unknown"){
+                    currentPlatform = "Link";
+                }
+            }
+            const link = links.find((link) => link.staticLinkId === linkId);
+            if(link){
+                const data = {
+                    title: link.title,
+                    platform: currentPlatform,
+                    icon: link.icon,
+                    defaultUrl: url,
+                    status: isHttpUrl ? "public" : "hidden"
+                }
+                const response = await putDataWithParams(`StaticLinks/${linkId}`,data,{id:linkId ,userId: userId})
+                if(response){
+                    toast.success("Cập nhật thành công");
+                }else{
+                    toast.error("Cập nhật thất bại");
+                }
+            }else{
+                setError(true);
+                console.log("Link ko ton tai");
+            }
+        }catch (error) {
+            setError(true);
+            console.log("Error changing link url", error);
+        }finally{
+            setLoading(false);
+        }
     }
+
     const changeLinkStatus = (linkId: string, status: string) => {
         setLinks(links.map((link) => link.staticLinkId === linkId ? { ...link, status } : link));
     }
@@ -73,6 +109,25 @@ const useLinks = () => {
 
     const handleAddLink = async (platform: string) => {
         setAddLinkModal(false);
+        setLoading(true);
+        try {
+            const data = {
+                userId: localStorage.getItem("userId"),
+                title: platform,
+                platform: platform,
+                defaultUrl: "",
+                status:"hidden"
+            }
+            const response = await postData("StaticLinks",data)
+            if(response){
+                getAllLinks();
+            }
+        } catch (error) {
+            setError(true);
+            console.log(error);
+        }finally{
+            setLoading(false);
+        }
     
     }
     return {
