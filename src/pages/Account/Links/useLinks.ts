@@ -30,6 +30,8 @@ const useLinks = () => {
         if (linkId && typeof currentTitle === 'string') setTitle(currentTitle);
     };
     const toggleEditUrl = (linkId: string | null, currentUrl?: string) => {
+        setStatusEdit(null);
+        setCheckUrl(false);
         setEditingUrlId(prev => (prev === linkId ? null : linkId));
         if (linkId && typeof currentUrl === 'string') setUrl(currentUrl);
     };
