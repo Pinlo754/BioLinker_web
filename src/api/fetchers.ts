@@ -17,3 +17,6 @@ export const putDataWithParams = (url: string, data: any, params: Record<string,
 
 export const deleteData = (url: string) =>
   axiosInstance.delete(url).then((res) => res.data);
+
+export const deleteDataWithParams = (url: string, params: Record<string, any>) =>
+  axiosInstance.delete(url, { params }).then((res) => res.data);

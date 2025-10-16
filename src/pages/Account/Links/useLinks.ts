@@ -1,6 +1,6 @@
 import { useState } from "react";
 import avatar from "../../../assets/avatar.png";
-import { fetcherWithParams, postData, putDataWithParams, } from "../../../api/fetchers";
+import { deleteDataWithParams, fetcherWithParams, postData, putDataWithParams, } from "../../../api/fetchers";
 import platformDetect from "../../../constants/platformDetect";
 import { toast } from "react-toastify";
 type Link = {
@@ -185,6 +185,24 @@ const useLinks = () => {
     
     }
 
+    const deleteLink = async (linkId: string) => {
+        setLoading(true);
+        try{
+            const userId = localStorage.getItem("userId");
+            const response = await deleteDataWithParams(`StaticLinks/${linkId}`,{id:linkId ,userId: userId})
+            if(response){
+                toast.success("Xóa liên kết thành công");
+            }else{
+                toast.error("Xóa liên kết thất bại");
+            }
+            getAllLinks();
+        }catch (error) {
+            setError(true);
+            console.log("Error deleting link", error);
+        }finally{
+            setLoading(false);
+        }
+    }
     return {
         loading,
         avatar,
@@ -213,6 +231,7 @@ const useLinks = () => {
         image,
         checkUrl,
         statusEdit,
+        deleteLink,
     };
 };
 

@@ -34,6 +34,7 @@ const Links = () => {
         image,
         checkUrl,
         statusEdit,
+        deleteLink,
     } = useLinks();
 
     const { 
@@ -186,7 +187,7 @@ const Links = () => {
                                 </div>
                             </div>
                             <div className="self-end pr-2 pb-2">
-                                <button>
+                                <button onClick={() => deleteLink(link.staticLinkId)}>
                                     <svg width="18" height="18" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-hidden="true"><path fill-rule="evenodd" d="m6.83 0-.35.15-1.33 1.33-.15.35V3H0v1h2v11.5l.5.5h11l.5-.5V4h2V3h-5V1.83l-.15-.35L9.52.15 9.17 0H6.83ZM10 3v-.96L8.96 1H7.04L6 2.04V3h4ZM5 4H3v11h10V4H5Zm2 3v5H6V7h1Zm3 .5V7H9v5h1V7.5Z" fill="currentColor"></path>
                                     </svg>
                                 </button>
