@@ -31,6 +31,7 @@ const Links = () => {
         changeLinkStatus,
         getUserInfo,
         setLoading,
+        image,
     } = useLinks();
 
     const { 
@@ -56,8 +57,8 @@ const Links = () => {
                 <div className="w-full flex flex-col gap-4">
                     <div className="w-full flex flex-row gap-4 text-black">
                         {/**personal image */}
-                        <button className="min-w-[64px]  max-w-[64px] self-center" onClick={() => fileInputRef.current?.click()}>
-                            <img src={avatar} alt="personal image" className="w-full object-cover" />
+                        <button className="w-[11%] h-full self-center" onClick={() => fileInputRef.current?.click()}>
+                            <img src={image || avatar} alt="personal image" className="w-[64px] h-[64px] object-cover rounded-full" />
                         </button>
                         <input
                             type="file"
@@ -74,8 +75,8 @@ const Links = () => {
                         <div className="flex flex-col gap-2 ">
                             <p className="text-base font-bold">{displayName}</p>
                             <p className="text-base">{bio}</p>
-                            <p className="text-base">{domain}</p>
-                        </div>
+                                <p className="text-base text-green1"><a href={`https://links.biolinker.io.vn/${domain}`} target="_blank" rel="noopener noreferrer">https://links.biolinker.io.vn/{domain}</a></p>
+                            </div>
                     </div>
                     <button className="rounded-3xl border  bg-gradient-to-r from-green1 to-green2 h-[65px] font-semibold mt-2 text-[#ffffff] hover:bg-[#33D08D] "
                         onClick={() => setAddLinkModal(true)}>

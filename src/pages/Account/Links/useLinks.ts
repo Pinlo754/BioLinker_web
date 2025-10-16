@@ -20,6 +20,7 @@ const useLinks = () => {
     const [editingTitleId, setEditingTitleId] = useState<string | null>(null);
     const [editingUrlId, setEditingUrlId] = useState<string | null>(null);
     const [addLinkModal, setAddLinkModal] = useState(false);
+    const [image, setImage] = useState("");
     const toggleEditTitle = (linkId: string | null, currentTitle?: string) => {
         setEditingTitleId(prev => (prev === linkId ? null : linkId));
         if (linkId && typeof currentTitle === 'string') setTitle(currentTitle);
@@ -32,11 +33,12 @@ const useLinks = () => {
     const [error, setError] = useState(false);
     const getUserInfo = async () => {
         const userId = localStorage.getItem("userId");
-        const response = await fetcherWithParams(`Users/user/${userId}`,{userId})
+        const response = await fetcherWithParams(`Auth/${userId}`,{userId: userId})
         if(response){
-            setDisplayName(response.displayName);
-            setBio(response.bio);
-            setDomain(response.customDomain);
+            setDisplayName(response.nickName);
+            setBio(response.description);
+            setDomain(response.customerDomain);
+            setImage(response.userImage );
         }
     }
     const getAllLinks = async () => {
@@ -98,6 +100,7 @@ const useLinks = () => {
         changeLinkUrl,
         changeLinkStatus,
         setLoading,
+        image,
     };
 };
 
