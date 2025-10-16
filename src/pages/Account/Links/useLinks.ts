@@ -23,6 +23,8 @@ const useLinks = () => {
     const [editingUrlId, setEditingUrlId] = useState<string | null>(null);
     const [addLinkModal, setAddLinkModal] = useState(false);
     const [image, setImage] = useState("");
+    const [checkUrl, setCheckUrl] = useState(false);
+    const [statusEdit, setStatusEdit] = useState<string | null>(null);
     const toggleEditTitle = (linkId: string | null, currentTitle?: string) => {
         setEditingTitleId(prev => (prev === linkId ? null : linkId));
         if (linkId && typeof currentTitle === 'string') setTitle(currentTitle);
@@ -130,8 +132,30 @@ const useLinks = () => {
         }
     }
 
-    const changeLinkStatus = (linkId: string, status: string) => {
-        setLinks(links.map((link) => link.staticLinkId === linkId ? { ...link, status } : link));
+    const changeLinkStatus = async (linkId: string, status: string) => {   
+        const{isHttpUrl} = platformDetect(links.find((link) => link.staticLinkId === linkId)?.defaultUrl || "");
+        if(!isHttpUrl && status === "public"){
+            setCheckUrl(true);
+            setStatusEdit(linkId)
+        }else{
+            setCheckUrl(false);
+            setLinks(links.map((link) => link.staticLinkId === linkId ? { ...link, status } : link));
+            try{
+                setLoading(true);
+                const userId = localStorage.getItem("userId");
+                const link = links.find((link) => link.staticLinkId === linkId);
+                if(link){
+                    const data = {
+                        status: status
+                    }
+                }
+            }catch (error) {
+                setError(true);
+                console.log("Error changing link status", error);
+            }finally{
+                setLoading(false);
+            }
+        }
     }
 
 
@@ -158,6 +182,7 @@ const useLinks = () => {
         }
     
     }
+
     return {
         loading,
         avatar,
@@ -184,6 +209,8 @@ const useLinks = () => {
         changeLinkStatus,
         setLoading,
         image,
+        checkUrl,
+        statusEdit,
     };
 };
 

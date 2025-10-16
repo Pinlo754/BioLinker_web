@@ -32,13 +32,14 @@ const Links = () => {
         getUserInfo,
         setLoading,
         image,
+        checkUrl,
+        statusEdit,
     } = useLinks();
 
     const { 
         fileInputRef,
         handleChangeImage,
     } = useInformation();
-
 
     useEffect(() => {
         const render = async () => {
@@ -159,10 +160,11 @@ const Links = () => {
                                     </span>
                                 </button>
                             )}
-                            {/* <div className="bg-[#BF000B] w-[50%] rounded-[2px] relative p-1">
+                            {checkUrl && statusEdit === link.staticLinkId && 
+                            (<div className="bg-[#BF000B] w-[60%] rounded-[2px] relative p-1">
                                 <div className="absolute w-0 h-0 border-l-4 border-l-transparent border-r-4 border-r-transparent border-b-4 border-b-[#BF000B] bottom-full"></div>
-                                <p className="text-black text-xs text-white font-semibold">Vui lòng nhập đúng định dạng URL</p>
-                            </div> */}
+                                <p className="text-center text-xs text-white font-semibold">Vui lòng nhập đúng định dạng URL</p>
+                            </div> )}
                         </div>
                         {/**button */}
                         <div className="flex flex-col gap-4">
@@ -177,7 +179,7 @@ const Links = () => {
                                 {/* Toggle Switch */}
                                 <div className="flex items-center gap-2">
                                     <label className="relative inline-flex items-center cursor-pointer">
-                                        <input type="checkbox" className="sr-only peer" checked={link.status === "public"} onChange={(e) => changeLinkStatus(link.staticLinkId, e.target.checked ? "public" : "private")}/>
+                                        <input type="checkbox" className="sr-only peer" checked={link.status === "public"} onChange={(e) => changeLinkStatus(link.staticLinkId, e.target.checked ? "public" : "hidden")}/>
                                         <div className="w-11 h-6 bg-gray-300 peer-focus:outline-none  rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-[#016E1A]">
                                         </div>
                                     </label>
