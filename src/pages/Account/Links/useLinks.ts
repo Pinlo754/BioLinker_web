@@ -59,8 +59,36 @@ const useLinks = () => {
         }
     }
 
-    const changeLinkTitle = (linkId: string, title: string) => {
+    const changeLinkTitle = async (linkId: string, title: string) => {
         setLinks(links.map((link) => link.staticLinkId === linkId ? { ...link, title } : link));
+        try{
+            setLoading(true);
+            const userId = localStorage.getItem("userId");
+            const link = links.find((link) => link.staticLinkId === linkId);
+            if(link){
+                const data = {
+                    title: title,
+                    platform: link.platform,
+                    icon: link.icon,
+                    defaultUrl: link.defaultUrl,
+                    status: link.status
+                }
+                const response = await putDataWithParams(`StaticLinks/${linkId}`,data,{id:linkId ,userId: userId})
+                if(response){
+                    toast.success("Cập nhật thành công");
+                }else{
+                    toast.error("Cập nhật thất bại");
+                }
+            }else{
+                setError(true);
+                console.log("Link ko ton tai");
+            }
+        }catch (error) {
+            setError(true);
+            console.log("Error changing link title", error);
+        }finally{
+            setLoading(false);
+        }
     }
 
     const changeLinkUrl = async (linkId: string, url: string) => {
