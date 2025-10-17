@@ -113,31 +113,38 @@ const useLogin = () => {
 
   // Hàm gọi backend facebook-response
   const handleFacebookResponse = async () => {
-      // Bước 2: nhận lại token và thông tin user từ URL
-      const params = new URLSearchParams(location.search);
-      const token = params.get("token");
-      const email = params.get("email");
-      const userId = params.get("userId");
-      const name = params.get("name");
-      const role = params.get("role") || "FreeUser";
+    // Bước 2: nhận lại token và thông tin user từ URL
+    const params = new URLSearchParams(location.search);
+    const token = params.get("token");
+    const email = params.get("email");
+    const userId = params.get("userId");
+    const name = params.get("name");
+    const role = params.get("role") || "FreeUser";
+    const avatar = params.get("avatar");
 
-      if (token) {
-        localStorage.setItem("token", token);
-        localStorage.setItem("userId", userId || "");
-        localStorage.setItem("email", email || "");
-        localStorage.setItem("name", name || "");
-        localStorage.setItem("role", role);
-        toast.success("Đăng nhập bằng Facebook thành công!");
-        if (role === "Admin") navigate("/admin");
-        else if (role === "staff") navigate("/staff");
-        else navigate("/");
-        toast.success("Đăng nhập bằng Facebook thành công!");
+    if (token) {
+      const user = {
+        token,
+        userId: userId || "",
+        email: email || "",
+        name: name || "",
+        role,
+        avatar: avatar || "/avatar.svg",
+      };
+
+      localStorage.setItem("user", JSON.stringify(user));
+      toast.success("Đăng nhập bằng Facebook thành công!");
+      if (role === "Admin") navigate("/admin");
+      else if (role === "staff") navigate("/staff");
+      else navigate("/");
+      toast.success("Đăng nhập bằng Facebook thành công!");
     }
   };
 
   // Khi click login -> chuyển hướng đến backend (để bắt đầu quy trình OAuth)
   const loginByFacebook = () => {
-    window.location.href = "https://biolinker.onrender.com/api/Auth/login-facebook";
+    window.location.href =
+      "https://biolinker.onrender.com/api/Auth/login-facebook";
   };
 
   // Login bằng Email/Password
@@ -182,8 +189,8 @@ const useLogin = () => {
       case "Facebook":
         loginByFacebook();
         break;
-      // case "Google":
-      //   loginByGoogle();
+        // case "Google":
+        //   loginByGoogle();
         break;
       case "Apple":
       case "LinkedIn":

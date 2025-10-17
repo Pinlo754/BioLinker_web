@@ -20,6 +20,8 @@ export function StylePanel({ profileData, onUpdateProfile }: StylePanelProps) {
     { id: "ribbon-left", label: "Ribbon Left", class: "rounded-r-full" },
     { id: "ribbon-right", label: "Ribbon Right", class: "rounded-l-full" },
     { id: "ribbon-both", label: "Ribbon Both", class: "rounded-full" },
+    { id: "rounded-top", label: "Rounded Top", class: "rounded-t-lg" },
+    { id: "rounded-bottom", label: "Rounded Bottom", class: "rounded-b-lg" },
   ]
 
   return (

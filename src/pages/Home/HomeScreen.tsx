@@ -30,15 +30,16 @@ const Home = () => {
           </h1>
 
           <p className="mt-4 text-base sm:text-lg lg:text-xl font-helvetica text-white opacity-80 mb-6">
-            Biolinker is a smart link-in-bio tool that helps users create a personalized landing page to showcase all their important links, social profiles, and content in one place. Perfect for creators, businesses, and influencers.
-          </p>
+           Biolinker là một công cụ “liên kết trong tiểu sử” thông minh, giúp người dùng tạo một trang đích cá nhân hóa để hiển thị tất cả các liên kết quan trọng, hồ sơ mạng xã hội và nội dung của họ ở cùng một nơi.
+Rất phù hợp cho người sáng tạo nội dung, doanh nghiệp và người ảnh hưởng.
+            </p>
 
           {/* Start Trial Button */}
           <button
-            onClick={() => navigate("/trial")}
+            onClick={() => navigate("/bio-edit")}
             className="w-full sm:w-64 h-16 sm:h-20 rounded-full px-6 py-3 bg-gradient-to-r from-[#16C875] to-[#6CDFAB] text-white font-helvetica font-bold text-lg sm:text-xl flex justify-center items-center transition-all duration-300 hover:scale-105 hover:shadow-xl"
           >
-            Start to Trial
+            Trải nghiệm ngay
           </button>
 
           {/* Stats Section */}
@@ -53,7 +54,7 @@ const Home = () => {
                   15k+
                 </div>
                 <div className="font-helvetica text-sm sm:text-base">
-                  Active user
+                  Người dùng
                 </div>
               </div>
             </div>
@@ -68,7 +69,7 @@ const Home = () => {
                   5k+
                 </div>
                 <div className="font-helvetica text-sm sm:text-base">
-                  Total download
+                  Tổng lượt tải về
                 </div>
               </div>
             </div>
@@ -83,7 +84,7 @@ const Home = () => {
                   10k+
                 </div>
                 <div className="font-helvetica text-sm sm:text-base">
-                  Customer
+                  Khách hàng
                 </div>
               </div>
             </div>

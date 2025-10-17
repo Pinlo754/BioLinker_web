@@ -90,7 +90,7 @@ const routers = createBrowserRouter([
     element: <Account />,
   },
   {
-    path: "/bio/:userid",
+    path: "/bio/:userName",
     element: <ProfilePage />,
   },
   {

@@ -1,26 +1,44 @@
-"use client"
+"use client";
 
-import { Tabs, TabsList, TabsTrigger, TabsContent } from "../../../../../components/ui/tabs"
-import { Input } from "../../../../../components/ui/input"
-import { Label } from "../../../../../components/ui/label"
-import { Search } from "lucide-react"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../../../../../components/ui/select"
-import { ProfileData, LayoutElement } from "../../../../../types/bio"
+import {
+  Tabs,
+  TabsList,
+  TabsTrigger,
+  TabsContent,
+} from "../../../../../components/ui/tabs";
+import { Input } from "../../../../../components/ui/input";
+import { Label } from "../../../../../components/ui/label";
+import { Search } from "lucide-react";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "../../../../../components/ui/select";
+import { ProfileData, LayoutElement } from "../../../../../types/bio";
+import upload from "../../../../../lib/upload";
+import { Button } from "../../../../../components/ui/button";
+import { LuUpload } from "react-icons/lu";
 
 interface BackgroundPanelProps {
-  profileData: ProfileData
-  onUpdateProfile: (updates: Partial<ProfileData>) => void
-  onUpdateElement: (elementId: string, content: any) => void
+  profileData: ProfileData;
+  onUpdateProfile: (updates: Partial<ProfileData>) => void;
+  onUpdateElement: (elementId: string, content: any) => void;
 }
 
-export function BackgroundPanel({ profileData, onUpdateProfile, onUpdateElement }: BackgroundPanelProps) {
+export function BackgroundPanel({
+  profileData,
+  onUpdateProfile,
+  onUpdateElement,
+}: BackgroundPanelProps) {
   const backgrounds = [
     { id: 1, type: "gradient", url: "/green-gradient.png" },
     { id: 2, type: "gradient", url: "/blue-gradient.png" },
     { id: 3, type: "image", url: "/marble-texture.png" },
     { id: 4, type: "image", url: "/vietnam-landmark.jpg" },
     { id: 5, type: "image", url: "/mountain-vista.png" },
-  ]
+  ];
 
   const solidColors = [
     "#ffffff",
@@ -39,7 +57,7 @@ export function BackgroundPanel({ profileData, onUpdateProfile, onUpdateElement 
     "#06b6d4",
     "#ef4444",
     "#f97316",
-  ]
+  ];
 
   const gradients = [
     "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
@@ -50,21 +68,28 @@ export function BackgroundPanel({ profileData, onUpdateProfile, onUpdateElement 
     "linear-gradient(135deg, #30cfd0 0%, #330867 100%)",
     "linear-gradient(135deg, #a8edea 0%, #fed6e3 100%)",
     "linear-gradient(135deg, #ff9a9e 0%, #fecfef 100%)",
-  ]
+  ];
 
-  const backgroundElement = profileData.elements.find((el: LayoutElement) => el.type === "background")
+  const backgroundElement = profileData.elements.find(
+    (el: LayoutElement) => el.type === "background"
+  );
 
   const updateBackground = (value: string) => {
-    if (backgroundElement) {
-      onUpdateElement(backgroundElement.id, { value })
-    }
+  if (backgroundElement) {
+    const updatedContent =
+      typeof backgroundElement.content === "object"
+        ? { ...backgroundElement.content, value }
+        : { value };
+
+    onUpdateElement(backgroundElement.id, updatedContent);
   }
+};
+
 
   const currentBackground =
-  typeof backgroundElement?.content === "string"
-    ? backgroundElement.content
-    : backgroundElement?.content.value || "#ffffff"
-
+    typeof backgroundElement?.content === "string"
+      ? backgroundElement.content
+      : backgroundElement?.content.value || "#ffffff";
 
   return (
     <div className="p-6">
@@ -101,10 +126,16 @@ export function BackgroundPanel({ profileData, onUpdateProfile, onUpdateElement 
                 key={bg.id}
                 onClick={() => updateBackground(bg.url)}
                 className={`relative aspect-[3/2] rounded-lg overflow-hidden border-2 transition-colors ${
-                  currentBackground === bg.url ? "border-primary" : "border-border hover:border-primary/50"
+                  currentBackground === bg.url
+                    ? "border-primary"
+                    : "border-border hover:border-primary/50"
                 }`}
               >
-                <img src={bg.url || "/placeholder.svg"} alt="Background" className="object-cover" />
+                <img
+                  src={bg.url || "/placeholder.svg"}
+                  alt="Background"
+                  className="object-cover"
+                />
               </button>
             ))}
           </div>
@@ -118,12 +149,20 @@ export function BackgroundPanel({ profileData, onUpdateProfile, onUpdateElement 
                 <Input
                   id="custom-color"
                   type="color"
-                  value={currentBackground.startsWith("#") ? currentBackground : "#ffffff"}
+                  value={
+                    currentBackground.startsWith("#")
+                      ? currentBackground
+                      : "#ffffff"
+                  }
                   onChange={(e) => updateBackground(e.target.value)}
                   className="w-20 h-10"
                 />
                 <Input
-                  value={currentBackground.startsWith("#") ? currentBackground : "#ffffff"}
+                  value={
+                    currentBackground.startsWith("#")
+                      ? currentBackground
+                      : "#ffffff"
+                  }
                   onChange={(e) => updateBackground(e.target.value)}
                   className="flex-1"
                   placeholder="#ffffff"
@@ -139,7 +178,9 @@ export function BackgroundPanel({ profileData, onUpdateProfile, onUpdateElement 
                     key={color}
                     onClick={() => updateBackground(color)}
                     className={`w-full aspect-square rounded-lg border-2 transition-all ${
-                      currentBackground === color ? "border-primary scale-110" : "border-border hover:border-primary/50"
+                      currentBackground === color
+                        ? "border-primary scale-110"
+                        : "border-border hover:border-primary/50"
                     }`}
                     style={{ backgroundColor: color }}
                   />
@@ -171,24 +212,65 @@ export function BackgroundPanel({ profileData, onUpdateProfile, onUpdateElement 
 
         <TabsContent value="upload" className="mt-6">
           <div className="space-y-4">
-            <div>
+            <div className="flex flex-col gap-2">
               <Label htmlFor="bg-url">Background Image URL</Label>
+              <div className="flex w-full gap-1">
               <Input
                 id="bg-url"
                 value={
-                  currentBackground.startsWith("http") || currentBackground.startsWith("/") ? currentBackground : ""
+                  currentBackground.startsWith("http") ||
+                  currentBackground.startsWith("/")
+                    ? currentBackground
+                    : ""
                 }
                 onChange={(e) => updateBackground(e.target.value)}
-                placeholder="https://example.com/image.jpg or /local-image.jpg"
-                className="mt-2"
+                placeholder="https://example.com/image.jpg hoặc /local-image.jpg"
+                className="focus:ring-2 focus:ring-[#16C875] transition-all duration-200 w-[80%]"
               />
+
+              {/* Nút chọn ảnh từ máy */}
+              <Button
+                type="button"
+                variant="outline"
+                className="w-[15%] text-sm"
+                onClick={() => document.getElementById("bg-file")?.click()}
+              >
+                {LuUpload({ className: "w-5 h-5 text-gray-600" })}
+              </Button>
+              </div>
+              
+
+              <input
+                id="bg-file"
+                type="file"
+                className="hidden"
+                accept="image/*"
+                onChange={async (e) => {
+                  const file = e.target.files?.[0];
+                  if (file) {
+                    const fileUrl = await upload(file); // upload(file) phải trả về URL ảnh
+                    updateBackground(fileUrl);
+                  }
+                }}
+              />
+
+              {/* Hiển thị ảnh xem trước */}
+              {currentBackground && (
+                <img
+                  src={currentBackground}
+                  alt="Background preview"
+                  className="w-full h-32 object-cover rounded-lg mt-2 border"
+                />
+              )}
             </div>
+
             <p className="text-sm text-muted-foreground">
-              Enter a URL to an image or upload your own image to use as background
+              Enter a URL to an image or upload your own image to use as
+              background
             </p>
           </div>
         </TabsContent>
       </Tabs>
     </div>
-  )
+  );
 }

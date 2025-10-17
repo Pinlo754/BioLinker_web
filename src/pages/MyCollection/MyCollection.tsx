@@ -12,11 +12,8 @@ type TabKey = 'owned' | 'created' | 'collections' | 'insight' ;
 
 const MyCollection = () => {
 
-  const username = "Thanh Phong";
-  const userTag = "@ThanhPhong";
-  const job = "Digital Artist"
-  const bioLink = "biolinker.io.vn/bio/thanhphong";
-  const avatar = "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=600&q=80";
+  const userString = localStorage.getItem("user");
+  const user = userString ? JSON.parse(userString) : null;
 
   const [activeTab, setActiveTab] = useState<'owned' | 'created' | 'collections' | 'insight'>('collections')
 
@@ -40,7 +37,7 @@ const MyCollection = () => {
       <Header />                   
       <main className="flex-1 flex flex-col  relative">
         <div className="w-full">
-          <img src={avatar} alt="Template" className="w-full h-[600px] object-cover" />
+          <img src={user.userImage} alt="Template" className="w-full h-[600px] object-cover" />
         </div>
         <div className="flex flex-col flex-1 px-10 absolute top-[320px] left-0 right-0" >
           <div className="w-full  gap-4 w-full mt-10 rounded-t-2xl  bg-white">
@@ -53,7 +50,7 @@ const MyCollection = () => {
                 {/* avatar user */}
                 <div className="mx-6">
                   <img
-                  src={avatar}
+                  src={user.userImage}
                   alt="Template"
                   className="w-40 h-40 rounded-full border-2 shadow"
                   />
@@ -62,11 +59,11 @@ const MyCollection = () => {
                 {/* name user */}
                 <div className="flex flex-col gap-6">
                   <div className="flex flex-row gap-2 items-end">   
-                    <h2 className="text-3xl font-bold max-w-screen-2xl text-start">{username} </h2>
-                    <p className="text-black/80 font-bold font">{userTag}</p>
+                    <h2 className="text-3xl font-bold max-w-screen-2xl text-start">{user.fullName} </h2>
+                    <p className="text-black/80 font-bold font">{user.userTag}</p>
                   </div>
-                  <p className="text-black/60">{job}</p>
-                  <p className="text-black/60">{bioLink}</p>
+                  <p className="text-black/60">{user.job}</p>
+                  <a href={`/bio/${user.customerDomain}`} className="text-black/60">{`biolinker.io.vn/bio/${user.customerDomain}`}</a>
                 </div>
               </div>
 
@@ -75,11 +72,11 @@ const MyCollection = () => {
                 <div className="flex flex-col gap-6 align-top min-w-[320px] px-4">
                   <div className="flex flex-row justify-between items-center">
                     <p className="text-black/60">Followers</p>
-                    <p className="text-black/60">0</p>
+                    <p className="text-black/60">{ user.followers ? user.follower : 0}</p>
                   </div>
                   <div className="flex flex-row  justify-between items-center">
                     <p className="text-black/60">Followings</p>
-                    <p className="text-black/60">0</p>
+                    <p className="text-black/60">{ user.followings ? user.followings : 0}</p>
                   </div>
                   <div className="flex flex-row gap-4 justify-between items-center">
                     <div className="flex items-center gap-4">
