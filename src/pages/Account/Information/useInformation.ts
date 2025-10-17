@@ -18,8 +18,6 @@ const useInformation = () => {
     const [domain, setDomain] = useState("");
     const checkUserData = async () => {
         localStorage.removeItem("user");
-        const email = localStorage.getItem("email");
-        const password = localStorage.getItem("password");
         const userId = localStorage.getItem("userId");
         const user = await fetcherWithParams(`Auth/${userId}`, {userId: userId});
 

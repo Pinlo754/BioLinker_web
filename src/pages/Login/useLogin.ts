@@ -40,19 +40,19 @@ const useLogin = () => {
   };
 
   const postGoogleLogin = async (id_token : string) => {
-    setLoading(true);
+    try {
+      setLoading(true);
     const response = await axios.post(`${BASE_URL}/Auth/login-google`, { idToken: id_token });
     if(response.data){
-      localStorage.setItem("userId", response.data.userId);
+      localStorage.clear();
       const userId = response.data.userId
       const user = await fetcherWithParams(`Auth/${userId}`, {userId: userId});
+      localStorage.setItem("userId", userId);
       localStorage.setItem("user", JSON.stringify(user));
-      console.log(response.data);
-      
-      if(response.data.customerDomain === null){
-        console.log(response.data.customDomain);
+      if(user.customerDomain === null){
+        console.log(user.customerDomain);
         setLoading(false);
-        navigate("/create-account",{state: {emailGg: response.data.email, setPassword: true}});
+        navigate("/create-account",{state: {emailGg: user.email, setPassword: true}});
       }
       else{
         setLoading(false);
@@ -63,6 +63,12 @@ const useLogin = () => {
       setLoading(false);
       toast.error("Đăng nhập Google thất bại!");
     }
+    } catch (error) {
+      setLoading(false);
+      console.log(error);
+      toast.error("Đăng nhập Google thất bại!");
+    }
+    
   };
   // // Login bằng Google
   // const loginByGoogle = useGoogleLogin({
@@ -164,6 +170,7 @@ const useLogin = () => {
       if (data?.token) {
         const user = await fetcherWithParams(`Auth/${data.userId}`, {userId: data.userId});
         localStorage.setItem("user", JSON.stringify(user));
+        localStorage.setItem("userId", data.userId);
         setLoading(false);
         toast.success("Login successful!");
         if (data.role?.[0] === "Admin") navigate("/admin");

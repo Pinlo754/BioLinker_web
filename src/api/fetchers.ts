@@ -12,5 +12,11 @@ export const postData = (url: string, data: any) =>
 export const putData = (url: string, data: any) =>
   axiosInstance.put(url, data).then((res) => res.data);
 
+export const putDataWithParams = (url: string, data: any, params: Record<string, any>) =>
+  axiosInstance.put(url, data, { params }).then((res) => res.data);
+
 export const deleteData = (url: string) =>
   axiosInstance.delete(url).then((res) => res.data);
+
+export const deleteDataWithParams = (url: string, params: Record<string, any>) =>
+  axiosInstance.delete(url, { params }).then((res) => res.data);

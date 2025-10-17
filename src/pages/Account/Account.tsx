@@ -19,11 +19,11 @@ const Account = () => {
       };
     const ActiveTabView = tabViewByKey[activeTab];
     return (
-        <div className="h-screen overflow-hidden flex flex-col font-roboto mt-[8vh]">
+        <div className="h-screen overflow-hidden flex flex-col font-roboto ">
             <Header/>
-            <main className="w-full flex flex-1 overflow-hidden">
+            <main className="w-full flex flex-1 overflow-hidden mt-[8vh]">
                 {/* Left sidebar */}
-                <aside className="w-full max-w-xs bg-gradient-to-br from-green1 to-green2 pt-5 flex flex-col gap-4 sticky top-0 self-start h-screen">
+                <aside className="w-full max-w-[280px] bg-gradient-to-br from-green1 to-green2 pt-5 flex flex-col gap-4 sticky top-0 self-start h-screen">
                     <div className="flex flex-col gap-2">
                         {menuComponent.map((item) => (
                             <button
@@ -40,7 +40,7 @@ const Account = () => {
                     </div>
                 </aside>
                 {/* Main content */}
-                <div className="flex-1 bg-gradient-to-br from-green1 h-full overflow-y-auto">
+                <div className="flex-1 bg-gradient-to-br from-green1 h-full">
                     <ActiveTabView />
                 </div>
             </main>
