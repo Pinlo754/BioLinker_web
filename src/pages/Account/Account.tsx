@@ -3,18 +3,21 @@ import useAccount from "./useAccount";
 import PageNotFound from "../NotFound/NotFoundScreen";
 import Information from "./Information/Information";
 import Links from "./Links/Links";
+import Domain from "./Domain/Domain";
 import { useState } from "react";
+import UpdatePro from "./UpdatePro/UpdatePro";
 import LogOut from "../LogOut/LogOut";
-type AccountTabKey = "BioLinker" | "Thông tin cá nhân" | "Cài đặt" | "QR của tôi" | "Hỗ trợ" | "Đăng xuất";
+type AccountTabKey = "BioLinker" | "Thông tin cá nhân" | "Tên miền" | "Nâng cấp" | "QR của tôi" | "Hướng dẫn" | "Đăng xuất";
 const Account = () => {
     const { menuComponent } = useAccount();
     const [activeTab, setActiveTab] = useState<AccountTabKey>("BioLinker");
     const tabViewByKey: Record<AccountTabKey, React.ComponentType<any>> = {
         "BioLinker": Links,
         "Thông tin cá nhân": Information,
-        "Cài đặt": PageNotFound,
+        "Tên miền": Domain,
+        "Nâng cấp": UpdatePro,
         "QR của tôi": PageNotFound,
-        "Hỗ trợ": PageNotFound,
+        "Hướng dẫn": PageNotFound,
         "Đăng xuất": LogOut,
       };
     const ActiveTabView = tabViewByKey[activeTab];
