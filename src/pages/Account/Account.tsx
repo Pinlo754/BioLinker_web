@@ -3,6 +3,7 @@ import useAccount from "./useAccount";
 import PageNotFound from "../NotFound/NotFoundScreen";
 import Information from "./Information/Information";
 import Links from "./Links/Links";
+import Domain from "./Domain/Domain";
 import { useState } from "react";
 import UpdatePro from "./UpdatePro/UpdatePro";
 import LogOut from "../LogOut/LogOut";
@@ -13,7 +14,7 @@ const Account = () => {
     const tabViewByKey: Record<AccountTabKey, React.ComponentType<any>> = {
         "BioLinker": Links,
         "Thông tin cá nhân": Information,
-        "Tên miền": PageNotFound,
+        "Tên miền": Domain,
         "Nâng cấp": UpdatePro,
         "QR của tôi": PageNotFound,
         "Hướng dẫn": PageNotFound,
