@@ -2,12 +2,13 @@
 
 import { useEffect, useState } from "react";
 import { Button } from "../../components/ui/button";
-import { Settings, Smartphone, Monitor, Download, Upload } from "lucide-react";
+import { Settings, Smartphone, Monitor, Download, Upload, Save } from "lucide-react";
 import { LeftSidebar } from "./components/bio/left-sidebar";
 import { MobilePreview } from "./components/bio/mobile-preview";
 import { RightPanel } from "./components/bio/right-panel";
 import Header from "../../components/sections/Header";
 import { ProfileData, LayoutElement } from "@/types/bio";
+import TemplateModal from "./components/template-modal";
 import axios from "axios";
 // ---- Component chính ----
 export default function BioBuilder() {
@@ -41,7 +42,6 @@ export default function BioBuilder() {
 
       const existingData = getRes.data;
       if (existingData.length > 0) {
-        // 2️⃣ Nếu tồn tại, xóa bản ghi cũ
         const oldId = existingData[0].id;
         await axios.delete(
           `https://68e6641521dd31f22cc56979.mockapi.io/template/${oldId}`
@@ -208,13 +208,13 @@ export default function BioBuilder() {
 
   // Danh sách hình ảnh hướng dẫn
   const tutorialImages = [
-    "/trial1.png",
-    "/trial2.png",
-    "/trial3.png",
-    "/trial4.png",
-    "/trial5.png",
-    "/trial6.png",
-    "/trial7.png",
+    "/Trial1.png",
+    "/Trial2.png",
+    "/Trial3.png",
+    "/Trial4.png",
+    "/Trial5.png",
+    "/Trial6.png",
+    "/Trial7.png",
   ];
 
   const handleNextStep = () => {
@@ -237,6 +237,80 @@ export default function BioBuilder() {
     localStorage.setItem("isBeginner", "false");
   };
 
+  const [TemplateId, setTemplateId] = useState("");
+
+  const createTemplateId = async () => {};
+  // Hàm post dữ liệu template lên API backend
+  const handleSaveTemplate = async (templateId: string) => {
+    try {
+      if (!profileData.elements.length) {
+        alert("Chưa có element nào để lưu!");
+        return;
+      }
+
+      // Map dữ liệu FE sang body API
+      const payload = profileData.elements.map((el, index) => ({
+        templateId: templateId,
+        elementType: el.type,
+        position: {
+          x: el.position.x,
+          y: el.position.y,
+          width: el.position.width,
+          height: el.position.height || 0,
+          zIndex: el.position.zIndex,
+        },
+        size: {
+          width: el.size?.width || el.position.width,
+          height: el.size?.height || el.position.height || 0,
+        },
+        style: {
+          fontSize: el.styles?.fontSize || 14,
+          fontWeight: el.styles?.fontWeight || "normal",
+          color: el.styles?.color || "#000000",
+          backgroundColor: el.styles?.backgroundColor || "#ffffff",
+          borderRadius: el.styles?.borderRadius || 0,
+          padding: el.styles?.padding || 0,
+        },
+        element: {
+          text: el.content?.text || el.content?.value || "",
+          url: el.content?.url || "",
+          imageUrl: el.content?.src || el.content?.imageUrl || "",
+          skills: el.content?.skills || [],
+        },
+        orderIndex: index,
+      }));
+
+      console.log("Payload gửi đi:", payload);
+
+      // Gửi POST
+      const res = await axios.post(
+        "https://yourapi.com/api/template-data", // 🔹 thay bằng API thật của bạn
+        payload,
+        { headers: { "Content-Type": "application/json" } }
+      );
+
+      console.log("Kết quả:", res.data);
+      alert("Lưu template thành công!");
+    } catch (error: any) {
+      console.error(
+        "Lỗi khi lưu template:",
+        error.response?.data || error.message
+      );
+      alert("Lỗi khi lưu template!");
+    }
+  };
+
+  const [showTemplateModal, setShowTemplateModal] = useState(false);
+  // Hàm mở modal
+  const handleOpenTemplateModal = () => {
+    setShowTemplateModal(true);
+  };
+
+  // Khi tạo thành công
+  const handleTemplateCreated = async (templateId: string) => {
+    // Gọi hàm lưu layout
+    await handleSaveTemplate(templateId);
+  };
   // ---- Render ----
   return (
     <div className="h-screen flex flex-col  mt-14">
@@ -270,10 +344,19 @@ export default function BioBuilder() {
               <Upload className="w-4 h-4 mr-2" />
               Publish
             </Button>
-            <Button variant="outline" size="sm" onClick={handleExportJSON}>
-              <Download className="w-4 h-4 mr-2" />
-              Export
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={handleOpenTemplateModal}
+            >
+              <Save className="w-4 h-4 mr-2" />Tạo Template
             </Button>
+            {showTemplateModal && (
+              <TemplateModal
+                onClose={() => setShowTemplateModal(false)}
+                onTemplateCreated={handleTemplateCreated}
+              />
+            )}
           </div>
 
           <MobilePreview

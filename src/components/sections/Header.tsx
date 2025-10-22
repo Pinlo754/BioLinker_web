@@ -22,6 +22,7 @@ const Header = () => {
       if (user) {
         try {
           const parsedUser = JSON.parse(user);
+          console.log(parsedUser);
           setUserData(parsedUser);
         } catch (error) {
           setUserData(null);
@@ -56,8 +57,7 @@ const Header = () => {
       navigate("/");
     }
     else{
-      window.location.reload();
-      navigate("/dashboard");
+      navigate("/dashboard");      
     }
   }
   return (
@@ -133,11 +133,7 @@ const Header = () => {
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <Button className="w-10 h-10 md:w-12 md:h-12 rounded-full overflow-hidden p-0 flex items-center justify-center">
-                  {userData?.userImage ? (
-                    <img src={userData.userImage} alt="avatar" className="w-full h-full object-cover rounded-full" />
-                  ) : (
-                    <img src={avatar} alt="avatar" className="w-full h-full object-cover rounded-full" />
-                  )}
+                  <img src={userData.userImage} alt="avatar" className="w-full h-full object-cover rounded-full" />
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end" className="w-48 bg-white">

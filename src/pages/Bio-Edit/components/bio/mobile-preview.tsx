@@ -225,11 +225,17 @@ function ProfileContent({
             style={{
               ...absoluteStyle,
               width: isAbsoluteMode ? `${element.position.width}%` : "7rem",
-              backgroundImage: `url(${
-                getContentValue(element.content) || "/placeholder.svg"
-              })`,
+              background: (() => {
+                const value = getContentValue(element.content);
+                if (!value) return "transparent";
+                if (value.startsWith("http") || value.startsWith("/")) {
+                  return `url(${value}) center/cover no-repeat`;
+                }
+                return value;
+              })(),
               backgroundSize: "cover",
               backgroundPosition: "center",
+              transition: "background 0.3s ease",
             }}
           />
         );
@@ -463,14 +469,35 @@ function ProfileContent({
           {/* Background full màn */}
           {profileData.elements
             .filter((el) => el.type === "background")
-            .map((el, index) => (
-              <img
-                key={el.id}
-                src={getContentValue(el.content) || "/placeholder.svg"}
-                alt="background"
-                className="absolute top-0 left-0 w-full h-full object-cover z-0"
-              />
-            ))}
+            .map((el) => {
+              const value = getContentValue(el.content);
+
+              // Nếu không có giá trị background thì bỏ qua
+              if (!value) return null;
+
+              // Nếu là link ảnh
+              if (value.startsWith("http") || value.startsWith("/")) {
+                return (
+                  <img
+                    key={el.id}
+                    src={value}
+                    alt="background"
+                    className="absolute top-0 left-0 w-full h-full object-cover z-0"
+                  />
+                );
+              }
+
+              // Nếu là màu hoặc gradient
+              return (
+                <div
+                  key={el.id}
+                  className="absolute top-0 left-0 w-full h-full z-0 transition-all duration-300"
+                  style={{
+                    background: value,
+                  }}
+                />
+              );
+            })}
 
           {/* Nội dung */}
           <div className="relative z-10 flex flex-col items-center justify-center gap-3 w-full px-4">
@@ -504,14 +531,34 @@ function ProfileContent({
           {/* Background full màn */}
           {profileData.elements
             .filter((el) => el.type === "background")
-            .map((el) => (
-              <img
-                key={el.id}
-                src={getContentValue(el.content) || "/placeholder.svg"}
-                alt="background"
-                className="absolute top-0 left-0 w-full h-full object-cover z-0"
-              />
-            ))}
+            .map((el) => {
+              const value = getContentValue(el.content);
+
+              if (!value) return null;
+
+              // Nếu là link ảnh
+              if (value.startsWith("http") || value.startsWith("/")) {
+                return (
+                  <img
+                    key={el.id}
+                    src={value}
+                    alt="background"
+                    className="absolute top-0 left-0 w-full h-full object-cover z-0"
+                  />
+                );
+              }
+
+              // Nếu là màu hoặc gradient
+              return (
+                <div
+                  key={el.id}
+                  className="absolute top-0 left-0 w-full h-full z-0 transition-all duration-300"
+                  style={{
+                    background: value,
+                  }}
+                />
+              );
+            })}
 
           {/* Nội dung */}
           <div className="relative z-10 flex flex-row flex-wrap items-start justify-center gap-4 p-6 w-full h-full overflow-auto">

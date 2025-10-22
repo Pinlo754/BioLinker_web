@@ -75,16 +75,17 @@ export function BackgroundPanel({
   );
 
   const updateBackground = (value: string) => {
-  if (backgroundElement) {
-    const updatedContent =
-      typeof backgroundElement.content === "object"
-        ? { ...backgroundElement.content, value }
-        : { value };
+    if (backgroundElement) {
+      const updatedContent =
+        typeof backgroundElement.content === "object"
+          ? { ...backgroundElement.content, value }
+          : { value };
 
-    onUpdateElement(backgroundElement.id, updatedContent);
-  }
-};
-
+      onUpdateElement(backgroundElement.id, updatedContent);
+      console.log("Before update:", backgroundElement);
+      console.log("After update:", updatedContent);
+    }
+  };
 
   const currentBackground =
     typeof backgroundElement?.content === "string"
@@ -191,6 +192,95 @@ export function BackgroundPanel({
         </TabsContent>
 
         <TabsContent value="gradient" className="mt-6">
+          <div className="space-y-4">
+            {/* --- PHẦN CHỌN GRADIENT --- */}
+            <div>
+              <Label>Tùy chỉnh Gradient</Label>
+              <div className="grid grid-cols-2 gap-4 mt-3">
+                <div>
+                  <Label>Màu 1</Label>
+                  <Input
+                    type="color"
+                    defaultValue="#16C875"
+                    id="color1"
+                    onChange={(e) => {
+                      const color2 =
+                        (document.getElementById("color2") as HTMLInputElement)
+                          ?.value || "#6CDFAB";
+                      updateBackground(
+                        `linear-gradient(135deg, ${e.target.value} 0%, ${color2} 100%)`
+                      );
+                    }}
+                    className="w-full h-10 p-1"
+                  />
+                </div>
+                <div>
+                  <Label>Màu 2</Label>
+                  <Input
+                    type="color"
+                    defaultValue="#6CDFAB"
+                    id="color2"
+                    onChange={(e) => {
+                      const color1 =
+                        (document.getElementById("color1") as HTMLInputElement)
+                          ?.value || "#16C875";
+                      updateBackground(
+                        `linear-gradient(135deg, ${color1} 0%, ${e.target.value} 100%)`
+                      );
+                    }}
+                    className="w-full h-10 p-1"
+                  />
+                </div>
+              </div>
+            </div>
+
+            {/* --- PHẦN CHỌN HƯỚNG --- */}
+            <div>
+              <Label>Hướng Gradient</Label>
+              <Select
+                defaultValue="135deg"
+                onValueChange={(angle) => {
+                  const color1 =
+                    (document.getElementById("color1") as HTMLInputElement)
+                      ?.value || "#16C875";
+                  const color2 =
+                    (document.getElementById("color2") as HTMLInputElement)
+                      ?.value || "#6CDFAB";
+                  updateBackground(
+                    `linear-gradient(${angle}, ${color1} 0%, ${color2} 100%)`
+                  );
+                }}
+              >
+                <SelectTrigger className="w-full mt-2">
+                  <SelectValue placeholder="Chọn hướng" />
+                </SelectTrigger>
+                <SelectContent className="bg-white">
+                  <SelectItem value="0deg">Trên → Dưới (0°)</SelectItem>
+                  <SelectItem value="45deg">Chéo phải xuống (45°)</SelectItem>
+                  <SelectItem value="90deg">Trái → Phải (90°)</SelectItem>
+                  <SelectItem value="135deg">Chéo phải lên (135°)</SelectItem>
+                  <SelectItem value="180deg">Dưới → Trên (180°)</SelectItem>
+                  <SelectItem value="225deg">Chéo trái lên (225°)</SelectItem>
+                  <SelectItem value="270deg">Phải → Trái (270°)</SelectItem>
+                  <SelectItem value="315deg">Chéo trái xuống (315°)</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+
+            {/* --- PHẦN XEM TRƯỚC --- */}
+            <div>
+              <Label>Xem trước</Label>
+              <div
+                className="w-full h-24 rounded-lg border mt-2 transition-all duration-300"
+                style={{
+                  background: currentBackground.startsWith("linear-gradient")
+                    ? currentBackground
+                    : "linear-gradient(135deg, #16C875 0%, #6CDFAB 100%)",
+                }}
+              />
+            </div>
+          </div>
+
           <div>
             <Label>Gradient Presets</Label>
             <div className="grid grid-cols-2 gap-3 mt-2">
@@ -215,30 +305,29 @@ export function BackgroundPanel({
             <div className="flex flex-col gap-2">
               <Label htmlFor="bg-url">Background Image URL</Label>
               <div className="flex w-full gap-1">
-              <Input
-                id="bg-url"
-                value={
-                  currentBackground.startsWith("http") ||
-                  currentBackground.startsWith("/")
-                    ? currentBackground
-                    : ""
-                }
-                onChange={(e) => updateBackground(e.target.value)}
-                placeholder="https://example.com/image.jpg hoặc /local-image.jpg"
-                className="focus:ring-2 focus:ring-[#16C875] transition-all duration-200 w-[80%]"
-              />
+                <Input
+                  id="bg-url"
+                  value={
+                    currentBackground.startsWith("http") ||
+                    currentBackground.startsWith("/")
+                      ? currentBackground
+                      : ""
+                  }
+                  onChange={(e) => updateBackground(e.target.value)}
+                  placeholder="https://example.com/image.jpg hoặc /local-image.jpg"
+                  className="focus:ring-2 focus:ring-[#16C875] transition-all duration-200 w-[80%]"
+                />
 
-              {/* Nút chọn ảnh từ máy */}
-              <Button
-                type="button"
-                variant="outline"
-                className="w-[15%] text-sm"
-                onClick={() => document.getElementById("bg-file")?.click()}
-              >
-                {LuUpload({ className: "w-5 h-5 text-gray-600" })}
-              </Button>
+                {/* Nút chọn ảnh từ máy */}
+                <Button
+                  type="button"
+                  variant="outline"
+                  className="w-[15%] text-sm"
+                  onClick={() => document.getElementById("bg-file")?.click()}
+                >
+                  {LuUpload({ className: "w-5 h-5 text-gray-600" })}
+                </Button>
               </div>
-              
 
               <input
                 id="bg-file"
@@ -256,11 +345,25 @@ export function BackgroundPanel({
 
               {/* Hiển thị ảnh xem trước */}
               {currentBackground && (
-                <img
-                  src={currentBackground}
-                  alt="Background preview"
-                  className="w-full h-32 object-cover rounded-lg mt-2 border"
-                />
+                <>
+                  {/* Nếu là ảnh */}
+                  {currentBackground.startsWith("http") ||
+                  currentBackground.startsWith("/") ? (
+                    <img
+                      src={currentBackground}
+                      alt="Background preview"
+                      className="w-full h-32 object-cover rounded-lg mt-2 border"
+                    />
+                  ) : (
+                    // Nếu là màu hoặc gradient
+                    <div
+                      className="w-full h-32 rounded-lg mt-2 border transition-all duration-300"
+                      style={{
+                        background: currentBackground,
+                      }}
+                    />
+                  )}
+                </>
               )}
             </div>
 

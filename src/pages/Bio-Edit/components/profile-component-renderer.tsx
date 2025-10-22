@@ -1,9 +1,9 @@
 "use client";
 
 import { getContentValue, type LayoutElement } from "../../../types/bio";
-import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
-import { Card, CardContent } from "@/components/ui/card";
+import { Button } from "../../../components/ui/button";
+import { Badge } from "../../../components/ui/badge";
+import { Card, CardContent } from "../../../components/ui/card";
 import { Twitter, Linkedin, Github, Instagram, Globe } from "lucide-react";
 
 interface ProfileComponentRendererProps {

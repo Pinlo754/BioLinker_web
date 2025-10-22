@@ -27,8 +27,8 @@ export function LeftSidebar({ activePanel, onPanelChange }: LeftSidebarProps) {
           <button
             key={item.id}
             onClick={() => onPanelChange(item.id)}
-            className={`flex flex-col items-center gap-1 p-3 rounded-lg transition-colors ${
-              isActive ? "bg-primary text-primary-foreground" : "text-sidebar-foreground hover:bg-accent"
+            className={`w-full flex flex-col items-center gap-1 p-3 rounded-lg transition-colors ${
+              isActive ? "bg-gradient-to-r from-[#16C875] to-[#6CDFAB] text-primary-foreground" : "text-sidebar-foreground hover:bg-accent"
             }`}
             title={item.label}
           >

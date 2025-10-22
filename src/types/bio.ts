@@ -67,7 +67,7 @@ export type LayoutContent =
       text?: string;
       value?: string;
       url?: string;
-      links?: { platform: string; url: string }[];
+      links?: {staticLinkId?:string; platform: string; url: string }[];
       skills?: string[];
     };
 

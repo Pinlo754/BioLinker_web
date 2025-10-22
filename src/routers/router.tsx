@@ -19,6 +19,7 @@ import ProfilePage from "../pages/Bio/page";
 import PrivacyPolicy from "../pages/PrivacyPolicy";
 import TermsOfService from "../pages/TermsOfService";
 import LogOut from "../pages/LogOut/LogOut";
+import PaymentInfo from "../pages/PaymentInfo";
 
 const routers = createBrowserRouter([
   {
@@ -90,7 +91,7 @@ const routers = createBrowserRouter([
     element: <Account />,
   },
   {
-    path: "/bio/:userName",
+    path: "/biolinker/:userName",
     element: <ProfilePage />,
   },
   {
@@ -104,6 +105,10 @@ const routers = createBrowserRouter([
   {
     path: "/logout",
     element: <LogOut />,
+  },
+  {
+    path: "/payment",
+    element: <PaymentInfo />,
   }
 ]);
 

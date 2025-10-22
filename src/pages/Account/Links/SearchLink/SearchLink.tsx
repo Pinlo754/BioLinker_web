@@ -7,8 +7,8 @@ type SearchLinkProps = {
 }
 
 const SearchLink: React.FC<SearchLinkProps> = ({ visible, onClose, onAddLink }) => {
-    if (!visible) return null;
     const { platforms } = useSearchLink();
+    if (!visible) return null;    
     return (
         <div className="fixed inset-0 z-[9999] bg-black/25 backdrop-blur-[2px] flex items-center justify-center">
             <div className="bg-white rounded-3xl py-2 shadow-xl flex flex-col items-center gap-4 w-full max-w-4xl h-[80vh]">

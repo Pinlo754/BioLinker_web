@@ -109,151 +109,162 @@ export function ContentPanel({
 
   // 🚀 Nút Fast Design (tự động sinh bố cục + load social link từ API)
   const handleFastDesign = async () => {
-  const userString = localStorage.getItem("user");
-  if (!userString) {
-    alert("Chưa có thông tin người dùng!");
-    return;
-  }
-
-  const user = JSON.parse(userString);
-  const userId = user.userId;
-
-  // Gọi API để lấy social links
-  let staticLinks = [];
-  try {
-    const res = await axios.get(
-      `https://biolinker.onrender.com/api/StaticLinks/user/${userId}`
-    );
-    staticLinks = res.data || [];
-  } catch (error) {
-    console.error("Lỗi khi lấy social links:", error);
-  }
-
-  // Lọc chỉ lấy link có status = "public"
-  const publicLinks = staticLinks.filter((link: any) => link.status === "public");
-
-  // Map platform → icon
-  const platformIcons: Record<string, string> = {
-    Facebook: "/facebook.svg",
-    Instagram: "/instagram.svg",
-    TikTok: "/tiktok.svg",
-    YouTube: "/youtube.svg",
-    Twitter: "/x.svg",
-  };
-
-  // Sao chép danh sách element hiện tại
-  const updatedElements = [...profileData.elements];
-
-  // Helper: tìm element theo type
-  const findElement = (type: string) =>
-    updatedElements.find((el) => el.type === type);
-
-  // === Avatar ===
-  const existingAvatar = findElement("avatar");
-  if (existingAvatar) {
-    // Nếu đã có avatar thì chỉ cập nhật khi chưa có ảnh
-    if (!existingAvatar.content?.value && user.userImage) {
-      existingAvatar.content.value = user.userImage;
+    const userString = localStorage.getItem("user");
+    if (!userString) {
+      alert("Chưa có thông tin người dùng!");
+      return;
     }
-  } else {
-    // Chưa có → thêm mới
-    updatedElements.push({
-      id: `avatar-${Date.now()}`,
-      type: "avatar",
-      content: { value: user.userImage || "/default-avatar.png" },
-      position: { x: 50, y: 10, width: 40, zIndex: 1 },
-      alignment: "center",
-      visible: true,
-    });
-  }
 
-  // === Name ===
-  const existingName = findElement("name");
-  if (existingName) {
-    if (!existingName.content?.value && user.fullName) {
-      existingName.content.value = user.fullName;
+    const user = JSON.parse(userString);
+    const userId = user.userId;
+
+    // Gọi API để lấy social links
+    let staticLinks = [];
+    try {
+      const res = await axios.get(
+        `https://biolinker.onrender.com/api/StaticLinks/user/${userId}`
+      );
+      staticLinks = res.data || [];
+    } catch (error) {
+      console.error("Lỗi khi lấy social links:", error);
     }
-  } else {
-    updatedElements.push({
-      id: `name-${Date.now()}`,
-      type: "name",
-      content: {
-        value: user.fullName || "Unknown User",
-        textColor: "#000000",
-        fontSize: 20,
-        fontWeight: "600",
-        fontFamily: "Poppins, sans-serif",
-      },
-      position: { x: 50, y: 30, width: 90, zIndex: 2 },
-      alignment: "center",
-      visible: true,
-    });
-  }
 
-  // === Bio ===
-  const existingBio = findElement("bio");
-  if (existingBio) {
-    if (!existingBio.content?.value && user.description) {
-      existingBio.content.value = user.description;
-    }
-  } else {
-    updatedElements.push({
-      id: `bio-${Date.now()}`,
-      type: "bio",
-      content: {
-        value: user.description || "Welcome to my Biolinker page!",
-        textColor: "#666666",
-        fontSize: 14,
-        fontWeight: "400",
-        fontFamily: "Poppins, sans-serif",
-      },
-      position: { x: 50, y: 40, width: 90, zIndex: 3 },
-      alignment: "center",
-      visible: true,
-    });
-  }
-
-  // === Social Links ===
-  publicLinks.forEach((link: any, idx: number) => {
-    const existingLink = updatedElements.find(
-      (el) =>
-        el.type === "link" &&
-        el.content?.social?.toLowerCase() === link.platform.toLowerCase()
+    // Lọc chỉ lấy link có status = "public"
+    const publicLinks = staticLinks.filter(
+      (link: any) => link.status === "public"
     );
 
-    const newContent = {
-      text: link.title || link.platform,
-      url: link.defaultUrl,
-      social: link.platform.toLowerCase(),
-      icon: platformIcons[link.platform] || "",
+    // Map platform → icon
+    const platformIcons: Record<string, string> = {
+      Facebook: "/facebook.svg",
+      Instagram: "/instagram.svg",
+      Tiktok: "/tiktok.svg",
+      Youtube: "/youtube.svg",
+      Telegram: "/telegram.svg",
+      Spotify: "/spotify.svg",
+      Threads: "/threads.svg",
+      X: "/x.svg",
+      Github: "/github.svg",
+      Linkedin: "/linkedin.svg",
+      Discord: "/discord.svg",
+      Soundcloud: "/soundcloud.svg",
     };
 
-    if (existingLink) {
-      // Nếu link đã có → chỉ cập nhật URL & icon nếu trống
-      if (!existingLink.content?.url) existingLink.content.url = link.defaultUrl;
-      if (!existingLink.content?.icon)
-        existingLink.content.icon = platformIcons[link.platform] || "";
+    // Sao chép danh sách element hiện tại
+    const updatedElements = [...profileData.elements];
+
+    // Helper: tìm element theo type
+    const findElement = (type: string) =>
+      updatedElements.find((el) => el.type === type);
+
+    // === Avatar ===
+    const existingAvatar = findElement("avatar");
+    if (existingAvatar) {
+      // Nếu đã có avatar thì chỉ cập nhật khi chưa có ảnh
+      if (!existingAvatar.content?.value && user.userImage) {
+        existingAvatar.content.value = user.userImage;
+      }
     } else {
-      // Nếu chưa có → thêm mới
+      // Chưa có → thêm mới
       updatedElements.push({
-        id: `link-${link.platform.toLowerCase()}-${Date.now() + idx}`,
-        type: "link",
-        content: newContent,
-        position: { x: 50, y: 55 + idx * 10, width: 90, zIndex: 10 + idx },
+        id: `avatar-${Date.now()}`,
+        type: "avatar",
+        content: { value: user.userImage || "/default-avatar.png" },
+        position: { x: 50, y: 10, width: 40, zIndex: 1 },
         alignment: "center",
         visible: true,
       });
     }
-  });
 
-  // Cập nhật profile với danh sách element đã chỉnh sửa/thêm mới
-  onUpdateProfile({ elements: updatedElements });
+    // === Name ===
+    const existingName = findElement("name");
+    if (existingName) {
+      if (!existingName.content?.value && user.fullName) {
+        existingName.content.value = user.fullName;
+      }
+    } else {
+      updatedElements.push({
+        id: `name-${Date.now()}`,
+        type: "name",
+        content: {
+          value: user.fullName || "Unknown User",
+          textColor: "#000000",
+          fontSize: 20,
+          fontWeight: "600",
+          fontFamily: "Poppins, sans-serif",
+        },
+        position: { x: 50, y: 30, width: 90, zIndex: 2 },
+        alignment: "center",
+        visible: true,
+      });
+    }
 
-  alert("Fast Design đã cập nhật giao diện, giữ nguyên phần cũ và thêm phần còn thiếu!");
-};
+    // === Bio ===
+    const existingBio = findElement("bio");
+    if (existingBio) {
+      if (!existingBio.content?.value && user.description) {
+        existingBio.content.value = user.description;
+      }
+    } else {
+      updatedElements.push({
+        id: `bio-${Date.now()}`,
+        type: "bio",
+        content: {
+          value: user.description || "Welcome to my Biolinker page!",
+          textColor: "#666666",
+          fontSize: 14,
+          fontWeight: "400",
+          fontFamily: "Poppins, sans-serif",
+        },
+        position: { x: 50, y: 40, width: 90, zIndex: 3 },
+        alignment: "center",
+        visible: true,
+      });
+    }
 
+    // === Social Links ===
+    publicLinks.forEach((link: any, idx: number) => {
+      const existingLink = updatedElements.find(
+        (el) =>
+          el.type === "link" &&
+          el.content?.social?.toLowerCase() === link.platform.toLowerCase()
+      );
 
-  // --- JSX ---
+      const newContent = {
+        id: link.staticLinkId,
+        text: link.title || link.platform,
+        url: link.defaultUrl,
+        social: link.platform.toLowerCase(),
+        icon: platformIcons[link.platform] || "",
+      };
+
+      if (existingLink) {
+        if (!existingLink.content?.url)
+          existingLink.content.url = link.defaultUrl;
+        if (!existingLink.content?.icon)
+          existingLink.content.icon = platformIcons[link.platform] || "";
+        if (!existingLink.content?.staticLinkId && link.staticLinkId)
+          existingLink.content.staticLinkId = link.staticLinkId;
+      } else {
+        updatedElements.push({
+          id: newContent.id,
+          type: "link",
+          content: newContent,
+          position: { x: 50, y: 55 + idx * 10, width: 90, zIndex: 10 + idx },
+          alignment: "center",
+          visible: true,
+        });
+      }
+    });
+
+    // Cập nhật profile với danh sách element đã chỉnh sửa/thêm mới
+    onUpdateProfile({ elements: updatedElements });
+
+    alert(
+      "Fast Design đã cập nhật giao diện, giữ nguyên phần cũ và thêm phần còn thiếu!"
+    );
+  };
+
   return (
     <div className="p-6">
       <div className="flex items-center justify-between mb-6">
@@ -651,7 +662,14 @@ export function ContentPanel({
                               instagram: "/instagram.svg",
                               tiktok: "/tiktok.svg",
                               youtube: "/youtube.svg",
-                              twitter: "/x.svg",
+                              telegram: "/telegram.svg",
+                              spotify: "/spotify.svg",
+                              threads: "/threads.svg",
+                              x: "/x.svg",
+                              github: "/github.svg",
+                              linkedin: "/linkedin.svg",
+                              discord: "/discord.svg",
+                              soundcloud: "/soundcloud.svg",
                             };
 
                             updateElement(element.id, {
@@ -674,13 +692,14 @@ export function ContentPanel({
                             <SelectItem value="facebook">
                               <div className="flex items-center gap-2">
                                 <img
-                                  src="/facebook.png"
+                                  src="/facebook.svg"
                                   alt="Facebook"
                                   className="w-4 h-4"
                                 />
                                 <span>Facebook</span>
                               </div>
                             </SelectItem>
+
                             <SelectItem value="instagram">
                               <div className="flex items-center gap-2">
                                 <img
@@ -691,16 +710,18 @@ export function ContentPanel({
                                 <span>Instagram</span>
                               </div>
                             </SelectItem>
+
                             <SelectItem value="tiktok">
                               <div className="flex items-center gap-2">
                                 <img
                                   src="/tiktok.svg"
-                                  alt="Instagram"
+                                  alt="TikTok"
                                   className="w-4 h-4"
                                 />
                                 <span>TikTok</span>
                               </div>
                             </SelectItem>
+
                             <SelectItem value="youtube">
                               <div className="flex items-center gap-2">
                                 <img
@@ -711,14 +732,92 @@ export function ContentPanel({
                                 <span>YouTube</span>
                               </div>
                             </SelectItem>
-                            <SelectItem value="twitter">
+
+                            <SelectItem value="telegram">
+                              <div className="flex items-center gap-2">
+                                <img
+                                  src="/telegram.svg"
+                                  alt="Telegram"
+                                  className="w-4 h-4"
+                                />
+                                <span>Telegram</span>
+                              </div>
+                            </SelectItem>
+
+                            <SelectItem value="spotify">
+                              <div className="flex items-center gap-2">
+                                <img
+                                  src="/spotify.svg"
+                                  alt="Spotify"
+                                  className="w-4 h-4"
+                                />
+                                <span>Spotify</span>
+                              </div>
+                            </SelectItem>
+
+                            <SelectItem value="threads">
+                              <div className="flex items-center gap-2">
+                                <img
+                                  src="/threads.svg"
+                                  alt="Threads"
+                                  className="w-4 h-4"
+                                />
+                                <span>Threads</span>
+                              </div>
+                            </SelectItem>
+
+                            <SelectItem value="x">
                               <div className="flex items-center gap-2">
                                 <img
                                   src="/x.svg"
-                                  alt="Twitter"
+                                  alt="X (Twitter)"
                                   className="w-4 h-4"
                                 />
                                 <span>X</span>
+                              </div>
+                            </SelectItem>
+
+                            <SelectItem value="github">
+                              <div className="flex items-center gap-2">
+                                <img
+                                  src="/github.svg"
+                                  alt="GitHub"
+                                  className="w-4 h-4"
+                                />
+                                <span>GitHub</span>
+                              </div>
+                            </SelectItem>
+
+                            <SelectItem value="linkedin">
+                              <div className="flex items-center gap-2">
+                                <img
+                                  src="/linkedin.svg"
+                                  alt="LinkedIn"
+                                  className="w-4 h-4"
+                                />
+                                <span>LinkedIn</span>
+                              </div>
+                            </SelectItem>
+
+                            <SelectItem value="discord">
+                              <div className="flex items-center gap-2">
+                                <img
+                                  src="/discord.svg"
+                                  alt="Discord"
+                                  className="w-4 h-4"
+                                />
+                                <span>Discord</span>
+                              </div>
+                            </SelectItem>
+
+                            <SelectItem value="soundcloud">
+                              <div className="flex items-center gap-2">
+                                <img
+                                  src="/soundcloud.svg"
+                                  alt="SoundCloud"
+                                  className="w-4 h-4"
+                                />
+                                <span>SoundCloud</span>
                               </div>
                             </SelectItem>
                           </SelectContent>

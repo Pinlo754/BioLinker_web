@@ -63,7 +63,7 @@ const MyCollection = () => {
                     <p className="text-black/80 font-bold font">{user.userTag}</p>
                   </div>
                   <p className="text-black/60">{user.job}</p>
-                  <a href={`/bio/${user.customerDomain}`} className="text-black/60">{`biolinker.io.vn/bio/${user.customerDomain}`}</a>
+                  <a href={`/biolinker/${user.customerDomain}`} className="text-black/60">{`biolinker.io.vn/biolinker/${user.customerDomain}`}</a>
                 </div>
               </div>
 
