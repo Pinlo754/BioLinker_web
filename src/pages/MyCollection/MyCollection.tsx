@@ -8,25 +8,20 @@ import { BsThreeDots } from "react-icons/bs";
 import Analytics from "./Tags/Analytics/Analytics";
 import Collection from "./Tags/Collection/Collection";
 
-type TabKey = 'owned' | 'created' | 'collections' | 'insight' ;
+type TabKey = 'collections' | 'insight' ;
 
 const MyCollection = () => {
 
   const userString = localStorage.getItem("user");
   const user = userString ? JSON.parse(userString) : null;
 
-  const [activeTab, setActiveTab] = useState<'owned' | 'created' | 'collections' | 'insight'>('collections')
+  const [activeTab, setActiveTab] = useState<'collections' | 'insight'>('collections')
 
   const tabs = [
-    { key: 'owned', label: 'Owned (14)' },
-    { key: 'created', label: 'Created (45)' },
-    { key: 'collections', label: 'Collections (2)' },
-    { key: 'insight', label: 'Insight' },
-    { key: 'more', label: 'More' },
+    { key: 'collections', label: 'Bộ sưu tập (2)' },
+    { key: 'insight', label: 'Phân tích' },
   ]
   const tabViewByKey: Record<TabKey, React.ComponentType<any>> = {
-    owned: Analytics,
-    created: Analytics,
     collections: Collection,
     insight: Analytics,
   };

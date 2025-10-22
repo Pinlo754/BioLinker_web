@@ -9,7 +9,7 @@
             features: [
                 "Mẫu cơ bản dành riêng cho ngành",
                 "Tùy chỉnh ảnh đại diện và tiểu sử",
-                "Phân tích cơ bản"
+                // "Phân tích cơ bản"
             ]
         },
         {
@@ -25,6 +25,7 @@
                 "Không bao gồm watermark",
                 "Theo dõi các mẫu ưa thích",
                 "Theo dõi và phân tích lượt truy cập",
+                "Tạo bảng collection riêng",
                 //"Gợi ý tiểu sử do AI tạo ra"
             ]
         },
@@ -38,7 +39,6 @@
                 "Năm lần thay đổi tên miền miễn phí",
                 "Năm lần tạo mã QR miễn phí",
                 "Xuất template",
-                "Tạo bảng collection riêng",
                 "Đăng kí và xem bio của người khác",
                 "AI phân tích thông số của bio của bạn",
             ]
