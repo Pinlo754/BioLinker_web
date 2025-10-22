@@ -8,7 +8,7 @@ import { BsThreeDots } from "react-icons/bs";
 import Analytics from "./Tags/Analytics/Analytics";
 import Collection from "./Tags/Collection/Collection";
 
-type TabKey = 'owned' | 'created' | 'collections' | 'insight' ;
+type TabKey = 'collections' | 'insight' ;
 
 const MyCollection = () => {
 
@@ -18,12 +18,10 @@ const MyCollection = () => {
   const [activeTab, setActiveTab] = useState<'collections' | 'insight'>('collections')
 
   const tabs = [
-    { key: 'collection', label: 'Bộ sưu tập (2)' },
+    { key: 'collections', label: 'Bộ sưu tập (2)' },
     { key: 'insight', label: 'Phân tích' },
   ]
   const tabViewByKey: Record<TabKey, React.ComponentType<any>> = {
-    owned: Analytics,
-    created: Analytics,
     collections: Collection,
     insight: Analytics,
   };

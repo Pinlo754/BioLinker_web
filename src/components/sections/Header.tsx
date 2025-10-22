@@ -52,11 +52,12 @@ const Header = () => {
   ];
 
   const handleHome = () => {
+    console.log(userData);
+    
     if(userData === null){
       navigate("/");
     }
     else{
-      window.location.reload();
       navigate("/dashboard");
     }
   }
@@ -64,15 +65,10 @@ const Header = () => {
     <header className="bg-white shadow-md w-full px-4 md:px-8 py-2 fixed top-0 z-50">
       <div className="flex items-center justify-between w-full">
         {/* Logo */}
-        {userData === null ? (
         <button onClick={() => handleHome()} className="flex items-center">
           <img src={logo} alt="logo" className="h-12 md:h-14" />
         </button>
-        ) : (
-          <button onClick={() => handleHome()} className="flex items-center">
-            <img src={logo} alt="logo" className="h-12 md:h-14" />
-          </button>
-        )}
+
         {/* Desktop Navigation */}
         <nav className="hidden md:flex items-center gap-16 w-[40%] justify-center">
           {navItems.map((item) => (

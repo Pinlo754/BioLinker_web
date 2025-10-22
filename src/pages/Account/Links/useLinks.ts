@@ -148,8 +148,21 @@ const useLinks = () => {
                 const link = links.find((link) => link.staticLinkId === linkId);
                 if(link){
                     const data = {
+                        title: link.title,
+                        platform: link.platform,
+                        icon: link.icon,
+                        defaultUrl: url,
                         status: status
                     }
+                    const response = await putDataWithParams(`StaticLinks/${linkId}`,data,{id:linkId ,userId: userId})
+                    if(response){
+                        toast.success("Cập nhật thành công");
+                    }else{
+                        toast.error("Cập nhật thất bại");
+                    }
+                }else{
+                    setError(true);
+                    console.log("thay doi trang thai that bai");
                 }
             }catch (error) {
                 setError(true);
