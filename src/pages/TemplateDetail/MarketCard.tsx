@@ -1,55 +1,111 @@
+import { useNavigate } from "react-router-dom"
+import { HeartIcon } from "@heroicons/react/24/outline"
+import { StarIcon as StarSolidIcon, HeartIcon as HeartSolidIcon } from "@heroicons/react/24/solid"
+
 export default function MarketCard({
   image,
-  avatar,
   name,
-  count,
   isPremium,
+  views = 1250,
+  downloads = 89,
+  job = "Lập trinh viên",
+  category = ["Lập trình", "Thiết kế"],
+  isLiked = false,
 }: {
   image: string
-  avatar: string
   name: string
-  count: string
   isPremium?: boolean
+  views?: number
+  downloads?: number
+  job?: string
+  category?: string[]
+  isLiked?: boolean
 }) {
+  const navigate = useNavigate();
+  
   return (
-    <div className="bg-white rounded-2xl shadow hover:shadow-lg transition duration-300 overflow-hidden flex flex-col w-ful">
-      {/* Ảnh lớn + avatar */}
-      <div className="relative">
+    <div className="bg-white rounded-3xl max-w-[290px] min-w-[240px] shadow-lg hover:shadow-2xl hover:shadow-emerald-500/20 transition-all duration-500 overflow-hidden group cursor-pointer transform hover:-translate-y-2"
+      onClick={() => {
+        navigate(`/template-detail/`);
+      }}
+    >
+      {/* Header với image và overlay */}
+      <div className="relative overflow-hidden">
         <img
           src={image}
           alt={name}
-          className="w-full h-24 sm:h-30 md:h-36 lg:h-40 object-cover rounded-t-2xl"
+          className="w-full h-52  object-cover group-hover:scale-110 transition-transform duration-700"
         />
-        <img
-          src={avatar}
-          alt={name}
-          className="w-10 h-10 sm:w-12 sm:h-12 rounded-full border-4 border-white absolute left-4 -bottom-5 shadow"
-        />
+        
+        {/* Gradient overlay */}
+        <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+        
+        {/* Premium badge */}
+        {isPremium && (
+          <div className="absolute top-4 right-4">
+            <span className="bg-gradient-to-r from-yellow-400 to-orange-500 text-white px-3 py-1 rounded-full text-xs font-bold shadow-lg">
+               
+            </span>
+          </div>
+        )}
+        
+        {/* Price badge */}
+        <div className="absolute top-4 right-4">
+          {isPremium ? (
+          <span className="px-2 py-2 rounded-full text-sm font-bold shadow-lg bg-green-500 text-white" >
+            ⭐ Premium
+          </span>
+          ): (
+            <span className="px-3 py-1 rounded-full text-sm font-bold shadow-lg bg-white text-gray-800" >
+              Free
+            </span>
+          )}
+        </div>
+        
+        {/* Action buttons overlay */}
+        <div className="absolute bottom-4 right-4 flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+          <button 
+            className="bg-white/90 backdrop-blur-sm p-2 rounded-full hover:bg-white transition-colors"
+            onClick={(e) => {
+              e.stopPropagation();
+              // Handle like
+            }}
+          >
+            {isLiked ? (
+              <HeartSolidIcon className="w-5 h-5 text-red-500" />
+            ) : (
+              <HeartIcon className="w-5 h-5 text-gray-600" />
+            )}
+          </button>
+        </div>
       </div>
 
-      {/* Nội dung */}
-      <div className="flex flex-col flex-1 px-4 pt-8 sm:pt-10">
-        <div className="flex flex-col">
-          <span className="text-lg sm:text-xl md:text-2xl font-bold">{name}</span>
-          <div className="text-gray-400 text-sm sm:text-base md:text-lg mt-1 text-right">
-            {count}
-          </div>
+      {/* Content */}
+      <div className="px-6 py-2">
+        {/* Title và Author */}
+        <div className="mb-4">
+          <h3 className="text-xl font-bold text-gray-900 mb-2 group-hover:text-emerald-600 transition-colors">
+            {name}
+          </h3>
         </div>
 
-        <div className="mt-auto">
-          {isPremium && (
-            <div className="flex items-center justify-between gap-2 py-3">
-              <span className="inline-block bg-gray-100 text-green-500 text-sm sm:text-base md:text-lg px-4 sm:px-6 py-1 sm:py-2 rounded-full font-medium">
-                Premium
+        {/* Category và Tags */}
+        <div className="mb-4">
+          <div className="flex items-center justify-between mb-2">
+            <span className="text-sm font-medium text-gray-700">Danh mục</span>
+            {/* <span className="text-xs text-gray-500">{downloads} downloads</span> */}
+          </div>
+          
+          <div className="flex flex-wrap gap-2">
+            <span className="px-3 py-1 bg-emerald-100 text-emerald-700 rounded-full text-xs font-medium">
+              {job}
+            </span>
+            {category.map((category) => (
+              <span className="px-3 py-1 bg-gray-100 text-gray-700 rounded-full text-xs font-medium">
+                {category}
               </span>
-              <a
-                href="/template-detail"
-                className="text-sm sm:text-base md:text-lg px-2 py-1 sm:px-3 sm:py-2 font-medium text-gray-700 hover:text-green-500 transition"
-              >
-                Edit Now
-              </a>
-            </div>
-          )}
+            ))}
+          </div>
         </div>
       </div>
     </div>
