@@ -4,10 +4,23 @@ import Footer from '../../components/sections/Footer'
 import MarketCard from '../TemplateDetail/MarketCard'
 import SideBar from '../../components/sections/SideBar'
 import useMarket from './useMarket'
+import { LoadingOverlay } from '../../components/ui/loading'
 
 
 const Market = () => {
-  const { allTemplates, currentTemplates, currentPage, totalPages, goToPage, goToNextPage, goToPrevPage, getAllTemplates } = useMarket();
+  const { 
+    currentTemplates, 
+    currentPage, 
+    totalPages, 
+    goToPage, 
+    goToNextPage, 
+    goToPrevPage, 
+    getAllTemplates, 
+    getTemplatesByType, 
+    searchTemplates,
+    searchTerm,
+    loading,
+  } = useMarket();
 
   useEffect(() => {
     getAllTemplates();
@@ -16,7 +29,7 @@ const Market = () => {
   return (
     <div className="bg-gray-100 min-h-screen flex flex-col justify-center">
       <Header />
-
+      {<LoadingOverlay visible={loading} />}
       <main className=" w-full flex justify-center">
         <div className=' w-full flex-1  py-6 sm:px-6 lg:px-8 flex flex-col lg:flex-row gap-6 mt-10'>
           {/* Sidebar filter */}
@@ -34,16 +47,18 @@ const Market = () => {
                 </button> */}
                 <input
                   type="text"
-                  placeholder="Tìm kiếm"
+                  placeholder="Tìm kiếm theo tên template"
+                  value={searchTerm}
+                  onChange={(e) => searchTemplates(e.target.value)}
                   className="flex-1  md:w-64 border border-gray-300 rounded-full px-4 py-2 focus:outline-none focus:ring-2 focus:ring-green-300"
                 />
               </div>
               <div>
-                <select className="border border-gray-300 rounded-full px-4 py-2 w-full md:w-auto">
-                  <option>Tất cả</option>
-                  <option>Free</option>
-                  <option>Premium</option>
-                  <option>Yêu thích</option>
+                <select onChange={(e) => getTemplatesByType(e.target.value)} className="border border-gray-300 rounded-full px-4 py-2 w-full md:w-auto">
+                  <option value="all">Tất cả</option>
+                  <option value="free">Miễn phí</option>
+                  <option value="premium">Trả phí</option>
+                  <option value="favorite">Yêu thích</option>
                 </select>
               </div>
             </div>
@@ -51,7 +66,7 @@ const Market = () => {
             {/* Grid cards */}
             <div className="grid grid-rows-2 sm:grid-rows-1 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 hover:cursor-pointer">
               {currentTemplates.map((card, i) => (
-                <MarketCard key={i} image={card.previewImage} name={card.name} isPremium={card.isPremium} job={card.job} category={card.category}  />
+                <MarketCard key={i} image={card.previewImage} isFavorite={card.isFavorite} name={card.name} isPremium={card.isPremium} job={card.job} category={card.category}  />
               ))}
             </div>
 

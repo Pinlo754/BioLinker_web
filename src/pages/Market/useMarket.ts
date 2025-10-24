@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { fetcher } from "../../api/fetchers";
+import { fetcher, fetcherWithParams } from "../../api/fetchers";
 import template1 from '../../assets/template1.jpeg'
 import template2 from '../../assets/template2.jpg'
 import template3 from '../../assets/template3.jpg'
@@ -11,49 +11,131 @@ type Template = {
     job: string;
     category: string;
     status: string;
+    templateId: string;
+    isFavorite: boolean;
 }
 
 const useMarket = () => {
-    const cards = [
-        { image: template1, avatar: "https://randomuser.me/api/portraits/men/32.jpg", name: "Thanh Phong", count: "1 of 321", isPremium: true },
-        { image: template2, avatar: "https://randomuser.me/api/portraits/men/32.jpg", name: "Thanh Phong", count: "1 of 321", isPremium: true },
-        { image: template3, avatar: "https://randomuser.me/api/portraits/men/32.jpg", name: "Thanh Phong", count: "1 of 321", isPremium: true },
-        { image: template4, avatar: "https://randomuser.me/api/portraits/men/32.jpg", name: "Thanh Phong", count: "1 of 321", isPremium: true },
-        { image: template1, avatar: "https://randomuser.me/api/portraits/men/32.jpg", name: "Thanh Phong", count: "1 of 321", isPremium: true },
-        { image: template2, avatar: "https://randomuser.me/api/portraits/men/32.jpg", name: "Thanh Phong", count: "1 of 321", isPremium: true },
-        { image: template3, avatar: "https://randomuser.me/api/portraits/men/32.jpg", name: "Thanh Phong", count: "1 of 321", isPremium: true },
-        { image: template4, avatar: "https://randomuser.me/api/portraits/men/32.jpg", name: "Thanh Phong", count: "1 of 321", isPremium: true },
-      ]
 
-    const [freeTemplate, setFreeTemplate] = useState();
+    const [freeTemplate, setFreeTemplate] = useState<Template[]>([]);
     const [allTemplates, setAllTemplates] = useState<Template[]>([]);
-    const [premiumTemplate, setPremiumTemplate] = useState();
+    const [displayedTemplates, setDisplayedTemplates] = useState<Template[]>([]);
+    const [premiumTemplate, setPremiumTemplate] = useState<Template[]>([]);
     const [error, setError] = useState(false)
     const [message, setMessage] = useState("");
+    const [loading, setLoading] = useState(false);
+    const [searchTerm, setSearchTerm] = useState("");
     
     // Pagination states
     const [currentPage, setCurrentPage] = useState(1);
     const [itemsPerPage] = useState(8);
 
     const getAllTemplates = async () =>{
+        setLoading(true);
         try {
             const response = await fetcher ("Template")
             if(response){
                 const templates = response.filter((template: Template) => template.status === "Active")
-                setAllTemplates(templates);
+                const favoriteTemplates = await getFavoriteTemplates(templates);
+                const favoriteIds = favoriteTemplates?.map(fav => fav.templateId) || [];
+                const templatesWithFavorite = templates.map((template:Template) => ({
+                    ...template,
+                    isFavorite: favoriteIds.includes(template.templateId)
+                }));        
+                setAllTemplates(templatesWithFavorite);
+                setDisplayedTemplates(templatesWithFavorite);
+                console.log(templatesWithFavorite);
             } else{
                 setMessage("no template")
             }
         } catch (error) {
           setError(true);  
+        } finally {
+            setLoading(false);
         }
     }
 
+    // Get templates by type
+    const getTemplatesByType = async (type: string) => {
+        setLoading(true);
+        if(type === "free") {
+            getFreeTemplates();
+        } else if(type === "premium") {
+            getPremiumTemplates();
+        } else if(type === "all") {
+            getAllTemplates();
+        } else if(type === "favorite") {
+            const favoriteTemplates = await getFavoriteTemplates(allTemplates);
+            if(favoriteTemplates) {
+                const likedTemplates = favoriteTemplates.map((template: Template) => ({
+                    ...template,
+                    isFavorite: true
+                }));
+                setDisplayedTemplates(likedTemplates);
+            } else {
+                setDisplayedTemplates([]);
+            }
+        }
+        setLoading(false);
+    }
+
+    // Get free templates
+    const getFreeTemplates =() => {
+        if(freeTemplate.length > 0) {
+            setDisplayedTemplates(freeTemplate);
+        } else {
+        const freeTemplates = allTemplates.filter((template: Template) => template.isPremium === false);
+        setFreeTemplate(freeTemplates);
+        setDisplayedTemplates(freeTemplates);
+        }
+    }
+
+    // Get premium templates
+    const getPremiumTemplates =() => {
+        if(premiumTemplate.length > 0) {
+            setDisplayedTemplates(premiumTemplate);
+        } else {
+            const premiumTemplates = allTemplates.filter((template: Template) => template.isPremium === true);
+            setPremiumTemplate(premiumTemplates);
+            setDisplayedTemplates(premiumTemplates);
+        }
+    }
+
+    const getFavoriteTemplates = async (allTemplates: Template[]) => {
+        try {
+            const userId = localStorage.getItem("userId")
+            const response = await fetcherWithParams (`Collection/${userId}`,{userId: userId});
+            if(response){
+                const templates = response.templates;
+                const likeTemplates = allTemplates.filter((template: Template) => templates.find((t: string) => t === template.templateId));
+                console.log(likeTemplates);
+                return likeTemplates;
+            }
+        } catch (error) {
+            setError(true);
+        }
+    }
+
+    // Search function
+    const searchTemplates = (term: string) => {
+        setSearchTerm(term);
+        setCurrentPage(1); // Reset to first page when searching
+        
+        if (term.trim() === "") {
+            setDisplayedTemplates(allTemplates);
+        } else {
+            const filteredTemplates = allTemplates.filter(template => 
+                template.name.toLowerCase().includes(term.toLowerCase())
+            );
+            setDisplayedTemplates(filteredTemplates);
+        }
+    };
+
     // Pagination calculations
-    const totalPages = Math.ceil(allTemplates.length / itemsPerPage);
+    const totalPages = Math.ceil(displayedTemplates.length / itemsPerPage);
     const startIndex = (currentPage - 1) * itemsPerPage;
     const endIndex = startIndex + itemsPerPage;
-    const currentTemplates = allTemplates.slice(startIndex, endIndex);
+    const currentTemplates = displayedTemplates.slice(startIndex, endIndex);
 
     // Pagination handlers
     const goToPage = (page: number) => {
@@ -76,13 +158,18 @@ const useMarket = () => {
 
     return{
         getAllTemplates,
-        allTemplates,
         currentTemplates,
         currentPage,
         totalPages,
         goToPage,
         goToNextPage,
         goToPrevPage,
+        getFreeTemplates,
+        getPremiumTemplates,
+        getTemplatesByType,
+        searchTemplates,
+        searchTerm,
+        loading,
     }
 }
 export default useMarket;

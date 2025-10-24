@@ -10,7 +10,7 @@ export default function MarketCard({
   downloads = 89,
   job ,
   category ,
-  isLiked = false,
+  isFavorite = false,
 }: {
   image: string
   name: string
@@ -19,7 +19,7 @@ export default function MarketCard({
   downloads?: number
   job?: string
   category?: string
-  isLiked?: boolean
+  isFavorite?: boolean
 }) {
   const navigate = useNavigate();
   
@@ -71,7 +71,7 @@ export default function MarketCard({
               // Handle like
             }}
           >
-            {isLiked ? (
+            {isFavorite ? (
               <HeartSolidIcon className="w-5 h-5 text-red-500" />
             ) : (
               <HeartIcon className="w-5 h-5 text-gray-600" />
