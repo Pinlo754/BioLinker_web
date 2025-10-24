@@ -19,6 +19,8 @@ const Market = () => {
     getTemplatesByType, 
     searchTemplates,
     searchTerm,
+    categoryOptions,
+    filterTemplates,
     loading,
   } = useMarket();
 
@@ -34,7 +36,7 @@ const Market = () => {
         <div className=' w-full flex-1  py-6 sm:px-6 lg:px-8 flex flex-col lg:flex-row gap-6 mt-10'>
           {/* Sidebar filter */}
           <div className="hidden lg:block w-64 flex-shrink-0">
-          <SideBar />
+          <SideBar categoryOptions={categoryOptions} filterTemplates={filterTemplates} />
           </div>
 
           {/* Main content */}

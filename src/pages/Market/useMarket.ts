@@ -25,6 +25,7 @@ const useMarket = () => {
     const [message, setMessage] = useState("");
     const [loading, setLoading] = useState(false);
     const [searchTerm, setSearchTerm] = useState("");
+    const [categoryOptions, setCategoryOptions] = useState<string[]>([]);
     
     // Pagination states
     const [currentPage, setCurrentPage] = useState(1);
@@ -44,7 +45,10 @@ const useMarket = () => {
                 }));        
                 setAllTemplates(templatesWithFavorite);
                 setDisplayedTemplates(templatesWithFavorite);
-                console.log(templatesWithFavorite);
+                
+                // Extract unique categories
+                const uniqueCategories = Array.from(new Set(templatesWithFavorite.map((template: Template) => template.category))).filter(Boolean) as string[];
+                setCategoryOptions(uniqueCategories);
             } else{
                 setMessage("no template")
             }
@@ -108,7 +112,6 @@ const useMarket = () => {
             if(response){
                 const templates = response.templates;
                 const likeTemplates = allTemplates.filter((template: Template) => templates.find((t: string) => t === template.templateId));
-                console.log(likeTemplates);
                 return likeTemplates;
             }
         } catch (error) {
@@ -125,10 +128,33 @@ const useMarket = () => {
             setDisplayedTemplates(allTemplates);
         } else {
             const filteredTemplates = allTemplates.filter(template => 
-                template.name.toLowerCase().includes(term.toLowerCase())
+                template.name && template.name.toLowerCase().includes(term.toLowerCase())
             );
             setDisplayedTemplates(filteredTemplates);
         }
+    };
+
+    // Filter function
+    const filterTemplates = (jobFilter?: string, categoryFilter?: string) => {
+        setCurrentPage(1); // Reset to first page when filtering
+        
+        let filteredTemplates = allTemplates;
+        
+        // Apply job filter
+        if (jobFilter && jobFilter.trim() !== "") {
+            filteredTemplates = filteredTemplates.filter(template => 
+                template.job && template.job.toLowerCase().includes(jobFilter.toLowerCase())
+            );
+        }
+        
+        // Apply category filter
+        if (categoryFilter && categoryFilter.trim() !== "") {
+            filteredTemplates = filteredTemplates.filter(template => 
+                template.category && template.category.toLowerCase().includes(categoryFilter.toLowerCase())
+            );
+        }
+        
+        setDisplayedTemplates(filteredTemplates);
     };
 
     // Pagination calculations
@@ -169,6 +195,8 @@ const useMarket = () => {
         getTemplatesByType,
         searchTemplates,
         searchTerm,
+        categoryOptions,
+        filterTemplates,
         loading,
     }
 }
