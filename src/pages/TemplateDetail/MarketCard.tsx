@@ -1,28 +1,38 @@
 import { useNavigate } from "react-router-dom"
 import { HeartIcon } from "@heroicons/react/24/outline"
 import { StarIcon as StarSolidIcon, HeartIcon as HeartSolidIcon } from "@heroicons/react/24/solid"
+import { useState } from "react"
 
 export default function MarketCard({
   image,
   name,
   isPremium,
-  views = 1250,
-  downloads = 89,
+  templateId,
   job ,
   category ,
   isFavorite = false,
+  onFavoriteChange,
+  onFavoriteClick,
 }: {
   image: string
   name: string
   isPremium?: boolean
-  views?: number
-  downloads?: number
+  templateId?: string
   job?: string
   category?: string
   isFavorite?: boolean
+  onFavoriteChange?: (templateId: string, newFavoriteStatus: boolean) => void
+  onFavoriteClick?: (templateId: string, isFavorite: boolean) => void
 }) {
   const navigate = useNavigate();
-  
+  const [message, setMessage] = useState("");
+  const changeFavoriteStatus = (isFavorite: boolean, templateId: string) => {
+    if (onFavoriteClick) {
+      onFavoriteClick(templateId, isFavorite);
+    }
+  }
+
+
   return (
     <div className="bg-white rounded-3xl max-w-[290px] min-w-[240px] shadow-lg hover:shadow-2xl hover:shadow-emerald-500/20 transition-all duration-500 overflow-hidden group cursor-pointer transform hover:-translate-y-2"
       onClick={() => {
@@ -53,11 +63,11 @@ export default function MarketCard({
         <div className="absolute top-4 right-4">
           {isPremium ? (
           <span className="px-2 py-2 rounded-full text-sm font-bold shadow-lg bg-green-500 text-white" >
-            ⭐ Premium
+            ⭐ Nâng cao
           </span>
           ): (
             <span className="px-3 py-1 rounded-full text-sm font-bold shadow-lg bg-white text-gray-800" >
-              Free
+              Miễn phí
             </span>
           )}
         </div>
@@ -69,6 +79,7 @@ export default function MarketCard({
             onClick={(e) => {
               e.stopPropagation();
               // Handle like
+              changeFavoriteStatus(isFavorite, templateId || "");
             }}
           >
             {isFavorite ? (

@@ -202,7 +202,7 @@ const useLinks = () => {
         setLoading(true);
         try{
             const userId = localStorage.getItem("userId");
-            const response = await deleteDataWithParams(`StaticLinks/${linkId}`,{id:linkId ,userId: userId})
+            const response = await deleteDataWithParams(`StaticLinks/${linkId}`, null, {id:linkId ,userId: userId})
             if(response){
                 toast.success("Xóa liên kết thành công");
             }else{

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { fetcher, fetcherWithParams } from "../../api/fetchers";
+import { fetcher, fetcherWithParams, postData, deleteDataWithParams } from "../../api/fetchers";
 import template1 from '../../assets/template1.jpeg'
 import template2 from '../../assets/template2.jpg'
 import template3 from '../../assets/template3.jpg'
@@ -157,6 +157,72 @@ const useMarket = () => {
         setDisplayedTemplates(filteredTemplates);
     };
 
+    // Handle favorite click
+    const handleFavoriteClick = async (templateId: string, isFavorite: boolean) => {
+        setLoading(true);
+        try {
+            const user = localStorage.getItem("user");
+            if (user) {
+                const userData = JSON.parse(user);
+                const currentPlanId = userData.currentPlanId;
+                
+                if (currentPlanId === "Business-Plan") {
+                    if (isFavorite) {
+                        await removeFavorite(userData.userId, templateId);
+                    } else {
+                        await addFavorite(userData.userId, templateId);
+                    }
+                }
+            }
+        } catch (error) {
+            console.error("Error handling favorite:", error);
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    // Add favorite
+    const addFavorite = async (userId: string, templateId: string) => {
+        const data = {
+            userId: userId,
+            templateIds: [templateId],
+        };
+        const response = await postData("Collection", data);
+        if (response) {
+            toggleFavorite(templateId, true);
+        }
+    };
+
+    // Remove favorite
+    const removeFavorite = async (userId: string, templateId: string) => {
+        const arrayTemplateId = [templateId];
+        const response = await deleteDataWithParams(`Collection/${userId}`, arrayTemplateId, {userId: userId});
+        if (response) {
+            toggleFavorite(templateId, false);
+        }
+    };
+
+    // Toggle favorite status
+    const toggleFavorite = (templateId: string, newFavoriteStatus: boolean) => {
+        // Cập nhật allTemplates
+        setAllTemplates(prevTemplates => 
+            prevTemplates.map(template => 
+                template.templateId === templateId 
+                    ? { ...template, isFavorite: newFavoriteStatus }
+                    : template
+            )
+        );
+        
+        // Cập nhật displayedTemplates
+        setDisplayedTemplates(prevTemplates => 
+            prevTemplates.map(template => 
+                template.templateId === templateId 
+                    ? { ...template, isFavorite: newFavoriteStatus }
+                    : template
+            )
+        );
+    };
+
     // Pagination calculations
     const totalPages = Math.ceil(displayedTemplates.length / itemsPerPage);
     const startIndex = (currentPage - 1) * itemsPerPage;
@@ -197,6 +263,8 @@ const useMarket = () => {
         searchTerm,
         categoryOptions,
         filterTemplates,
+        toggleFavorite,
+        handleFavoriteClick,
         loading,
     }
 }

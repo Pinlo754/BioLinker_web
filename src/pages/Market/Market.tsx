@@ -21,6 +21,8 @@ const Market = () => {
     searchTerm,
     categoryOptions,
     filterTemplates,
+    toggleFavorite,
+    handleFavoriteClick,
     loading,
   } = useMarket();
 
@@ -68,7 +70,17 @@ const Market = () => {
             {/* Grid cards */}
             <div className="grid grid-rows-2 sm:grid-rows-1 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 hover:cursor-pointer">
               {currentTemplates.map((card, i) => (
-                <MarketCard key={i} image={card.previewImage} isFavorite={card.isFavorite} name={card.name} isPremium={card.isPremium} job={card.job} category={card.category}  />
+                <MarketCard 
+                  key={i} 
+                  templateId={card.templateId} 
+                  image={card.previewImage} 
+                  isFavorite={card.isFavorite} 
+                  name={card.name} 
+                  isPremium={card.isPremium} 
+                  job={card.job} 
+                  category={card.category}
+                  onFavoriteClick={handleFavoriteClick}
+                />
               ))}
             </div>
 
