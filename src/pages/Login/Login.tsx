@@ -132,6 +132,7 @@ const Login = () => {
           {/* Social login */}
           <div className="flex flex-col items-center w-full mt-6 gap-3">
             {/* Google Login UI */}
+            <div className="google-login-responsive-wrapper w-full flex justify-center">
             <GoogleLogin
               onSuccess={(credentialResponse) => {
                 const idToken = credentialResponse.credential;
@@ -146,11 +147,11 @@ const Login = () => {
               onError={() => {
                 toast.error("Google login failed!");
               }}
-              theme="outline"
               size="large"
               shape="rectangular"
               text="signin_with"
             />
+            </div>
 
             {/* Các nút social khác */}
             <div className="flex justify-between items-center w-full gap-1 md:gap-3">

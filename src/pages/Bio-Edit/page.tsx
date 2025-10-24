@@ -2,7 +2,14 @@
 
 import { useEffect, useState } from "react";
 import { Button } from "../../components/ui/button";
-import { Settings, Smartphone, Monitor, Download, Upload, Save } from "lucide-react";
+import {
+  Settings,
+  Smartphone,
+  Monitor,
+  Download,
+  Upload,
+  Save,
+} from "lucide-react";
 import { LeftSidebar } from "./components/bio/left-sidebar";
 import { MobilePreview } from "./components/bio/mobile-preview";
 import { RightPanel } from "./components/bio/right-panel";
@@ -75,7 +82,23 @@ export default function BioBuilder() {
       ? JSON.parse(saved)
       : {
           layoutMode: "flex-vertical",
-          elements: [],
+          elements: [
+            {
+              id: "background-1761132455488",
+              type: "background",
+              content: {
+                value: "#ffffff",
+              },
+              position: {
+                x: 30,
+                y: 10,
+                width: 40,
+                zIndex: 6,
+              },
+              alignment: "center",
+              visible: true,
+            },
+          ],
           globalStyles: {
             buttonStyle: "rounded",
             buttonColor: "#2d3748",
@@ -349,7 +372,8 @@ export default function BioBuilder() {
               size="sm"
               onClick={handleOpenTemplateModal}
             >
-              <Save className="w-4 h-4 mr-2" />Tạo Template
+              <Save className="w-4 h-4 mr-2" />
+              Tạo Template
             </Button>
             {showTemplateModal && (
               <TemplateModal

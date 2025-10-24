@@ -49,3 +49,21 @@ body::-webkit-scrollbar {
 .scrollbar-hide::-webkit-scrollbar {
   display: none; /* Chrome, Safari, Opera */
 }
+
+/* Custom CSS để xử lý responsive cho Google Login */
+
+/* 1. Ép buộc thẻ div cha (Google render) phải co lại theo container */
+/* Selector: Thẻ div cha (được render bởi component) */
+.google-login-responsive-wrapper > div {
+    /* Đảm bảo nó không bao giờ vượt quá chiều rộng của container */
+    max-width: 100% !important;
+    width: 100% !important; /* Đặt width 100% để override styles inline */
+}
+
+/* 2. Ép buộc iframe bên trong phải co lại */
+/* Selector: Iframe bên trong thẻ div cha */
+.google-login-responsive-wrapper > div > iframe {
+    /* Cực kỳ quan trọng: Ép iframe co lại theo container */
+    max-width: 100% !important;
+    width: 100% !important;
+}
