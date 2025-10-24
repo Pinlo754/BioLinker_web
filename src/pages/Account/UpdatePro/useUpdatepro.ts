@@ -20,12 +20,10 @@
             features: [
                 "Tất cả tính năng của gói miễn phí",
                 "Tùy chỉnh ảnh đại diện và tiểu sử nâng cao",
-                "Một lần thay đổi tên miền miễn phí",
-                "Một lần tạo mã QR miễn phí",
+                "Thay đổi tên miền miễn phí",
                 "Không bao gồm watermark",
-                "Theo dõi các mẫu ưa thích",
+                "Đánh dấu các template miễn phí",
                 "Theo dõi và phân tích lượt truy cập",
-                "Tạo bảng collection riêng",
                 //"Gợi ý tiểu sử do AI tạo ra"
             ]
         },
@@ -36,10 +34,10 @@
             action: "Đăng kí",
             features: [
                 "Tất cả tính năng của gói tiêu chuẩn",
-                "Năm lần thay đổi tên miền miễn phí",
-                "Năm lần tạo mã QR miễn phí",
-                "Xuất template",
+                "Tạo mã QR miễn phí",
+                "Xuất template miễn phí",
                 "Đăng kí và xem bio của người khác",
+                "Đánh dấu các template trả phí",
                 "AI phân tích thông số của bio của bạn",
             ]
         }
