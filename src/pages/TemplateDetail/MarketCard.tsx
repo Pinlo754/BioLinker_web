@@ -85,14 +85,6 @@ export default function MarketCard({
         {/* Gradient overlay */}
         <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
         
-        {/* Premium badge */}
-        {isPremium && (
-          <div className="absolute top-4 right-4">
-            <span className="bg-gradient-to-r from-yellow-400 to-orange-500 text-white px-3 py-1 rounded-full text-xs font-bold shadow-lg">
-               
-            </span>
-          </div>
-        )}
         
         {/* Price badge */}
         <div className="absolute top-4 right-4">
@@ -113,13 +105,13 @@ export default function MarketCard({
             className={`backdrop-blur-sm p-2 rounded-full transition-colors ${
               canUseCollection() 
                 ? "bg-white/90 hover:bg-white" 
-                : "bg-gray-300/90 cursor-not-allowed"
+                : "bg-gray-300/90 "
             }`}
             onClick={(e) => {
               e.stopPropagation();
               changeFavoriteStatus(isFavorite, templateId || "");
             }}
-            disabled={!canUseCollection()}
+            // disabled={!canUseCollection()}
           >
             {isFavorite ? (
               <HeartSolidIcon className={`w-5 h-5 ${canUseCollection() ? "text-red-500" : "text-gray-400"}`} />
@@ -130,11 +122,11 @@ export default function MarketCard({
         </div>
         
         {/* Message display */}
-        {message && (
+        {/* {message && (
           <div className="absolute top-4 left-4 bg-red-500 text-white px-3 py-1 rounded-full text-xs font-medium">
             {message}
           </div>
-        )}
+        )} */}
       </div>
 
       {/* Content */}

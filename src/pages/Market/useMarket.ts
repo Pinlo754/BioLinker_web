@@ -51,8 +51,6 @@ const useMarket = () => {
                 // Extract unique categories
                 const uniqueCategories = Array.from(new Set(templatesWithFavorite.map((template: Template) => template.category))).filter(Boolean) as string[];
                 setCategoryOptions(uniqueCategories);
-            } else{
-                setMessage("no template")
             }
         } catch (error) {
           setError(true);  
@@ -173,6 +171,7 @@ const useMarket = () => {
                 
                 if (currentPlanId === free) {
                     // Free plan không được dùng collection
+                    setMessage("Free plan không được sử dụng tính năng collection");
                     console.log("Free plan không được sử dụng tính năng collection");
                     return;
                 } else if (currentPlanId === pro) {
@@ -184,7 +183,7 @@ const useMarket = () => {
                             await addFavorite(userData.userId, templateId);
                         }
                     } else {
-                        console.log("PRO plan chỉ được sử dụng với template miễn phí");
+                        setMessage("PRO plan chỉ được sử dụng với template miễn phí");
                     }
                 } else if (currentPlanId === business) {
                     // Business plan được dùng với tất cả template
@@ -287,6 +286,8 @@ const useMarket = () => {
         toggleFavorite,
         handleFavoriteClick,
         loading,
+        message,
+        setMessage,
     }
 }
 export default useMarket;

@@ -5,6 +5,7 @@ import MarketCard from '../TemplateDetail/MarketCard'
 import SideBar from '../../components/sections/SideBar'
 import useMarket from './useMarket'
 import { LoadingOverlay } from '../../components/ui/loading'
+import NotificationOverlay from '../../components/ui/noti'
 
 
 const Market = () => {
@@ -24,6 +25,8 @@ const Market = () => {
     toggleFavorite,
     handleFavoriteClick,
     loading,
+    message,
+    setMessage,
   } = useMarket();
 
   useEffect(() => {
@@ -34,6 +37,7 @@ const Market = () => {
     <div className="bg-gray-100 min-h-screen flex flex-col justify-center">
       <Header />
       {<LoadingOverlay visible={loading} />}
+      {<NotificationOverlay visible={message !== ''} message={message} onClose={() => setMessage('')} />}
       <main className=" w-full flex justify-center">
         <div className=' w-full flex-1  py-6 sm:px-6 lg:px-8 flex flex-col lg:flex-row gap-6 mt-10'>
           {/* Sidebar filter */}
