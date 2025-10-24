@@ -1,25 +1,18 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import Header from '../../components/sections/Header'
 import Footer from '../../components/sections/Footer'
 import MarketCard from '../TemplateDetail/MarketCard'
 import SideBar from '../../components/sections/SideBar'
-import template1 from '../../assets/template1.jpeg'
-import template2 from '../../assets/template2.jpg'
-import template3 from '../../assets/template3.jpg'
-import template4 from '../../assets/template4.jpg'
+import useMarket from './useMarket'
 
-const cards = [
-  { image: template1, avatar: "https://randomuser.me/api/portraits/men/32.jpg", name: "Thanh Phong", count: "1 of 321", isPremium: true },
-  { image: template2, avatar: "https://randomuser.me/api/portraits/men/32.jpg", name: "Thanh Phong", count: "1 of 321", isPremium: true },
-  { image: template3, avatar: "https://randomuser.me/api/portraits/men/32.jpg", name: "Thanh Phong", count: "1 of 321", isPremium: true },
-  { image: template4, avatar: "https://randomuser.me/api/portraits/men/32.jpg", name: "Thanh Phong", count: "1 of 321", isPremium: true },
-  { image: template1, avatar: "https://randomuser.me/api/portraits/men/32.jpg", name: "Thanh Phong", count: "1 of 321", isPremium: true },
-  { image: template2, avatar: "https://randomuser.me/api/portraits/men/32.jpg", name: "Thanh Phong", count: "1 of 321", isPremium: true },
-  { image: template3, avatar: "https://randomuser.me/api/portraits/men/32.jpg", name: "Thanh Phong", count: "1 of 321", isPremium: true },
-  { image: template4, avatar: "https://randomuser.me/api/portraits/men/32.jpg", name: "Thanh Phong", count: "1 of 321", isPremium: true },
-]
 
 const Market = () => {
+  const { allTemplates, currentTemplates, currentPage, totalPages, goToPage, goToNextPage, goToPrevPage, getAllTemplates } = useMarket();
+
+  useEffect(() => {
+    getAllTemplates();
+  }, []);
+
   return (
     <div className="bg-gray-100 min-h-screen flex flex-col justify-center">
       <Header />
@@ -56,23 +49,49 @@ const Market = () => {
             </div>
 
             {/* Grid cards */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 hover:cursor-pointer">
-              {cards.map((card, i) => (
-                <MarketCard key={i} {...card} />
+            <div className="grid grid-rows-2 sm:grid-rows-1 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 hover:cursor-pointer">
+              {currentTemplates.map((card, i) => (
+                <MarketCard key={i} image={card.previewImage} name={card.name} isPremium={card.isPremium} job={card.job} category={card.category}  />
               ))}
             </div>
 
             {/* Pagination */}
-            <div className="flex justify-center items-center gap-2 mt-8">
-              {[1, 2, 3, 4].map((n) => (
+            {totalPages > 1 && (
+              <div className="flex justify-center items-center gap-2 mt-8">
+                {/* Previous button */}
                 <button
-                  key={n}
-                  className="w-8 h-8 rounded-full flex items-center justify-center border border-gray-300 text-gray-700 font-semibold hover:bg-green-400 hover:text-white transition"
+                  onClick={goToPrevPage}
+                  disabled={currentPage === 1}
+                  className="w-8 h-8 rounded-full flex items-center justify-center border border-gray-300 text-gray-700 font-semibold hover:bg-green-400 hover:text-white transition disabled:opacity-50 disabled:cursor-not-allowed"
                 >
-                  {n}
+                  ‹
                 </button>
-              ))}
-            </div>
+
+                {/* Page numbers */}
+                {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
+                  <button
+                    key={page}
+                    onClick={() => goToPage(page)}
+                    className={`w-8 h-8 rounded-full flex items-center justify-center border border-gray-300 font-semibold transition ${
+                      currentPage === page
+                        ? 'bg-green-400 text-white'
+                        : 'text-gray-700 hover:bg-green-400 hover:text-white'
+                    }`}
+                  >
+                    {page}
+                  </button>
+                ))}
+
+                {/* Next button */}
+                <button
+                  onClick={goToNextPage}
+                  disabled={currentPage === totalPages}
+                  className="w-8 h-8 rounded-full flex items-center justify-center border border-gray-300 text-gray-700 font-semibold hover:bg-green-400 hover:text-white transition disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                  ›
+                </button>
+              </div>
+            )}
           </section>
         </div>
       </main>

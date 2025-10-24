@@ -8,8 +8,8 @@ export default function MarketCard({
   isPremium,
   views = 1250,
   downloads = 89,
-  job = "Lập trinh viên",
-  category = ["Lập trình", "Thiết kế"],
+  job ,
+  category ,
   isLiked = false,
 }: {
   image: string
@@ -18,7 +18,7 @@ export default function MarketCard({
   views?: number
   downloads?: number
   job?: string
-  category?: string[]
+  category?: string
   isLiked?: boolean
 }) {
   const navigate = useNavigate();
@@ -98,13 +98,11 @@ export default function MarketCard({
           
           <div className="flex flex-wrap gap-2">
             <span className="px-3 py-1 bg-emerald-100 text-emerald-700 rounded-full text-xs font-medium">
-              {job}
+              {job ? job : "Khác"}
             </span>
-            {category.map((category) => (
               <span className="px-3 py-1 bg-gray-100 text-gray-700 rounded-full text-xs font-medium">
                 {category}
               </span>
-            ))}
           </div>
         </div>
       </div>

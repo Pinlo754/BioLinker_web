@@ -39,6 +39,7 @@ export default function AsideBar() {
 
   const clearAll = () => {
     setSelectedOrientation("");
+    setSelectedJobOptions("");
   };
 
   return (
