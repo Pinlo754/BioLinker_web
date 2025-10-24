@@ -26,17 +26,52 @@ export default function MarketCard({
 }) {
   const navigate = useNavigate();
   const [message, setMessage] = useState("");
-  const changeFavoriteStatus = (isFavorite: boolean, templateId: string) => {
-    if (onFavoriteClick) {
-      onFavoriteClick(templateId, isFavorite);
+  const free = "FREE-PLAN";
+  const pro = "PRO-PLAN";
+  const business = "BUSINESS-PLAN";
+  // Check if user can use collection feature
+  const canUseCollection = () => {
+    const user = localStorage.getItem("user");
+    if (!user) return false;
+    
+    const userData = JSON.parse(user);
+    const currentPlanId = userData.currentPlanId;
+    
+    if (currentPlanId === free) {
+      return false; // Free plan không được dùng collection
+    } else if (currentPlanId === pro) {
+      return !isPremium; // PRO plan chỉ được dùng với template miễn phí
+    } else if (currentPlanId === business) {
+      return true; // Business plan được dùng với tất cả template
     }
-  }
+    
+    return false;
+  };
+  
+  const changeFavoriteStatus = (isFavorite: boolean, templateId: string) => {
+    if (canUseCollection() && onFavoriteClick) {
+      onFavoriteClick(templateId, isFavorite);
+    } else {
+      // Show message for restricted plans
+      const user = localStorage.getItem("user");
+      if (user) {
+        const userData = JSON.parse(user);
+        const currentPlanId = userData.currentPlanId;
+        
+        if (currentPlanId === free) {
+          setMessage("Cần nâng cấp gói để sử dụng tính năng collection");
+        } else if (currentPlanId === pro && isPremium) {
+          setMessage("PRO plan chỉ được sử dụng với template miễn phí");
+        }
+      }
+    }
+  };
 
 
   return (
     <div className="bg-white rounded-3xl max-w-[290px] min-w-[240px] shadow-lg hover:shadow-2xl hover:shadow-emerald-500/20 transition-all duration-500 overflow-hidden group cursor-pointer transform hover:-translate-y-2"
       onClick={() => {
-        navigate(`/template-detail/`);
+        navigate(`/template-detail/${templateId}`);
       }}
     >
       {/* Header với image và overlay */}
@@ -75,20 +110,31 @@ export default function MarketCard({
         {/* Action buttons overlay */}
         <div className="absolute bottom-4 right-4 flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
           <button 
-            className="bg-white/90 backdrop-blur-sm p-2 rounded-full hover:bg-white transition-colors"
+            className={`backdrop-blur-sm p-2 rounded-full transition-colors ${
+              canUseCollection() 
+                ? "bg-white/90 hover:bg-white" 
+                : "bg-gray-300/90 cursor-not-allowed"
+            }`}
             onClick={(e) => {
               e.stopPropagation();
-              // Handle like
               changeFavoriteStatus(isFavorite, templateId || "");
             }}
+            disabled={!canUseCollection()}
           >
             {isFavorite ? (
-              <HeartSolidIcon className="w-5 h-5 text-red-500" />
+              <HeartSolidIcon className={`w-5 h-5 ${canUseCollection() ? "text-red-500" : "text-gray-400"}`} />
             ) : (
-              <HeartIcon className="w-5 h-5 text-gray-600" />
+              <HeartIcon className={`w-5 h-5 ${canUseCollection() ? "text-gray-600" : "text-gray-400"}`} />
             )}
           </button>
         </div>
+        
+        {/* Message display */}
+        {message && (
+          <div className="absolute top-4 left-4 bg-red-500 text-white px-3 py-1 rounded-full text-xs font-medium">
+            {message}
+          </div>
+        )}
       </div>
 
       {/* Content */}

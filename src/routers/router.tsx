@@ -63,7 +63,7 @@ const routers = createBrowserRouter([
     element: <Market />,
   },
   {
-    path: "/template-detail",
+    path: "/template-detail/:templateId",
     element: <TemplateDetail />,
   },
   {

@@ -26,7 +26,9 @@ const useMarket = () => {
     const [loading, setLoading] = useState(false);
     const [searchTerm, setSearchTerm] = useState("");
     const [categoryOptions, setCategoryOptions] = useState<string[]>([]);
-    
+    const free = "FREE-PLAN";
+    const pro = "PRO-PLAN";
+    const business = "BUSINESS-PLAN";
     // Pagination states
     const [currentPage, setCurrentPage] = useState(1);
     const [itemsPerPage] = useState(8);
@@ -166,7 +168,26 @@ const useMarket = () => {
                 const userData = JSON.parse(user);
                 const currentPlanId = userData.currentPlanId;
                 
-                if (currentPlanId === "Business-Plan") {
+                // Tìm template để check isPremium
+                const template = allTemplates.find(t => t.templateId === templateId);
+                
+                if (currentPlanId === free) {
+                    // Free plan không được dùng collection
+                    console.log("Free plan không được sử dụng tính năng collection");
+                    return;
+                } else if (currentPlanId === pro) {
+                    // PRO plan chỉ được dùng với template miễn phí
+                    if (template && !template.isPremium) {
+                        if (isFavorite) {
+                            await removeFavorite(userData.userId, templateId);
+                        } else {
+                            await addFavorite(userData.userId, templateId);
+                        }
+                    } else {
+                        console.log("PRO plan chỉ được sử dụng với template miễn phí");
+                    }
+                } else if (currentPlanId === business) {
+                    // Business plan được dùng với tất cả template
                     if (isFavorite) {
                         await removeFavorite(userData.userId, templateId);
                     } else {
