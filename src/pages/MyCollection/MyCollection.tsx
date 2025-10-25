@@ -7,26 +7,22 @@ import { LuUpload } from "react-icons/lu";
 import { BsThreeDots } from "react-icons/bs";
 import Analytics from "./Tags/Analytics/Analytics";
 import Collection from "./Tags/Collection/Collection";
-
 type TabKey = 'collections' | 'insight' ;
 
 const MyCollection = () => {
-
+  const [count, setCount] = useState(0);
   const userString = localStorage.getItem("user");
   const user = userString ? JSON.parse(userString) : null;
 
   const [activeTab, setActiveTab] = useState<'collections' | 'insight'>('collections')
 
   const tabs = [
-    { key: 'collections', label: 'Bộ sưu tập (2)' },
+    { key: 'collections', label: `Bộ sưu tập (${count})` },
     { key: 'insight', label: 'Phân tích' },
   ]
-  const tabViewByKey: Record<TabKey, React.ComponentType<any>> = {
-    collections: Collection,
-    insight: Analytics,
+  const handleCountChange = (newCount: number) => {
+    setCount(newCount);
   };
-
-  const ActiveTabView = tabViewByKey[activeTab];
   return (
     <div className="bg-white min-h-screen flex flex-col">
       <Header />                   
@@ -66,11 +62,11 @@ const MyCollection = () => {
               <div className="flex-1 flex justify-end items-end flex-col gap-6 px-6 pt-6">
                 <div className="flex flex-col gap-6 align-top min-w-[320px] px-4">
                   <div className="flex flex-row justify-between items-center">
-                    <p className="text-black/60">Followers</p>
+                    <p className="text-black/60">Lượt theo dõi</p>
                     <p className="text-black/60">{ user.followers ? user.follower : 0}</p>
                   </div>
                   <div className="flex flex-row  justify-between items-center">
-                    <p className="text-black/60">Followings</p>
+                    <p className="text-black/60">Đang theo dõi</p>
                     <p className="text-black/60">{ user.followings ? user.followings : 0}</p>
                   </div>
                   <div className="flex flex-row gap-4 justify-between items-center">
@@ -84,7 +80,7 @@ const MyCollection = () => {
                       <button>{BsThreeDots({ className: "w-5 h-5 text-gray-600" })}</button>
                     </div>
                   </div>
-                  <button className="bg-gradient-to-r from-[#16C875] to-[#6CDFAB] text-white rounded-full px-4 py-2 w-full mt-4 ">Follow</button>
+                  <button className="bg-gradient-to-r from-[#16C875] to-[#6CDFAB] text-white rounded-full px-4 py-2 w-full mt-4 ">Theo dõi</button>
                 </div>          
               </div>
             </div>
@@ -110,7 +106,11 @@ const MyCollection = () => {
                   </div>
                 </div>
               </div>
-              <ActiveTabView /> 
+              {activeTab === 'collections' ? (
+                <Collection onCountChange={handleCountChange} />
+              ) : (
+                <Analytics />
+              )} 
             </div>
           </div>
           <Footer/> 

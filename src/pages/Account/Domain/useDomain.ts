@@ -36,16 +36,20 @@ const useDomain = () => {
         }
         try{            
             const userData = localStorage.getItem("user");
+
             if(userData){
-                const user = JSON.parse(userData);
+                const userId = localStorage.getItem("userId");
+                const user = await fetcherWithParams(`Auth/${userId}`, { userId: userId });
+                console.log("user",user);
                 const data = {
                     userId: user?.userId,
                     job: user?.job,
-                    nickname: user?.nickname,
+                    nickname: user?.nickName,
                     description: user?.description,
-                    customerDomain: domain,
+                    customDomain: domain,
                     userImage: user?.userImage,
                 }
+                console.log("data",data);
                 const response = await axios.patch("https://biolinker.onrender.com/api/Auth/profile-customize", data);
                 if(response){
                     localStorage.removeItem("user");
@@ -57,7 +61,8 @@ const useDomain = () => {
                         setMessage("Tên miền đã được thay đổi thành công");
                         setSuccess("success");
                     }  
-                }}
+                }
+            }
         } catch (error) {
             setShowError(true);
         } finally{
@@ -71,7 +76,7 @@ const useDomain = () => {
             userData.customDomain = domain;
             localStorage.setItem('user', JSON.stringify(userData));
             const plan = userData.currentPlanId;
-            if(plan === "BUSINESS-PLAN"){
+            if(plan === "PRO-PLAN"){
                 setType('new')
             }
             else{
