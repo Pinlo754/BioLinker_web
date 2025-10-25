@@ -39,23 +39,30 @@ const TemplateDetail = () => {
     if (response) {
       setTemplateDetail(response);
       const collection = await getCollection();
-      console.log(collection);
       if (collection) {
         setIsFavorite(true);
+      } else {  
+        setIsFavorite(false);
       }
     }
     setIsLoading(false);
   }
 
   const getCollection = async () => {
-    const userId = localStorage.getItem("userId");
-    const response = await fetcherWithParams(`Collection/${userId}`, {userId: userId});
-    if (response) {
-      const templates = response.templates;
-      const checkTemplate = templates.includes(templateId);
-      console.log(checkTemplate);
-      return checkTemplate;
+    try {
+      const userId = localStorage.getItem("userId");
+      const response = await fetcherWithParams(`Collection/${userId}`, {userId: userId});
+      if (response) {
+        const templates = response.templates;
+        const checkTemplate = templates.includes(templateId);
+        console.log(checkTemplate);
+        return checkTemplate;
+      }
+    } catch (error) {
+      console.error("Error getting collection:", error);
+      return false;
     }
+    return false;
   }
 
   const getFiveTemplate = async () => {
