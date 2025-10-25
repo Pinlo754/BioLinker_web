@@ -1,7 +1,7 @@
 import background from "../../../assets/background.jpg";
 import useUpdatePro from "./useUpdatepro";
 const UpdatePro = () => {
-    const { description, plan } = useUpdatePro();
+    const { description, plan, userPlan, checkPlan } = useUpdatePro();
     return (
         <div className="relative flex items-center h-full">
             <img src={background} alt="background" className="absolute inset-0 w-full h-full object-cover" />
@@ -41,7 +41,7 @@ const UpdatePro = () => {
                                     </div>
                                     <p className={`${item.title === 'Standard' ? 'text-white' : 'text-gray-500'} max-w-md`}>{item.description}</p>
                                     <button className={`mt-2 w-full rounded-full  py-3 font-semibold hover:opacity-90 transition ${item.title === 'Standard' ? 'bg-white text-green2' : 'bg-gradient-to-r from-[#16C875] to-[#6CDFAB] text-white'}`}>
-                                        {item.action}
+                                        {checkPlan(userPlan, item.title)}
                                     </button>
                                 </div>
 

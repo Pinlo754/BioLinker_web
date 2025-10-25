@@ -35,9 +35,9 @@
             features: [
                 "Tất cả tính năng của gói tiêu chuẩn",
                 "Tạo mã QR miễn phí",
-                "Xuất template miễn phí",
-                "Đăng kí và xem bio của người khác",
-                "Đánh dấu các template trả phí",
+                //"Xuất template miễn phí",
+                //"Đăng kí và xem bio của người khác",
+                "Đánh dấu tất cả các template",
                 "AI phân tích thông số của bio của bạn",
             ]
         }
