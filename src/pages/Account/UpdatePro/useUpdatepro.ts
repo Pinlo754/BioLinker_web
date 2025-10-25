@@ -21,8 +21,7 @@ import { useEffect, useState } from "react";
             action: "Đăng kí",
             features: [
                 "Tất cả tính năng của gói miễn phí",
-                "Tùy chỉnh ảnh đại diện và tiểu sử nâng cao",
-                "Thay đổi tên miền miễn phí",
+                "Tạo mã QR miễn phí",
                 "Không bao gồm watermark",
                 "Đánh dấu các template miễn phí",
                 "Theo dõi và phân tích lượt truy cập",
@@ -36,7 +35,7 @@ import { useEffect, useState } from "react";
             action: "Đăng kí",
             features: [
                 "Tất cả tính năng của gói tiêu chuẩn",
-                "Tạo mã QR miễn phí",
+                "Thay đổi tên miền miễn phí",
                 //"Xuất template miễn phí",
                 //"Đăng kí và xem bio của người khác",
                 "Đánh dấu tất cả các template",
@@ -50,7 +49,7 @@ import { useEffect, useState } from "react";
       const userId = localStorage.getItem("userId");
       const user = await fetcherWithParams(`Auth/${userId}`, { userId: userId });
       console.log(user)
-      setUserPlan(user?.role);
+      setUserPlan(user?.currentPlanId);
     };
     useEffect(() => {
       checkUserData();
@@ -58,10 +57,10 @@ import { useEffect, useState } from "react";
     }, []);
   
     const checkPlan = (userPlan: string, title: string) => {
-      if (userPlan === "FreeUser" && title === "Free") return "Gói hiện tại";
-      else if (userPlan === "ProUser" && title === "Standard")
+      if (userPlan === "FREE-PLAN" && title === "Free") return "Gói hiện tại";
+      else if (userPlan === "PRO-PLAN" && title === "Standard")
         return "Gói hiện tại";
-      else if (userPlan === "BussinessUser" && title === "Bussiness")
+      else if (userPlan === "BUSINESS-PLAN" && title === "Bussiness")
         return "Gói hiện tại";
       else return "Đăng ký"
     };
