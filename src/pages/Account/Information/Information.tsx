@@ -152,12 +152,12 @@ const Information = () => {
                             </div>
                             <div className="px-6 py-8 border-b border-black gap-4 text-base text-start font-bold">
                                 <div className="">Gói dịch vụ:</div>
-                                <span className="text-green2">{plan === "FreeUser" ? "Miễn phí" : "Nâng cao"}</span>
+                                <span className="text-green2">{plan === "FREE-PLAN" ? "Miễn phí" : (plan === "PRO-PLAN" ? "Nâng cao" : "Doanh nghiệp")}</span>
                             </div>
                             <div className="px-6 py-10 text-center text-base font-bold border-black flex flex-col items-center justify-center">
                                 <span className="">Nâng cấp lên gói Nâng cao để mở khóa thêm chức năng trong BioLinker</span>
                                 <button className="align-center gap-4 justify-center flex flex-row rounded-3xl border px-6 py-4 w-[70%] font-semibold mt-2 text-[#4F4F4F]  bg-gradient-to-r from-green1 to-green2 text-white">
-                                    <span className="text-base text-white font-semibold">Upgrade to Pro</span>
+                                    <span className="text-base text-white font-semibold">Nâng cấp gói</span>
                                 </button>
                             </div>
                         </div>

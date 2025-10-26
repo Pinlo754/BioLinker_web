@@ -29,7 +29,7 @@ const useInformation = () => {
         setEmail(parsedUser?.email);
         setDescription(parsedUser?.description);
         setUsername(parsedUser?.fullName);
-        setPlan(parsedUser?.role);
+        setPlan(parsedUser?.currentPlanId);
         setJob(parsedUser?.job);
         setDomain(parsedUser?.customDomain);
         if (parsedUser?.userImage) {
