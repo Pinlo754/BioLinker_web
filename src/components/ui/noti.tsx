@@ -30,7 +30,7 @@ const NotificationOverlay: React.FC<NotificationOverlayProps> = ({
 }) => {
   if (!visible) return null;
   return (
-    <div className="fixed inset-0 z-[9999] bg-black/25 backdrop-blur-[1px] flex items-center justify-center">
+    <div className="fixed inset-0 z-[9999] bg-emerald-500 backdrop-blur-sm flex items-center justify-center">
       <div className="bg-white rounded-2xl p-6 md:p-8 shadow-xl w-[90%] max-w-md">
         <div className="flex items-start gap-3">
           {type === 'error' ? <ErrorIcon /> : <SuccessIcon />}

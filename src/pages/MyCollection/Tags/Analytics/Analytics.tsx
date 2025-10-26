@@ -3,6 +3,7 @@ import { ResponsiveContainer, AreaChart, Area, BarChart, Bar, XAxis, YAxis, Refe
 import useAnalytics from "./useAnalytics";
 import { PLATFORM_ICONS } from "../../../../constants/platformIcons";
 import { useNavigate } from "react-router-dom";
+import NotificationOverlay from "../../../../components/ui/noti";
 
 const Analytics = () => {
     const { 
@@ -70,6 +71,7 @@ const Analytics = () => {
     };
     return (
         <div className="w-full px-10 py-2">
+            <NotificationOverlay visible={user?.currentPlanId ==="FREE-PLAN"} message="Yêu cầu nâng cấp gói để trải nghiệm chức năng này" onClose={() => {navigate('/dashboard')}} />
             <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-6 ">
                 {/* View this month */}
                 {/* <button className="relative overflow-hidden bg-white rounded-[24px] shadow-lg border border-slate-100 p-6 flex items-center justify-between transition-colors 
