@@ -141,7 +141,7 @@ const Collection = ({ onCountChange }: CollectionProps) => {
             {/* list templates */}
               {/* detail template */}
               {templates.map((template, i) => (
-                <div className="bg-white rounded-3xl max-w-[290px] min-w-[240px] shadow-lg hover:shadow-2xl hover:shadow-emerald-500/20 transition-all duration-500 overflow-hidden group cursor-pointer transform hover:-translate-y-2"
+                <div  key={i} className="bg-white rounded-3xl max-w-[290px] min-w-[240px] shadow-lg hover:shadow-2xl hover:shadow-emerald-500/20 transition-all duration-500 overflow-hidden group cursor-pointer transform hover:-translate-y-2"
                 onClick={() => navigate(`/template-detail/${template.templateId}`)}>
                   <div className="relative overflow-hidden">
                     <img
