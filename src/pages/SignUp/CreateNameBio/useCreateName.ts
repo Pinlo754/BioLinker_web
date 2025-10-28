@@ -14,14 +14,14 @@ const useCreateName = () => {
     const [error, setError] = useState(false);
     const navigate = useNavigate();
     const [loading, setLoading] = useState(false);
-    const [backgroundUrl, setBackgroundUrl] = useState<string | null>(null);
+    const [backgroundUrl, setBackgroundUrl] = useState<string>("https://firebasestorage.googleapis.com/v0/b/chat-app-5396e.appspot.com/o/images%2F1761644495471template4.jpg?alt=media&token=f80560f3-e4a1-4a72-99f2-6f64d9184f8d");
     const [backgroundFile, setBackgroundFile] = useState<File | null>(null);
     const backgroundFileInputRef = useRef<HTMLInputElement>(null);
     const handleContinue = async () => {
         try {
             setLoading(true);
             let fileUrl = "";
-            let backgroundFileUrl = "";
+            let backgroundFileUrl = "https://firebasestorage.googleapis.com/v0/b/chat-app-5396e.appspot.com/o/images%2F1761644495471template4.jpg?alt=media&token=f80560f3-e4a1-4a72-99f2-6f64d9184f8d";
             if(avatarFile && backgroundFile){
                 fileUrl = await upload(avatarFile);
                 backgroundFileUrl = await upload(backgroundFile);
