@@ -36,7 +36,7 @@ const SetPassword: React.FC<SetPasswordProps>= ({ visible, emailGg}) => {
                 
                     <div className="  mt-1 text-xs text-red-500 h-2">
                     {!validatePassword(password) && password.length > 0 ? "Mật khẩu phải có ít nhất 8 ký tự, sự kết hợp của chữ cái, số và ký tự đặc biệt" : ""}
-                    {validatePassword(password) && password.length > 0 ? <span className="ml-2 text-red-500">(*)</span> : ""}
+                    <span className="ml-2 text-red-500">{!validatePassword(password) && password.length > 0 ? "(*)" : ""}</span>
                     </div>
               </div>
 

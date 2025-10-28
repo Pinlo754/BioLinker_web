@@ -30,7 +30,6 @@ const AddLink = () => {
                       onClick={() => navigate("/")}
                     />
                 </button>
-
                 
                 
                 {/* Welcome Message */}
@@ -38,7 +37,18 @@ const AddLink = () => {
                     Welcome, {username}!
                 </div>
             </div>
-
+                {/* Progress Bar */}
+                <div className="w-full max-w-md mx-auto px-6 align-middle">
+                    <div className="flex space-x-2">
+                        {/* Step 1 - Completed */}
+                        <div className="flex-1 h-2 bg-gradient-to-r from-green1 to-green2 rounded-full"></div>
+                        <div className="flex-1 h-2 bg-gradient-to-r from-green1 to-green2 rounded-full"></div>
+                        <div className="flex-1 h-2 bg-gradient-to-r from-green1 to-green2 rounded-full"></div>
+                        <div className="flex-1 h-2 bg-gradient-to-r from-green1 to-green2 rounded-full"></div>
+                        <div className="flex-1 h-2 bg-gray-300 rounded-full"></div>
+                        {/* Step 2 - Current */}
+                    </div>
+                </div>
             {/* Main Content */}
             <div className="flex flex-col items-center px-6 py-8 h-[80vh] overflow-y-auto pr-2 scrollbar-hide animate-fadeInUp">
                 <div className="text-center mb-8 ">
@@ -100,18 +110,7 @@ const AddLink = () => {
                     </div>
                 </div>
             </div>
-            {/* Progress Bar */}
-                <div className="w-full max-w-md mx-auto px-6 align-middle">
-                    <div className="flex space-x-2">
-                        {/* Step 1 - Completed */}
-                        <div className="flex-1 h-2 bg-gradient-to-r from-green1 to-green2 rounded-full"></div>
-                        <div className="flex-1 h-2 bg-gradient-to-r from-green1 to-green2 rounded-full"></div>
-                        <div className="flex-1 h-2 bg-gradient-to-r from-green1 to-green2 rounded-full"></div>
-                        <div className="flex-1 h-2 bg-gradient-to-r from-green1 to-green2 rounded-full"></div>
-                        <div className="flex-1 h-2 bg-gray-300 rounded-full"></div>
-                        {/* Step 2 - Current */}
-                    </div>
-                </div>
+            
             {/* Bottom Navigation */}
             <div className="flex justify-between items-center px-6 py-4">
                 {/* Back Button */}
