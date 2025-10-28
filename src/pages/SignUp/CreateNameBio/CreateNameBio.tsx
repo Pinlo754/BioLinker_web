@@ -18,11 +18,15 @@ const CreateNameBio = () => {
         error,
         description,
         setDescription,
-        avatarFile,
         setAvatarFile,
         setAvatarUrl,
         loading,
+        backgroundUrl,
+        setBackgroundUrl,
+        backgroundFileInputRef,
+        setBackgroundFile,
     } = useCreateName();
+    
 
     return (
         <div className="min-h-screen bg-white ">
@@ -61,37 +65,73 @@ const CreateNameBio = () => {
                     <p className="text-gray-600">Thêm ảnh đại diện, tên, và mô tả của bạn.</p>
                 </div>
 
-                {/* Avatar uploader */}
-                <div className="relative mb-8">
-                    <div className="w-40 h-40 rounded-full flex items-center justify-center overflow-hidden">
-                        {avatarUrl ? (
+                {/* Background banner + Avatar uploader */}
+                <div className="relative w-full max-w-2xl mb-16">
+                    {/* Background banner */}
+                    <div className="relative w-full h-40 rounded-2xl overflow-hidden border border-gray-200 bg-gray-100">
+                        {backgroundUrl ? (
                             // eslint-disable-next-line jsx-a11y/alt-text
-                            <img src={avatarUrl} className="w-full h-full object-cover" />
+                            <img src={backgroundUrl} className="w-full h-full object-cover" />
                         ) : (
-                            <img width="100%" height="100%" src={avatar} alt="user-male-circle"/>
+                            <div className="w-full h-full flex items-center justify-center text-gray-400">
+                                Thêm ảnh nền
+                            </div>
                         )}
+                        <button
+                            type="button"
+                            className="absolute top-2 right-2 w-8 h-8 rounded-full bg-black text-white flex items-center justify-center z-20"
+                            onClick={() => backgroundFileInputRef.current?.click()}
+                            aria-label="Upload background"
+                        >
+                            +
+                        </button>
+                        <input
+                            ref={backgroundFileInputRef}
+                            type="file"
+                            accept="image/*"
+                            onChange={(e) => {
+                                const file = e.target.files?.[0];
+                                if (!file) return;
+                                const url = URL.createObjectURL(file);
+                                setBackgroundFile(file);
+                                setBackgroundUrl(url);
+                            }}
+                            className="hidden"
+                        />
                     </div>
-                    <button
-                        type="button"
-                        className="absolute bottom-0 right-2 w-7 h-7 rounded-full bg-black text-white flex items-center justify-center"
-                        onClick={() => fileInputRef.current?.click()}
-                        aria-label="Upload avatar"
-                    >
-                        +
-                    </button>
-                    <input
-                        ref={fileInputRef}
-                        type="file"
-                        accept="image/*"
-                        onChange={(e) => {
-                            const file = e.target.files?.[0];
-                            if (!file) return;
-                            const url = URL.createObjectURL(file);
-                            setAvatarFile(file);
-                            setAvatarUrl(url);
-                        }}
-                        className="hidden"
-                    />
+
+                    {/* Avatar overlaid at bottom-center */}
+                    <div className="absolute -bottom-12 left-1/2 -translate-x-1/2 z-10">
+                        <div className="relative w-[120px] h-[120px] rounded-full flex items-center justify-center overflow-hidden border-4 border-white shadow-md">
+                            {avatarUrl ? (
+                                // eslint-disable-next-line jsx-a11y/alt-text
+                                <img src={avatarUrl} className="w-full h-full object-cover" />
+                            ) : (
+                                <img width="100%" height="100%" src={avatar} alt="user-male-circle"/>
+                            )}
+                        </div>
+                            <button
+                                type="button"
+                                className="absolute bottom-2 right-2 w-7 h-7 rounded-full bg-black text-white flex items-center justify-center"
+                                onClick={() => fileInputRef.current?.click()}
+                                aria-label="Upload avatar"
+                            >
+                                +
+                            </button>
+                            <input
+                                ref={fileInputRef}
+                                type="file"
+                                accept="image/*"
+                                onChange={(e) => {
+                                    const file = e.target.files?.[0];
+                                    if (!file) return;
+                                    const url = URL.createObjectURL(file);
+                                    setAvatarFile(file);
+                                    setAvatarUrl(url);
+                                }}
+                                className="hidden"
+                            />
+                    </div>
                 </div>
 
                 {/* Display Name */}

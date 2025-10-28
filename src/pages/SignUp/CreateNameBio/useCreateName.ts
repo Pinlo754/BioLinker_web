@@ -2,7 +2,7 @@ import { useRef, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
 import upload from "../../../lib/upload";
-import { postData } from "../../../api/fetchers";
+import { fetcherWithParams, postData } from "../../../api/fetchers";
 
 const useCreateName = () => {
     const { username, domain, additionalLinks, platformLink, job, email, password } = useLocation().state || {};
@@ -14,35 +14,39 @@ const useCreateName = () => {
     const [error, setError] = useState(false);
     const navigate = useNavigate();
     const [loading, setLoading] = useState(false);
+    const [backgroundUrl, setBackgroundUrl] = useState<string | null>(null);
+    const [backgroundFile, setBackgroundFile] = useState<File | null>(null);
+    const backgroundFileInputRef = useRef<HTMLInputElement>(null);
     const handleContinue = async () => {
         try {
-            if(avatarFile){
-                setLoading(true);
-                const userId = localStorage.getItem("userId");
-                console.log(userId);
-                const fileUrl = await upload(avatarFile);
-                console.log(fileUrl);
+            setLoading(true);
+            let fileUrl = "";
+            let backgroundFileUrl = "";
+            if(avatarFile && backgroundFile){
+                fileUrl = await upload(avatarFile);
+                backgroundFileUrl = await upload(backgroundFile);
+            }
+            const userId = localStorage.getItem("userId");
                 const data = {
                     userId: userId,
                     job: job,
                     nickname: displayName,
                     description: description,
-                    customerDomain: domain,
+                    customDomain: domain,
                     userImage: fileUrl,
+                    isBeginner: true,
+                    backgroundImage: backgroundFileUrl,
                 }
                 const response = await axios.patch("https://biolinker.onrender.com/api/Auth/profile-customize", data);
                 if(response){
-                    console.log(email,password);
-                    const login = await postData("Auth/Login", {email: email, password: password});
-                    console.log(login);
-                    if(login){
-                        const user = JSON.stringify(login);
-                        localStorage.setItem("user", user);
+                    const user = await fetcherWithParams(`Auth/${userId}`, {userId: userId});
+                    if(user){
+                        const userString = JSON.stringify(user);
+                        localStorage.setItem("user", userString);
                         setLoading(false);
                         navigate('/dashboard');
                     }  
                 }
-            }
         } catch (error) {
             // setError(true);
             setLoading(false);
@@ -80,6 +84,11 @@ const useCreateName = () => {
         setDescription,
         error,
         loading,
+        backgroundUrl,
+        setBackgroundUrl,
+        backgroundFileInputRef,
+        backgroundFile,
+        setBackgroundFile,
     }
 }
 export default useCreateName;
