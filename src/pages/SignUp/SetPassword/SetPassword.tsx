@@ -12,7 +12,7 @@ const SetPassword: React.FC<SetPasswordProps>= ({ visible, emailGg}) => {
     const isMatch = password.length > 0 && confirmPassword.length > 0 && password === confirmPassword && validatePassword(password);
     return (
         <div className="fixed inset-0 z-[9999] bg-black/25 backdrop-blur-[1px] flex items-center justify-center">
-            <div className="bg-white rounded-3xl p-8 shadow-xl flex flex-col items-center gap-4 w-[40%] h-[65vh]">
+            <div className="bg-white rounded-3xl p-8 shadow-xl flex flex-col items-center gap-4 w-[40%] h-[470px]">
               <h1 className="text-2xl md:text-3xl font-semibold tracking-tight text-gray-900">Tạo Mật Khẩu Mới</h1>
               <div className="w-full max-w-md flex flex-col gap-2">
                 <label className="text-sm font-medium text-gray-700">Mật khẩu</label>
@@ -33,12 +33,11 @@ const SetPassword: React.FC<SetPasswordProps>= ({ visible, emailGg}) => {
                     <span className="ml-1 text-sm">{showPassword ? "Ẩn" : "Hiện"}</span>
                   </button>
                 </div>
-                {!validatePassword(password) && password.length > 0 && (
-                    <div className="  mt-1 text-xs text-red-500">
-                    Mật khẩu phải có ít nhất 8 ký tự, sự kết hợp của chữ cái, số và ký tự đặc biệt
-                    <span className="ml-2 text-red-500">(*)</span>
+                
+                    <div className="  mt-1 text-xs text-red-500 h-2">
+                    {!validatePassword(password) && password.length > 0 ? "Mật khẩu phải có ít nhất 8 ký tự, sự kết hợp của chữ cái, số và ký tự đặc biệt" : ""}
+                    {validatePassword(password) && password.length > 0 ? <span className="ml-2 text-red-500">(*)</span> : ""}
                     </div>
-                )}
               </div>
 
               <div className="w-full max-w-md flex flex-col gap-2">
@@ -59,9 +58,7 @@ const SetPassword: React.FC<SetPasswordProps>= ({ visible, emailGg}) => {
                     {FaEyeSlash({ className: "w-5 h-5" })}
                     <span className="ml-1 text-sm">{showConfirmPassword ? "Ẩn" : "Hiện"}</span>
                   </button>
-                {confirmPassword.length > 0 && !isMatch && (
-                  <p className="text-xs text-red-500">Mật khẩu xác nhận không khớp</p>
-                )}                
+                  <div className="text-xs text-red-500 h-2 ">{confirmPassword.length > 0 && !isMatch ? "Mật khẩu xác nhận không khớp" : ""}</div>           
                 </div>
               </div>
 
