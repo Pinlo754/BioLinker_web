@@ -7,13 +7,15 @@ import { TemplatesSection } from "./components/template-section";
 import { CollectionOverview } from "./components/collection-overview";
 import { CreateTemplatesSection } from "./components/create-templates-section";
 import { FeaturedCollections } from "./components/featured-collection";
+import { TrialForCreator } from "../../components/sections/TrialForCreator";
 const Dashboard = () => {
-  const { templates } = useDasshboard();
+  const { templates, visibleTrialForCreator, setVisibleTrialForCreator } = useDasshboard();
   return (
     <div className="flex flex-col overflow-y-scroll scrollbar-hide">
       <div className="h-[91px] z-50">
         <Header />
       </div>
+      <TrialForCreator visible={visibleTrialForCreator} onClose={() => {setVisibleTrialForCreator(false)}} />
       <div className="pt-8 pb-16 flex bg-white">
         <span className="absolute top-60 left-16 inset-0 opacity-20">
           <Dot />

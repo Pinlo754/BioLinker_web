@@ -19,14 +19,19 @@ const useCreateName = () => {
     const backgroundFileInputRef = useRef<HTMLInputElement>(null);
     const handleContinue = async () => {
         try {
-            setLoading(true);
+            let isContentCreator = false;
             let fileUrl = "";
-            let backgroundFileUrl = "https://firebasestorage.googleapis.com/v0/b/chat-app-5396e.appspot.com/o/images%2F1761644495471template4.jpg?alt=media&token=f80560f3-e4a1-4a72-99f2-6f64d9184f8d";
-            if(avatarFile && backgroundFile){
+            setLoading(true);
+            if(avatarFile){
                 fileUrl = await upload(avatarFile);
+            }
+
+            let backgroundFileUrl = "https://firebasestorage.googleapis.com/v0/b/chat-app-5396e.appspot.com/o/images%2F1761644495471template4.jpg?alt=media&token=f80560f3-e4a1-4a72-99f2-6f64d9184f8d";
+            if(backgroundFile){
                 backgroundFileUrl = await upload(backgroundFile);
             }
             const userId = localStorage.getItem("userId");
+            console.log(fileUrl, backgroundFileUrl);
                 const data = {
                     userId: userId,
                     job: job,
@@ -37,6 +42,12 @@ const useCreateName = () => {
                     isBeginner: true,
                     backgroundImage: backgroundFileUrl,
                 }
+                if(job === "Nhà sáng tạo nội dung"){
+                    const updatePro = await postData("PayOS/upgrade-to-pro", {userId: userId});
+                    if(updatePro){
+                        isContentCreator = true;
+                    }
+                }
                 const response = await axios.patch("https://biolinker.onrender.com/api/Auth/profile-customize", data);
                 if(response){
                     const user = await fetcherWithParams(`Auth/${userId}`, {userId: userId});
@@ -44,7 +55,12 @@ const useCreateName = () => {
                         const userString = JSON.stringify(user);
                         localStorage.setItem("user", userString);
                         setLoading(false);
-                        navigate('/dashboard');
+                        console.log(isContentCreator);
+                        if(isContentCreator){
+                            navigate('/dashboard', {state: {isContentCreator: true}});
+                        } else {
+                            navigate('/dashboard');
+                        }
                     }  
                 }
         } catch (error) {
