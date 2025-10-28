@@ -28,7 +28,7 @@ const MyCollection = () => {
       <Header />                   
       <main className="flex-1 flex flex-col  relative">
         <div className="w-full">
-          <img src={user.userImage} alt="Template" className="w-full h-[600px] object-cover" />
+          <img src={user.backgroundImage} alt="Template" className="w-full h-[600px] object-cover" />
         </div>
         <div className="flex flex-col flex-1 px-10 absolute top-[320px] left-0 right-0" >
           <div className="w-full  gap-4 w-full mt-10 rounded-t-2xl  bg-white">
@@ -54,7 +54,7 @@ const MyCollection = () => {
                     <p className="text-black/80 font-bold font">{user.userTag}</p>
                   </div>
                   <p className="text-black/60">{user.job}</p>
-                  <a href={`/biolinker/${user.customerDomain}`} className="text-black/60">{`biolinker.io.vn/biolinker/${user.customerDomain}`}</a>
+                  <a href={`/biolinker/${user.customerDomain}`} className="text-emerald-500 underline">{`biolinker.io.vn/biolinker/${user.customerDomain}`}</a>
                 </div>
               </div>
 
