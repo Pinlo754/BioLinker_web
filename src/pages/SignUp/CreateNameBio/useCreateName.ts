@@ -42,9 +42,9 @@ const useCreateName = () => {
                     isBeginner: true,
                     backgroundImage: backgroundFileUrl,
                 }
-                if(job === "Nhà sáng tạo nội dung"){
-                    const updatePro = await postData("PayOS/upgrade-to-pro", {userId: userId});
-                    if(updatePro){
+                if(job){
+                    //const updatePro = await postData("PayOS/upgrade-to-pro", {userId: userId});
+                    if(true){
                         isContentCreator = true;
                     }
                 }
