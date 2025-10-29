@@ -9,6 +9,8 @@ import {
   Download,
   Upload,
   Save,
+  Menu,
+  X,
 } from "lucide-react";
 import { LeftSidebar } from "./components/bio/left-sidebar";
 import { MobilePreview } from "./components/bio/mobile-preview";
@@ -17,7 +19,15 @@ import Header from "../../components/sections/Header";
 import { ProfileData, LayoutElement } from "@/types/bio";
 import TemplateModal from "./components/template-modal";
 import axios from "axios";
-// ---- Component chính ----
+import { useMedia } from "use-media";
+import { useSearchParams } from "react-router-dom";
+
+interface MarketData {
+  id: string;
+  templateId: string;
+  profileData: ProfileData;
+}
+
 export default function BioBuilder() {
   const updateElementSize = (
     elementId: string,
@@ -35,14 +45,13 @@ export default function BioBuilder() {
     const userString = localStorage.getItem("user");
     const user = userString ? JSON.parse(userString) : null;
     const userName = user?.customerDomain || "";
-
+    
     if (!userName) {
       alert("Vui lòng đăng nhập trước khi publish!");
       return;
     }
 
     try {
-      // 1️⃣ Kiểm tra userName đã tồn tại chưa
       const getRes = await axios.get(
         `https://68e6641521dd31f22cc56979.mockapi.io/template?userName=${userName}`
       );
@@ -55,12 +64,13 @@ export default function BioBuilder() {
         );
       }
 
-      // 3️⃣ Tạo mới (ghi đè)
       const payload = { userName, profileData };
       await axios.post(
         "https://68e6641521dd31f22cc56979.mockapi.io/template",
         payload,
-        { headers: { "Content-Type": "application/json" } }
+        {
+          headers: { "Content-Type": "application/json" },
+        }
       );
 
       alert("Publish thành công!");
@@ -75,8 +85,10 @@ export default function BioBuilder() {
   >("content");
   const [viewMode, setViewMode] = useState<"mobile" | "desktop">("mobile");
 
+  const [showMobileMenu, setShowMobileMenu] = useState(false);
+  const [showRightPanel, setShowRightPanel] = useState(false);
+
   const [profileData, setProfileData] = useState<ProfileData>(() => {
-    // Nếu trong sessionStorage đã có dữ liệu trước đó thì lấy lại
     const saved = sessionStorage.getItem("profileData");
     return saved
       ? JSON.parse(saved)
@@ -123,7 +135,34 @@ export default function BioBuilder() {
     sessionStorage.setItem("profileData", JSON.stringify(profileData));
   }, [profileData]);
 
-  // ---- Update helpers ----
+  const [searchParams] = useSearchParams();
+  const templateIdParams = searchParams.get("templateId");
+  useEffect(() => {
+    const fetchTemplate = async () => {
+      if (!templateIdParams) return;
+
+      try {
+        const res = await axios.get("https://68e6641521dd31f22cc56979.mockapi.io/market");
+        const dataList: MarketData[] = res.data;
+
+        // Tìm đúng template theo id
+        const matched = dataList.find((item) => item.templateId === templateIdParams);
+
+        if (matched) {
+          console.log("✅ Template được chọn:", matched);
+          setProfileData(matched.profileData);
+          // Nếu muốn cập nhật giao diện luôn
+          // onUpdateProfile(matched);
+        } else {
+          console.warn("❌ Không tìm thấy template với id:", templateIdParams);
+        }
+      } catch (error) {
+        console.error("Lỗi khi lấy template:", error);
+      }
+    };
+
+    fetchTemplate();
+  }, [templateIdParams]);
   const updateProfileData = (updates: Partial<ProfileData>) => {
     setProfileData((prev) => ({ ...prev, ...updates }));
   };
@@ -158,7 +197,6 @@ export default function BioBuilder() {
     updateProfileData({ elements: newElements });
   };
 
-  // ---- Import/Export ----
   const handleExportJSON = () => {
     const dataStr = JSON.stringify(profileData, null, 2);
     const dataBlob = new Blob([dataStr], { type: "application/json" });
@@ -195,10 +233,9 @@ export default function BioBuilder() {
     input.click();
   };
 
-  // ---- Tutorial Overlay ----
   const [showTutorial, setShowTutorial] = useState<boolean>(() => {
     const beginner = localStorage.getItem("isBeginner");
-    return beginner === null || beginner === "true"; // nếu chưa có hoặc = true thì hiển thị
+    return beginner === null || beginner === "true";
   });
 
   const handleNeverRemind = async () => {
@@ -207,18 +244,19 @@ export default function BioBuilder() {
       if (!userString) return;
       const user = JSON.parse(userString);
 
-      // Gọi API PUT để set isBeginner = false
-      const response = await fetch(`https://yourapi.com/api/users/${user.id}`, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ ...user, isBeginner: false }),
-      });
+      const response = await fetch(
+        `https://biolinker.onrender.com/api/users/${user.id}`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ ...user, isBeginner: false }),
+        }
+      );
 
       if (!response.ok) throw new Error("Cập nhật thất bại");
 
-      // Cập nhật lại localStorage và ẩn tutorial
       const updatedUser = { ...user, isBeginner: false };
       localStorage.setItem("user", JSON.stringify(updatedUser));
       setShowTutorial(false);
@@ -227,9 +265,8 @@ export default function BioBuilder() {
     }
   };
 
-  const [step, setStep] = useState(0); // bước hiện tại
+  const [step, setStep] = useState(0);
 
-  // Danh sách hình ảnh hướng dẫn
   const tutorialImages = [
     "/Trial1.png",
     "/Trial2.png",
@@ -244,7 +281,6 @@ export default function BioBuilder() {
     if (step < tutorialImages.length - 1) {
       setStep(step + 1);
     } else {
-      // Khi hết bước cuối → tắt hướng dẫn
       handleSkipTutorial();
     }
   };
@@ -263,7 +299,7 @@ export default function BioBuilder() {
   const [TemplateId, setTemplateId] = useState("");
 
   const createTemplateId = async () => {};
-  // Hàm post dữ liệu template lên API backend
+  const isDesktop = useMedia({ minWidth: "768px" });
   const handleSaveTemplate = async (templateId: string) => {
     try {
       if (!profileData.elements.length) {
@@ -271,7 +307,6 @@ export default function BioBuilder() {
         return;
       }
 
-      // Map dữ liệu FE sang body API
       const payload = profileData.elements.map((el, index) => ({
         templateId: templateId,
         elementType: el.type,
@@ -305,13 +340,22 @@ export default function BioBuilder() {
 
       console.log("Payload gửi đi:", payload);
 
-      // Gửi POST
       const res = await axios.post(
-        "https://yourapi.com/api/template-data", // 🔹 thay bằng API thật của bạn
+        "https://biolinker.onrender.com/api/TemplateDetail",
         payload,
-        { headers: { "Content-Type": "application/json" } }
+        {
+          headers: { "Content-Type": "application/json" },
+        }
       );
 
+      const marketPayload = { templateId, profileData };
+      await axios.post(
+        "https://68e6641521dd31f22cc56979.mockapi.io/market",
+        marketPayload,
+        {
+          headers: { "Content-Type": "application/json" },
+        }
+      );
       console.log("Kết quả:", res.data);
       alert("Lưu template thành công!");
     } catch (error: any) {
@@ -324,57 +368,76 @@ export default function BioBuilder() {
   };
 
   const [showTemplateModal, setShowTemplateModal] = useState(false);
-  // Hàm mở modal
+
   const handleOpenTemplateModal = () => {
     setShowTemplateModal(true);
   };
 
-  // Khi tạo thành công
   const handleTemplateCreated = async (templateId: string) => {
-    // Gọi hàm lưu layout
     await handleSaveTemplate(templateId);
   };
-  // ---- Render ----
+
   return (
-    <div className="h-screen flex flex-col  mt-14">
+    <div className="h-screen flex flex-col mt-14">
       <Header />
 
-      <div className="flex-1 flex overflow-hidden">
-        <div className="flex-1 flex flex-col items-center bg-background p-8 overflow-auto">
-          {/* Toggle mobile/desktop */}
-          <div className="mb-6 flex items-center gap-2 bg-muted rounded-lg p-1">
-            <button
-              onClick={() => setViewMode("mobile")}
-              className={`flex items-center gap-2 px-4 py-2 rounded-md transition-colors ${
-                viewMode === "mobile" ? "bg-card shadow-sm" : "hover:bg-card/50"
-              }`}
+      <div className="flex-1 flex flex-col md:flex-row overflow-hidden">
+        <div className="flex-1 flex flex-col items-center bg-background p-2 md:p-4 lg:p-8 overflow-auto">
+          <div className="mb-4 md:mb-6 w-full flex flex-wrap items-center justify-center gap-2">
+            <div className="flex items-center gap-1 md:gap-2 bg-muted rounded-lg p-1">
+              <button
+                onClick={() => setViewMode("mobile")}
+                className={`flex items-center gap-1 md:gap-2 px-2 md:px-4 py-1.5 md:py-2 rounded-md transition-colors text-xs md:text-sm ${
+                  viewMode === "mobile"
+                    ? "bg-card shadow-sm"
+                    : "hover:bg-card/50"
+                }`}
+              >
+                <Smartphone className="w-3 h-3 md:w-4 md:h-4" />
+                <span className="hidden sm:inline font-medium">Mobile</span>
+              </button>
+              <button
+                onClick={() => setViewMode("desktop")}
+                className={`flex items-center gap-1 md:gap-2 px-2 md:px-4 py-1.5 md:py-2 rounded-md transition-colors text-xs md:text-sm ${
+                  viewMode === "desktop"
+                    ? "bg-card shadow-sm"
+                    : "hover:bg-card/50"
+                }`}
+              >
+                <Monitor className="w-3 h-3 md:w-4 md:h-4" />
+                <span className="hidden sm:inline font-medium">Desktop</span>
+              </button>
+            </div>
+
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={handlePublish}
+              className="text-xs md:text-sm bg-transparent"
             >
-              <Smartphone className="w-4 h-4" />
-              <span className="text-sm font-medium">Mobile</span>
-            </button>
-            <button
-              onClick={() => setViewMode("desktop")}
-              className={`flex items-center gap-2 px-4 py-2 rounded-md transition-colors ${
-                viewMode === "desktop"
-                  ? "bg-card shadow-sm"
-                  : "hover:bg-card/50"
-              }`}
-            >
-              <Monitor className="w-4 h-4" />
-              <span className="text-sm font-medium">Desktop</span>
-            </button>
-            <Button variant="outline" size="sm" onClick={handlePublish}>
-              <Upload className="w-4 h-4 mr-2" />
-              Publish
+              <Upload className="w-3 h-3 md:w-4 md:h-4 mr-1 md:mr-2" />
+              <span className="hidden sm:inline">Publish</span>
             </Button>
+
             <Button
               variant="outline"
               size="sm"
               onClick={handleOpenTemplateModal}
+              className="text-xs md:text-sm bg-transparent"
             >
-              <Save className="w-4 h-4 mr-2" />
-              Tạo Template
+              <Save className="w-3 h-3 md:w-4 md:h-4 mr-1 md:mr-2" />
+              <span className="hidden sm:inline">Tạo Template</span>
             </Button>
+
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => setShowRightPanel(!showRightPanel)}
+              className="md:hidden text-xs"
+            >
+              <Menu className="w-4 h-4" />
+            </Button>
+
             {showTemplateModal && (
               <TemplateModal
                 onClose={() => setShowTemplateModal(false)}
@@ -390,29 +453,62 @@ export default function BioBuilder() {
             onUpdatePosition={updateElementPosition}
           />
         </div>
-        <LeftSidebar activePanel={activePanel} onPanelChange={setActivePanel} />
-        <RightPanel
-          activePanel={activePanel}
-          profileData={profileData}
-          onUpdateProfile={updateProfileData}
-          onUpdateElement={updateElementContent}
-        />
+
+        {isDesktop && (
+          <LeftSidebar
+            activePanel={activePanel}
+            onPanelChange={setActivePanel}
+          />
+        )}
+
+        <div
+          className={`
+          fixed md:relative inset-0 md:inset-auto z-40 md:z-auto
+          ${showRightPanel ? "block" : "hidden md:block"}
+        `}
+        >
+          {/* Mobile overlay backdrop */}
+          <div
+            className="md:hidden absolute inset-0 bg-black/50"
+            onClick={() => setShowRightPanel(false)}
+          />
+
+          {/* Panel content */}
+          <div className="absolute md:relative right-0 top-0 bottom-0 w-[85%] sm:w-96 md:w-auto">
+            {/* Mobile close button */}
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={() => setShowRightPanel(false)}
+              className="md:hidden absolute top-2 right-2 z-50"
+            >
+              <X className="w-4 h-4" />
+            </Button>
+
+            <RightPanel
+              activePanel={activePanel}
+              profileData={profileData}
+              onUpdateProfile={updateProfileData}
+              onUpdateElement={updateElementContent}
+            />
+          </div>
+        </div>
       </div>
 
       {showTutorial && (
-        <div className="fixed inset-0 z-50 bg-black/80 flex flex-col items-center justify-center text-center text-white p-4">
+        <div className="fixed inset-0 z-50 bg-black/80 flex flex-col items-center justify-center text-center text-white p-2 md:p-4">
           <img
-            src={tutorialImages[step]}
+            src={tutorialImages[step] || "/placeholder.svg"}
             alt={`Step ${step + 1}`}
-            className="max-w-[80%] max-h-[70%] rounded-lg shadow-lg mb-6"
+            className="max-w-[95%] md:max-w-[80%] max-h-[60%] md:max-h-[70%] rounded-lg shadow-lg mb-4 md:mb-6"
           />
 
-          <div className="flex gap-4">
+          <div className="flex gap-2 md:gap-4">
             <Button
               variant="secondary"
               onClick={handlePreviosStep}
               disabled={step === 0}
-              className={`${
+              className={`text-xs md:text-sm ${
                 step > 0
                   ? "bg-white text-black hover:bg-gray-200"
                   : "bg-gray-400 text-gray-200 cursor-not-allowed"
@@ -423,14 +519,14 @@ export default function BioBuilder() {
             <Button
               variant="secondary"
               onClick={handleNextStep}
-              className="bg-white text-black hover:bg-gray-200"
+              className="bg-white text-black hover:bg-gray-200 text-xs md:text-sm"
             >
               {step < tutorialImages.length - 1 ? "Next" : "Finish"}
             </Button>
             <Button
               variant="outline"
               onClick={handleSkipTutorial}
-              className="text-white border-white hover:bg-white/20"
+              className="text-white border-white hover:bg-white/20 text-xs md:text-sm bg-transparent"
             >
               Skip
             </Button>
@@ -440,7 +536,7 @@ export default function BioBuilder() {
               handleSkipTutorial();
               handleNeverRemind();
             }}
-            className="mt-2 bg-gray-300 hover:bg-gray-400 text-black"
+            className="mt-2 bg-gray-300 hover:bg-gray-400 text-black text-xs md:text-sm"
           >
             Không nhắc lại
           </Button>

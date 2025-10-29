@@ -252,7 +252,7 @@ function ProfileContent({
             onMouseDown={(e) => handleMouseDown(e, element)}
             onClick={() => setSelectedElement(element.id)}
           >
-            <div className="w-28 h-28 rounded-full border-4 border-white overflow-hidden bg-white shadow-lg">
+            <div className="w-28 h-28 rounded-full border-4 border-white overflow-hidden bg-white shadow-lg mt-10">
               <img
                 src={getContentValue(element.content) || "/avatar.png"}
                 alt="Avatar"

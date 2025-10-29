@@ -194,15 +194,15 @@ const useLogin = () => {
   const LoginBy = (method: string) => {
     switch (method) {
       case "Facebook":
-        loginByFacebook();
-        break;
+        // loginByFacebook();
+        //break;
         // case "Google":
         //   loginByGoogle();
-        break;
+        // break;
       case "Apple":
       case "LinkedIn":
       case "SSO":
-        toast.info(`Login with ${method} is coming soon!`);
+        toast.info(`Đăng nhập với ${method} đang cập nhật!`);
         break;
     }
   };

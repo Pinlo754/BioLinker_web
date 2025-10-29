@@ -138,8 +138,8 @@ export function ContentPanel({
     const platformIcons: Record<string, string> = {
       Facebook: "/facebook.svg",
       Instagram: "/instagram.svg",
-      Tiktok: "/tiktok.svg",
-      Youtube: "/youtube.svg",
+      TikTok: "/tiktok.svg",
+      YouTube: "/youtube.svg",
       Telegram: "/telegram.svg",
       Spotify: "/spotify.svg",
       Threads: "/threads.svg",
@@ -157,15 +157,22 @@ export function ContentPanel({
     const findElement = (type: string) =>
       updatedElements.find((el) => el.type === type);
 
+    // === Background ===
+    const existingBackground = findElement("background");
+    if (user.backgroundImage) {
+      if (existingBackground) {
+        // Nếu đã có background → chỉ cập nhật URL
+        existingBackground.content.value = user.backgroundImage;
+      }
+    }
+
     // === Avatar ===
     const existingAvatar = findElement("avatar");
     if (existingAvatar) {
-      // Nếu đã có avatar thì chỉ cập nhật khi chưa có ảnh
       if (!existingAvatar.content?.value && user.userImage) {
         existingAvatar.content.value = user.userImage;
       }
     } else {
-      // Chưa có → thêm mới
       updatedElements.push({
         id: `avatar-${Date.now()}`,
         type: "avatar",
@@ -257,7 +264,7 @@ export function ContentPanel({
       }
     });
 
-    // Cập nhật profile với danh sách element đã chỉnh sửa/thêm mới
+    // ✅ Cập nhật profile
     onUpdateProfile({ elements: updatedElements });
 
     alert(

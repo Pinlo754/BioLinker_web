@@ -70,22 +70,22 @@ const Login = () => {
         <div className="w-full max-w-md bg-white rounded-3xl p-6 md:p-10 flex flex-col items-center justify-center shadow-lg">
           {/* Title */}
           <div className="font-helvetica font-medium text-2xl sm:text-3xl md:text-4xl text-center w-full mb-4">
-            Log in
+            Đăng nhập
           </div>
           <div className="flex">
-            <div className="font-helvetica">New to Design Space? </div>
+            <div className="font-helvetica">Chưa có tài khoản? </div>
             <a
               href="/create-account"
               className="font-helvetica ml-1 underline text-[#16C875]"
             >
-              Sign up for free
+              Đăng ký miễn phí ngay
             </a>
           </div>
 
           {/* Email input */}
           <div className="w-full mb-4">
             <label className="font-helvetica text-gray-500 text-sm sm:text-base">
-              Email address
+              Email
             </label>
             <div className="w-full h-14 rounded-lg border border-gray-300 flex items-center px-4 mt-2">
               <input
@@ -101,7 +101,7 @@ const Login = () => {
           {/* Password input */}
           <div className="w-full mb-1">
             <label className="font-helvetica text-gray-500 text-sm sm:text-base">
-              Password
+              Mật khẩu
             </label>
             <div className="w-full h-14 rounded-lg border border-gray-300 flex items-center px-4 mt-2">
               <input
@@ -117,7 +117,7 @@ const Login = () => {
           {/* Forget password */}
           <div className="w-full flex justify-start mt-2 text-sm sm:text-base">
             <span className="font-helvetica cursor-pointer text-gray-600">
-              Forget Password?
+              Quên mật khẩu
             </span>
           </div>
 
@@ -126,7 +126,7 @@ const Login = () => {
             className="w-full h-14 rounded-2xl bg-gradient-to-r from-[#16C875] to-[#6CDFAB] flex items-center justify-center mt-4 text-white text-center cursor-pointer"
             onClick={handleLogin}
           >
-            Log in
+            Đăng nhập
           </div>
 
           {/* Social login */}
@@ -137,15 +137,14 @@ const Login = () => {
               onSuccess={(credentialResponse) => {
                 const idToken = credentialResponse.credential;
                 if (idToken) {
-                  console.log("Google ID Token:", idToken);
-                  toast.success("Google login success!");
+                  console.log("Google ID Token:", idToken);                  
                   postGoogleLogin(idToken);
                 } else {
                   toast.error("No ID token received");
                 }
               }}
               onError={() => {
-                toast.error("Google login failed!");
+                toast.error("Đăng nhập Google thất bại!");
               }}
               size="large"
               shape="rectangular"
@@ -189,7 +188,7 @@ const Login = () => {
             className="w-full h-14 rounded-2xl bg-white flex items-center justify-center mt-4 text-black text-center border border-black cursor-pointer"
             onClick={() => LoginBy("SSO")}
           >
-            {FaLock({ className: "mr-4" })} Log in with SSO
+            {FaLock({ className: "mr-4" })} Đăng nhập với SSO
           </div>
           <a href="/privacy-policy" className="mt-2">
             Chính sách quyền riêng tư

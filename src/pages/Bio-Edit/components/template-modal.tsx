@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import axios from "axios";
 import html2canvas from "html2canvas";
 import { Button } from "../../../components/ui/button";
@@ -17,50 +17,60 @@ export default function TemplateModal({
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
   const [category, setCategory] = useState("");
+  const [job, setJob] = useState("");
   const [isPremium, setIsPremium] = useState(false);
   const [loading, setLoading] = useState(false);
 
-  // Dữ liệu demo cho preview
-  const [background, setBackground] = useState(
-    "https://images.unsplash.com/photo-1503264116251-35a269479413?w=800"
-  );
-  const [avatar, setAvatar] = useState(
-    "https://i.pravatar.cc/150?img=5"
-  );
-  const [socialLinks] = useState([
-    { name: "Facebook", url: "https://facebook.com" },
-    { name: "Instagram", url: "https://instagram.com" },
-    { name: "Twitter", url: "https://twitter.com" },
-  ]);
+  const [background, setBackground] = useState("");
+  const [avatar, setAvatar] = useState("");
+  const [previewImage, setPreviewImage] = useState<string>("");
 
   const previewRef = useRef<HTMLDivElement>(null);
-  const [previewImage, setPreviewImage] = useState<string | null>(null);
 
-  // 📸 Hàm tạo ảnh PNG preview chỉ gồm background + avatar + social đầu tiên
+  const jobOptions = [
+    "Nghệ sĩ",
+    "Thiết kế",
+    "Lập trình viên",
+    "Cá nhân",
+    "Nhà sản xuất âm nhạc",
+    "Nhà sáng tạo nội dung",
+    "Chủ doanh nghiệp",
+    "Khác",
+  ];
+
+  // 📸 Tạo preview PNG
   const handleGeneratePreview = async () => {
     const node = previewRef.current;
     if (!node) return;
 
     try {
       const canvas = await html2canvas(node, {
-        backgroundColor: null, // Giữ nguyên trong suốt nếu có
-        scale: 2, // Tăng độ phân giải ảnh
+        backgroundColor: null,
+        scale: 2,
       });
-
       const dataUrl = canvas.toDataURL("image/png");
       setPreviewImage(dataUrl);
-
-      // Nếu muốn tải về
-      const link = document.createElement("a");
-      link.download = "template-preview.png";
-      link.href = dataUrl;
-      link.click();
     } catch (err) {
       console.error("Lỗi khi tạo preview:", err);
+      alert("Không thể tạo preview!");
     }
   };
 
-  // 📤 Hàm lưu template vào server
+  // 📦 Lấy dữ liệu session.profileData
+  useEffect(() => {
+    const session = JSON.parse(sessionStorage.getItem("profileData") || "{}");
+    if (session && session.elements) {
+      const bg = session.elements.find((el: any) => el.type === "background");
+      if (bg) setBackground(bg.content.value);
+
+      const av = session.elements.find((el: any) => el.type === "avatar");
+      if (av) setAvatar(av.content.value);
+    }
+
+    handleGeneratePreview();
+  }, []);
+
+  // 📤 Lưu template
   const handleSaveTemplate = async () => {
     const user = JSON.parse(localStorage.getItem("user") || "{}");
     const createdBy = user?.userId || user?.id || "";
@@ -70,21 +80,30 @@ export default function TemplateModal({
       return;
     }
 
-    if (!name.trim() || !description.trim() || !category.trim()) {
+    if (!name.trim() || !description.trim() || !category.trim() || !job.trim()) {
       alert("Vui lòng nhập đầy đủ thông tin!");
+      return;
+    }
+
+    if (!previewImage) {
+      alert("Vui lòng tạo preview trước khi lưu!");
       return;
     }
 
     try {
       setLoading(true);
 
-      const res = await axios.post("https://biolinker.onrender.com/api/Template", {
+      const body = {
         name,
         description,
         category,
         isPremium,
         createdBy,
-      });
+        job,
+        previewImage,
+      };
+
+      const res = await axios.post("https://biolinker.onrender.com/api/Template", body);
 
       const templateId = res.data?.templateId || res.data?.id;
       if (templateId) {
@@ -94,7 +113,7 @@ export default function TemplateModal({
       } else {
         alert("Không nhận được templateId từ server!");
       }
-    } catch (error: any) {
+    } catch (error) {
       console.error("Lỗi khi tạo template:", error);
       alert("Tạo template thất bại!");
     } finally {
@@ -103,98 +122,94 @@ export default function TemplateModal({
   };
 
   return (
-    <div className="fixed inset-0 bg-black/60 flex items-center justify-center z-50">
-      <div className="bg-white rounded-xl shadow-lg w-[900px] flex">
-        {/* Preview bên trái */}
-        <div className="w-1/2 bg-gray-100 p-4 flex flex-col items-center justify-center border-r relative">
-          {/* Khung preview render ra PNG */}
+    <div className="fixed inset-0 bg-black/60 flex items-center justify-center z-50 p-4">
+      <div
+        className="
+          bg-white rounded-2xl shadow-xl 
+          w-full max-w-[900px]
+          flex flex-col md:flex-row 
+          overflow-hidden
+        "
+      >
+        {/* Cột trái: Preview */}
+        <div className="w-full md:w-1/2 bg-gray-50 flex flex-col items-center justify-center p-4 border-b md:border-b-0 md:border-r relative">
           <div
             ref={previewRef}
-            className="relative w-[300px] h-[400px] rounded-xl overflow-hidden flex flex-col items-center justify-center"
+            className="
+              relative rounded-xl overflow-hidden flex flex-col items-center justify-center 
+              shadow-md border bg-white
+              w-[220px] h-[300px] sm:w-[280px] sm:h-[380px] md:w-[300px] md:h-[400px]
+            "
             style={{
               background: `url(${background})`,
               backgroundSize: "cover",
               backgroundPosition: "center",
             }}
           >
-            {/* Avatar */}
             <img
               src={avatar}
               alt="Avatar"
-              className="w-24 h-24 rounded-full border-4 border-white shadow-lg mb-4"
+              className="w-20 h-20 sm:w-24 sm:h-24 rounded-full border-4 border-white shadow-lg mb-3"
             />
-
-            {/* Chỉ lấy link social đầu tiên */}
-            {socialLinks.length > 0 && (
-              <a
-                href={socialLinks[0].url}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="bg-white/80 px-3 py-1 rounded-full text-sm font-medium"
-              >
-                {socialLinks[0].name}
-              </a>
-            )}
           </div>
-
-          {/* Nút tạo preview */}
-          <Button
-            onClick={handleGeneratePreview}
-            className="mt-4 bg-blue-600 text-white"
-          >
-            Tạo Preview PNG
-          </Button>
-
-          {/* Hiển thị ảnh preview đã tạo */}
-          {previewImage && (
-            <div className="mt-4">
-              <h4 className="text-sm text-gray-600 mb-2 text-center">
-                Ảnh Preview đã tạo:
-              </h4>
-              <img
-                src={previewImage}
-                alt="Preview PNG"
-                className="w-[150px] rounded-md border shadow-sm"
-              />
-            </div>
-          )}
         </div>
 
-        {/* Form bên phải */}
-        <div className="w-1/2 p-6 flex flex-col gap-3">
-          <h2 className="text-xl font-semibold mb-2">Tạo Template mới</h2>
+        {/* Cột phải: Form */}
+        <div className="w-full md:w-1/2 p-5 flex flex-col gap-3">
+          <h2 className="text-lg md:text-xl font-semibold mb-2 text-center md:text-left">
+            Tạo Template mới
+          </h2>
 
-          <label className="text-sm font-medium">Tên Template</label>
-          <input
-            type="text"
-            className="border rounded-md p-2"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-          />
-
-          <label className="text-sm font-medium">Mô tả</label>
-          <textarea
-            className="border rounded-md p-2 h-20"
-            value={description}
-            onChange={(e) => setDescription(e.target.value)}
-          />
-
-          <label className="text-sm font-medium">Thể loại</label>
-          <input
-            type="text"
-            className="border rounded-md p-2"
-            value={category}
-            onChange={(e) => setCategory(e.target.value)}
-          />
-
-          <label className="inline-flex items-center gap-2 mt-2">
+          <div className="flex flex-col gap-2">
+            <label className="text-sm font-medium">Tên Template</label>
             <input
-              type="checkbox"
-              checked={isPremium}
-              onChange={(e) => setIsPremium(e.target.checked)}
+              type="text"
+              className="border rounded-md p-2"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              placeholder="Nhập tên template..."
             />
-            <span className="text-sm">Template Premium?</span>
-          </label>
+
+            <label className="text-sm font-medium">Mô tả</label>
+            <textarea
+              className="border rounded-md p-2 h-20"
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
+              placeholder="Mô tả chi tiết..."
+            />
+
+            <label className="text-sm font-medium">Thể loại</label>
+            <input
+              type="text"
+              className="border rounded-md p-2"
+              value={category}
+              onChange={(e) => setCategory(e.target.value)}
+              placeholder="Ví dụ: Portfolio, Business..."
+            />
+
+            <label className="text-sm font-medium">Nghề nghiệp</label>
+            <select
+              className="border rounded-md p-2 bg-white"
+              value={job}
+              onChange={(e) => setJob(e.target.value)}
+            >
+              <option value="">-- Chọn nghề nghiệp --</option>
+              {jobOptions.map((option) => (
+                <option key={option} value={option}>
+                  {option}
+                </option>
+              ))}
+            </select>
+
+            <label className="inline-flex items-center gap-2 mt-2">
+              <input
+                type="checkbox"
+                checked={isPremium}
+                onChange={(e) => setIsPremium(e.target.checked)}
+              />
+              <span className="text-sm">Template Premium?</span>
+            </label>
+          </div>
 
           <div className="mt-4 flex justify-end gap-3">
             <Button variant="outline" onClick={onClose}>

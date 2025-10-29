@@ -9,58 +9,67 @@ import { CreateTemplatesSection } from "./components/create-templates-section";
 import { FeaturedCollections } from "./components/featured-collection";
 import { TrialForCreator } from "../../components/sections/TrialForCreator";
 const Dashboard = () => {
-  const { templates, visibleTrialForCreator, setVisibleTrialForCreator } = useDasshboard();
+  const {
+    templates,
+    visibleTrialForCreator,
+    setVisibleTrialForCreator,
+    navigate,
+  } = useDasshboard();
   return (
     <div className="flex flex-col overflow-y-scroll scrollbar-hide">
       <div className="h-[91px] z-50">
         <Header />
       </div>
-      <TrialForCreator visible={visibleTrialForCreator} onClose={() => {setVisibleTrialForCreator(false)}} />
-      <div className="pt-8 pb-16 flex bg-white">
-        <span className="absolute top-60 left-16 inset-0 opacity-20">
-          <Dot />
-        </span>
-        <div className="w-[50%] ml-28">
-          <div className="mt-6 text-[64px] font-bold">BioLinker Welcome</div>
-          <div className="w-41 h-32 text-[26px] font-helvetica text-[#565656] opacity-80 mb-4">
-            Biolinker is a smart link-in-bio tool that helps users create a
-            personalized landing page to showcase all their important links,
-            social profiles, and content in one place. Perfect for creators,
-            businesses, and influencers.
-          </div>
-          <button className="w-40 h-14 mt-10 rounded-[60px] bg-gradient-to-r from-[#16C875] to-[#6CDFAB] text-white font-helvetica font-bold text-[16px] leading-[14px] flex justify-center items-center">
-            Explore Now
-          </button>
-          <div className="flex justify-between items-center mt-12 w-[50%] mx-auto">
-            <div className="flex flex-col items-center">
-              <div className="font-bold text-[30px] font-helvetica mt-3">
-                98k+
-              </div>
-              <div className="font-helvetica text-[15px]">Active user</div>
-            </div>
 
-            <div className="flex flex-col items-center">
-              <div className="font-bold text-[30px] font-helvetica mt-3">
-                12k+
+      <TrialForCreator
+        visible={visibleTrialForCreator}
+        onClose={() => setVisibleTrialForCreator(false)}
+      />
+
+      {/* Hero section */}
+      <div className="pt-8 pb-16 flex flex-col lg:flex-row bg-white px-6 lg:pl-48 text-center lg:text-left">
+        {/* Left content */}
+        <div className="lg:w-1/2 w-full flex flex-col items-center lg:items-start">
+          <h1 className="mt-6 text-[40px] sm:text-[48px] lg:text-[64px] font-bold">
+            BioLinker
+          </h1>
+          <p className="text-[20px] sm:text-[22px] lg:text-[26px] text-[#565656] opacity-80 mb-6">
+            One Click - Stick All
+          </p>
+
+          <button
+            className="w-48 h-14 mt-4 rounded-full bg-gradient-to-r from-[#16C875] to-[#6CDFAB] text-white font-bold text-[16px] flex justify-center items-center"
+            onClick={() => navigate("/marketplace")}
+          >
+            Khám phá ngay
+          </button>
+
+          {/* Stats */}
+          <div className="flex justify-center lg:justify-between items-center mt-12 w-full max-w-md gap-6">
+            {[
+              { number: "1000+", label: "Người dùng" },
+              { number: "300+", label: "Lượt tải về" },
+              { number: "400+", label: "Khách hàng" },
+            ].map((stat, idx) => (
+              <div key={idx} className="flex flex-col items-center">
+                <div className="font-bold text-[28px] sm:text-[30px]">
+                  {stat.number}
+                </div>
+                <div className="text-[15px]">{stat.label}</div>
               </div>
-              <div className="font-helvetica text-[15px]">Total download</div>
-            </div>
-            <div className="flex flex-col items-center">
-              <div className="font-bold text-[30px] font-helvetica mt-3">
-                15k+
-              </div>
-              <div className="font-helvetica text-[15px]">Customer</div>
-            </div>
+            ))}
           </div>
         </div>
-        <div className="relative flex items-center ml-16 ">
-          <div className="absolute w-96 h-96 z-30">
+
+        {/* Right side - Templates preview */}
+        <div className="relative items-center justify-center mt-12 lg:mt-0 lg:ml-16 hidden lg:flex">
+          <div className="absolute w-64 sm:w-72 md:w-80 lg:w-96 z-30">
             <TemplateLayer template={templates[0]} />
           </div>
-          <div className="absolute left-24 w-80 h-80 z-20">
+          <div className="absolute left-12 sm:left-16 w-56 sm:w-64 lg:w-80 z-20">
             <TemplateLayer template={templates[1]} />
           </div>
-          <div className="absolute left-40 w-72 h-72 z-10">
+          <div className="absolute left-20 sm:left-24 w-48 sm:w-56 lg:w-72 z-10">
             <TemplateLayer template={templates[2]} />
           </div>
         </div>
@@ -68,10 +77,9 @@ const Dashboard = () => {
 
       <Features />
       <TemplatesSection />
-      <CollectionOverview />
+      {/* <CollectionOverview /> */}
       <CreateTemplatesSection />
-      <FeaturedCollections />
-      
+      {/* <FeaturedCollections /> */}
     </div>
   );
 };

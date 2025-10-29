@@ -1,19 +1,17 @@
-"use client";
+"use client"
 
-import { getContentValue, type LayoutElement } from "../../../types/bio";
-import { Button } from "../../../components/ui/button";
-import { Badge } from "../../../components/ui/badge";
-import { Card, CardContent } from "../../../components/ui/card";
-import { Twitter, Linkedin, Github, Instagram, Globe } from "lucide-react";
+import { getContentValue, type LayoutElement } from "../../../types/bio"
+import { Button } from "../../../components/ui/button"
+import { Badge } from "../../../components/ui/badge"
+import { Card, CardContent } from "../../../components/ui/card"
+import { Twitter, Linkedin, Github, Instagram, Globe } from "lucide-react"
 
 interface ProfileComponentRendererProps {
-  component: LayoutElement;
+  component: LayoutElement
 }
 
-export function ProfileComponentRenderer({
-  component,
-}: ProfileComponentRendererProps) {
-  const { type, content, styles } = component;
+export function ProfileComponentRenderer({ component }: ProfileComponentRendererProps) {
+  const { type, content, styles } = component
 
   const baseStyles = {
     fontSize: styles?.fontSize || "16px",
@@ -26,7 +24,7 @@ export function ProfileComponentRenderer({
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
-  };
+  }
 
   switch (type) {
     case "text":
@@ -34,18 +32,16 @@ export function ProfileComponentRenderer({
         <div style={baseStyles} className="text-balance">
           {getContentValue(component.content) || "Your text here"}
         </div>
-      );
+      )
 
     case "image":
       return (
-        <div
-          style={{ ...baseStyles, padding: "0" }}
-          className="overflow-hidden"
-        >
+        <div style={{ ...baseStyles, padding: "0" }} className="overflow-hidden">
           <img
             src={
               getContentValue(component.content) ||
-              "/placeholder.svg?height=200&width=200&query=profile photo"
+              "/placeholder.svg?height=200&width=200&query=profile photo" ||
+              "/placeholder.svg"
             }
             alt={getContentValue(component.content) || "Profile image"}
             width={200}
@@ -54,7 +50,7 @@ export function ProfileComponentRenderer({
             style={{ borderRadius: styles?.borderRadius || "8px" }}
           />
         </div>
-      );
+      )
 
     case "button":
       return (
@@ -70,29 +66,29 @@ export function ProfileComponentRenderer({
             {getContentValue(component.content) || "Click me"}
           </Button>
         </div>
-      );
+      )
     case "link":
       const getSocialIcon = (platform: string) => {
         switch (platform.toLowerCase()) {
           case "twitter":
-            return Twitter;
+            return Twitter
           case "linkedin":
-            return Linkedin;
+            return Linkedin
           case "github":
-            return Github;
+            return Github
           case "instagram":
-            return Instagram;
+            return Instagram
           default:
-            return Globe;
+            return Globe
         }
-      };
+      }
 
-      const links = (typeof content === "object" && content?.links) || [];
+      const links = (typeof content === "object" && content?.links) || []
 
       return (
         <div style={{ ...baseStyles, gap: "8px", flexWrap: "wrap" }}>
           {links.map((link: any, index: any) => {
-            const IconComponent = getSocialIcon(link.platform);
+            const IconComponent = getSocialIcon(link.platform)
             return (
               <Button
                 key={index}
@@ -104,25 +100,24 @@ export function ProfileComponentRenderer({
                 <IconComponent className="w-4 h-4" />
                 {link.platform}
               </Button>
-            );
+            )
           })}
         </div>
-      );
+      )
 
     case "bio":
       return (
         <Card style={{ ...baseStyles, padding: "0" }}>
           <CardContent className="p-4">
             <p className="text-sm leading-relaxed text-pretty">
-              {getContentValue(component.content) ||
-                "Tell us about yourself..."}
+              {getContentValue(component.content) || "Tell us about yourself..."}
             </p>
           </CardContent>
         </Card>
-      );
+      )
 
     case "skills":
-      const skills = (typeof content === "object" && content?.skills) || [];
+      const skills = (typeof content === "object" && content?.skills) || []
 
       return (
         <div style={{ ...baseStyles, gap: "8px", flexWrap: "wrap" }}>
@@ -132,9 +127,9 @@ export function ProfileComponentRenderer({
             </Badge>
           ))}
         </div>
-      );
+      )
 
     default:
-      return <div style={baseStyles}>Unknown component type: {type}</div>;
+      return <div style={baseStyles}>Unknown component type: {type}</div>
   }
 }

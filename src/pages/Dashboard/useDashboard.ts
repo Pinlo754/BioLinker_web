@@ -1,7 +1,8 @@
 import { useState } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
-const useDasshboard = () => {    
+const useDasshboard = () => {   
+  const navigate = useNavigate(); 
   const { isContentCreator } = useLocation().state || { isContentCreator: false };
   const [visibleTrialForCreator, setVisibleTrialForCreator] = useState(isContentCreator);
    const templates: Template[] = [
@@ -45,6 +46,7 @@ const useDasshboard = () => {
         isContentCreator,
         visibleTrialForCreator,
         setVisibleTrialForCreator,
+        navigate
     };
 };
 export interface Template {
