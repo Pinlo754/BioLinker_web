@@ -13,6 +13,7 @@ import UpdatePro from "./UpdatePro/UpdatePro";
 import LogOut from "../LogOut/LogOut";
 import { useSearchParams } from "react-router-dom";
 import useMedia from "use-media";
+import QRStyling from "../QRStyling/app/page";
 
 type AccountTabKey =
   | "BioLinker"
@@ -33,7 +34,7 @@ const Account = () => {
     "Thông tin cá nhân": Information,
     "Tên miền": Domain,
     "Nâng cấp": UpdatePro,
-    "QR của tôi": PageNotFound,
+    "QR của tôi": QRStyling,
     "Hướng dẫn": PageNotFound,
     "Đăng xuất": LogOut,
   };

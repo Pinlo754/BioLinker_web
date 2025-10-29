@@ -45,7 +45,7 @@ export default function BioBuilder() {
     const userString = localStorage.getItem("user");
     const user = userString ? JSON.parse(userString) : null;
     const userName = user?.customerDomain || "";
-    
+
     if (!userName) {
       alert("Vui lòng đăng nhập trước khi publish!");
       return;
@@ -63,21 +63,20 @@ export default function BioBuilder() {
           `https://68e6641521dd31f22cc56979.mockapi.io/template/${oldId}`
         );
       }
-
-      const payload = { userName, profileData };
-      await axios.post(
-        "https://68e6641521dd31f22cc56979.mockapi.io/template",
-        payload,
-        {
-          headers: { "Content-Type": "application/json" },
-        }
-      );
-
-      alert("Publish thành công!");
     } catch (error: any) {
       console.error("Publish error:", error.response?.data || error.message);
-      alert("Lỗi khi publish profile!");
     }
+
+    const payload = { userName, profileData };
+    await axios.post(
+      "https://68e6641521dd31f22cc56979.mockapi.io/template",
+      payload,
+      {
+        headers: { "Content-Type": "application/json" },
+      }
+    );
+
+    alert("Publish thành công!");
   };
 
   const [activePanel, setActivePanel] = useState<
@@ -142,11 +141,15 @@ export default function BioBuilder() {
       if (!templateIdParams) return;
 
       try {
-        const res = await axios.get("https://68e6641521dd31f22cc56979.mockapi.io/market");
+        const res = await axios.get(
+          "https://68e6641521dd31f22cc56979.mockapi.io/market"
+        );
         const dataList: MarketData[] = res.data;
 
         // Tìm đúng template theo id
-        const matched = dataList.find((item) => item.templateId === templateIdParams);
+        const matched = dataList.find(
+          (item) => item.templateId === templateIdParams
+        );
 
         if (matched) {
           console.log("✅ Template được chọn:", matched);

@@ -94,7 +94,7 @@ const Links = () => {
               <p className="text-sm sm:text-base">{bio}</p>
               <p className="text-sm sm:text-base text-green1 break-all">
                 <a
-                  href={`https://links.biolinker.io.vn/${domain}`}
+                  href={`https://biolinker.io.vn/biolinker/${domain}`}
                   className="hover:underline"
                   target="_blank"
                   rel="noopener noreferrer"
