@@ -15,6 +15,11 @@ type Props = {
 export default function MobileBottomNav({ className = "" }: Props) {
   const navigate = useNavigate();
   const location = useLocation();
+  const path = location.pathname;
+
+  // Ẩn navbar nếu là trang biolinker
+  const isBioLinkerPage = /^\/biolinker\/[^/]+\/?$/.test(path);
+  if (isBioLinkerPage) return null;
 
   const items: NavItem[] = [
     {
@@ -101,7 +106,7 @@ export default function MobileBottomNav({ className = "" }: Props) {
   ];
 
   const handleNavigation = (item: NavItem) => {
-    // ✅ Kiểm tra đăng nhập khi nhấn "Account"
+    // Kiểm tra đăng nhập khi nhấn "Account"
     if (item.id === "account") {
       const user = localStorage.getItem("user");
       if (!user) {
@@ -121,7 +126,7 @@ export default function MobileBottomNav({ className = "" }: Props) {
       <div className="mx-auto max-w-xl">
         <div className="bg-gradient-to-r from-[#16C875]/20 to-[#6CDFAB]/20 backdrop-blur-md border-t border-green-200 rounded-t-2xl shadow-lg flex justify-between items-center">
           {items.map((it) => {
-            const isActive = location.pathname.startsWith(it.path);
+            const isActive = path.startsWith(it.path); // Xác định active
             return (
               <button
                 key={it.id}
@@ -135,9 +140,7 @@ export default function MobileBottomNav({ className = "" }: Props) {
                 }`}
               >
                 <div className="w-6 h-6">{it.icon}</div>
-                <span className="text-[11px] leading-none mt-0.5 font-medium">
-                  {it.label}
-                </span>
+                <span className="text-[11px] leading-none mt-0.5 font-medium">{it.label}</span>
               </button>
             );
           })}

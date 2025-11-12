@@ -3,30 +3,30 @@ import MobileBottomNav from "./components/sections/BottomMenu";
 
 export default function App() {
   const location = useLocation();
+  const path = location.pathname;
 
-  // Xác định tab đang active theo URL
+  const isBioLinkerPage = /^\/biolinker\/[^/]+\/?$/.test(path); // cho phép dấu / cuối
+  console.log("PATH:", path, "isBioLinkerPage:", isBioLinkerPage);
+
   const active =
-    location.pathname.startsWith("/marketplace")
+    path.startsWith("/marketplace")
       ? "market"
-      : location.pathname.startsWith("/bio-edit")
+      : path.startsWith("/bio-edit")
       ? "edit"
-      : location.pathname.startsWith("/account")
+      : path.startsWith("/account")
       ? "profile"
       : "";
 
   return (
     <div className="min-h-screen bg-gray-50">
-      {/* Phần nội dung trang con */}
       <div className="pb-20">
         <Outlet />
       </div>
 
-      {/* Thanh bottom nav cho mobile */}
-      {(location.pathname.startsWith("/marketplace") ||
-        location.pathname.startsWith("/bio-edit") ||
-        location.pathname.startsWith("/account")) && (
-        <MobileBottomNav />
-      )}
+      {!isBioLinkerPage &&
+        (path.startsWith("/marketplace") ||
+          path.startsWith("/bio-edit") ||
+          path.startsWith("/account")) && <MobileBottomNav />}
     </div>
   );
 }

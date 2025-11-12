@@ -22,6 +22,8 @@ import TermsOfService from "../pages/TermsOfService";
 import LogOut from "../pages/LogOut/LogOut";
 import PaymentInfo from "../pages/PaymentInfo";
 import MainLayout from "../components/sections/Layout";
+import AnnaNguyenBio from "../pages/Bio-hardcode/anna-nguyen/anna-nguyen";
+import ThanhTrucBio from "../pages/Bio-hardcode/lethanhtruc/thanh-truc";
 
 const routers = createBrowserRouter([
   {
@@ -115,6 +117,14 @@ const routers = createBrowserRouter([
         path: "/payment",
         element: <PaymentInfo />,
       },
+      {
+        path: "biolinker/anna-nguyen",
+        element: <AnnaNguyenBio />,
+      },
+      {
+        path: "biolinker/lethanhtruc",
+        element: <ThanhTrucBio />,
+      }
     ],
   },
 ]);
