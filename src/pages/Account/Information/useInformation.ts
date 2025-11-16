@@ -16,6 +16,7 @@ const useInformation = () => {
   const fileInputRef = useRef<HTMLInputElement | null>(null);
   const [job, setJob] = useState("");
   const [domain, setDomain] = useState("");
+  const [changePassword, setChangePassword] = useState(false);
   const checkUserData = async () => {
     localStorage.removeItem("user");
     const userId = localStorage.getItem("userId");
@@ -116,6 +117,8 @@ const useInformation = () => {
     error,
     fileInputRef,
     handleChangeImage,
+    changePassword,
+    setChangePassword,
   };
 };
 export default useInformation;

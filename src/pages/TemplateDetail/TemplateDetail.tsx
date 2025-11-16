@@ -185,7 +185,7 @@ const TemplateDetail = () => {
   return (
     <div className="bg-gray-100 min-h-screen flex flex-col">
       <Header />
-      {<LoadingOverlay visible={isLoading} />}
+      {<LoadingOverlay visible={isLoading} message="Đang tải dữ liệu..." />}
       <main className="flex-1 flex flex-col items-center justify-center py-8 sm:py-12 mt-10">
         {/* main content */}
         <div className="flex flex-col md:flex-row gap-8 lg:gap-16 w-full max-w-screen-2xl px-4">

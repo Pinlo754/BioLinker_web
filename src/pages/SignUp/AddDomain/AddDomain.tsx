@@ -129,7 +129,7 @@ const AddDomain = () => {
         </button>
       </div>
 
-      <LoadingOverlay visible={isLoading} />
+      <LoadingOverlay visible={isLoading} message="Đang tải dữ liệu..." />
     </div>
   );
 };

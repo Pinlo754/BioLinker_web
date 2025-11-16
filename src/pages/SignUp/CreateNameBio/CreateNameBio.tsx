@@ -207,7 +207,7 @@ const CreateNameBio = () => {
       </div>
 
       {error && <ErrorOverlay visible={error} />}
-      {loading && <LoadingOverlay visible={loading} />}
+      {loading && <LoadingOverlay visible={loading} message="Đang tải dữ liệu..." />}
     </div>
   );
 };

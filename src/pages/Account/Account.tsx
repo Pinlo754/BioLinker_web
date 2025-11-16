@@ -21,7 +21,7 @@ type AccountTabKey =
   | "Tên miền"
   | "Nâng cấp"
   | "QR của tôi"
-  | "Hướng dẫn"
+  // | "Hướng dẫn"
   | "Đăng xuất";
 
 const Account = () => {
@@ -35,18 +35,31 @@ const Account = () => {
     "Tên miền": Domain,
     "Nâng cấp": UpdatePro,
     "QR của tôi": QRStyling,
-    "Hướng dẫn": PageNotFound,
+    // "Hướng dẫn": PageNotFound,
     "Đăng xuất": LogOut,
   };
 
   const ActiveTabView = tabViewByKey[activeTab];
 
-  // ✅ Tự động chuyển sang tab "Nâng cấp" nếu URL có param thanh toán
   useEffect(() => {
     const code = searchParams.get("code");
+    const tab = searchParams.get("tab");
 
     if (code) {
       setActiveTab("Nâng cấp");
+    } else if (tab) {
+      const decodedTab = decodeURIComponent(tab);
+      const validTabs: AccountTabKey[] = [
+        "BioLinker",
+        "Thông tin cá nhân",
+        "Tên miền",
+        "Nâng cấp",
+        "QR của tôi",
+        "Đăng xuất",
+      ];
+      if (validTabs.includes(decodedTab as AccountTabKey)) {
+        setActiveTab(decodedTab as AccountTabKey);
+      }
     }
   }, [searchParams]);
 

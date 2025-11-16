@@ -61,7 +61,7 @@ const Links = () => {
           onClose={() => setAddLinkModal(false)}
           onAddLink={(platform) => handleAddLink(platform)}
         />
-        <LoadingOverlay visible={loading} />
+        <LoadingOverlay visible={loading} message="Đang tải dữ liệu..." />
         <ErrorOverlay visible={error} />
         {/**personal information */}
         <div className="w-full flex flex-col gap-3 sm:gap-4">

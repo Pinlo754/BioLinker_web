@@ -3,6 +3,8 @@
 import { useEffect } from "react";
 import useInformation from "./useInformation";
 import { LoadingOverlay } from "../../../components/ui/loading";
+import { useNavigate } from "react-router-dom";
+import SetPassword from "../../SignUp/SetPassword/SetPassword";
 const Information = () => {
   const {
     userData,
@@ -21,7 +23,10 @@ const Information = () => {
     error,
     fileInputRef,
     handleChangeImage,
+    changePassword,
+    setChangePassword,
   } = useInformation();
+  const navigate = useNavigate();
   useEffect(() => {
     checkUserData();
   }, []);
@@ -29,8 +34,9 @@ const Information = () => {
     <div className="w-full flex flex-col gap-3 sm:gap-4 bg-[#F3F3F1] pb-6 sm:pb-8 lg:pb-10 mt-[3vh] h-full overflow-y-auto px-4 sm:px-6 lg:px-8">
       <div className="max-w-full sm:max-w-[85%] lg:max-w-[55%] mx-auto flex flex-col gap-3 sm:gap-4 w-full font-roboto text-[#4F4F4F]">
         {loading && (
-          <LoadingOverlay visible={loading} message="Saving details..." />
+          <LoadingOverlay visible={loading} message="Đang tải dữ liệu..." />
         )}
+        {<SetPassword visible={changePassword} emailGg={email} handleCancel={() => setChangePassword(false)} />}
         {/* personal information */}
         <div className="w-full gap-6 sm:gap-8 lg:gap-10 text-xl sm:text-2xl mt-4 sm:mt-5 lg:mt-6 text-black">
           <span className="text-xl sm:text-2xl font-bold">
@@ -129,7 +135,9 @@ const Information = () => {
             <span className="text-sm sm:text-base text-start mt-2">
               Bạn có thể thay đổi mật khẩu bằng cách nhấn nút bên dưới.
             </span>
-            <button className="rounded-2xl sm:rounded-3xl border px-4 sm:px-5 lg:px-6 py-3 sm:py-4 h-[55px] sm:h-[60px] lg:h-[65px] font-semibold mt-4 sm:mt-5 lg:mt-6 text-[#4F4F4F] hover:bg-[#EBEEF1] text-sm sm:text-base">
+            <button className="rounded-2xl sm:rounded-3xl border px-4 sm:px-5 lg:px-6 py-3 sm:py-4 h-[55px] sm:h-[60px] lg:h-[65px] font-semibold mt-4 sm:mt-5 lg:mt-6 text-[#4F4F4F] hover:bg-[#EBEEF1] text-sm sm:text-base"
+            onClick={() => setChangePassword(true)}
+            >
               Thay đổi mật khẩu
             </button>
           </div>
@@ -187,7 +195,8 @@ const Information = () => {
                   Nâng cấp lên gói Nâng cao để mở khóa thêm chức năng trong
                   BioLinker
                 </span>
-                <button className="align-center gap-3 sm:gap-4 justify-center flex flex-row rounded-2xl sm:rounded-3xl border px-4 sm:px-5 lg:px-6 py-3 sm:py-4 w-full sm:w-[85%] lg:w-[70%] font-semibold mt-2 text-[#4F4F4F] bg-gradient-to-r from-green1 to-green2 text-white">
+                <button className="align-center gap-3 sm:gap-4 justify-center flex flex-row rounded-2xl sm:rounded-3xl border px-4 sm:px-5 lg:px-6 py-3 sm:py-4 w-full sm:w-[85%] lg:w-[70%] font-semibold mt-2 text-[#4F4F4F] bg-gradient-to-r from-green1 to-green2 text-white"
+                    onClick={() => navigate("/account?tab=" + encodeURIComponent("Nâng cấp"))}>
                   <span className="text-sm sm:text-base text-white font-semibold">
                     Nâng cấp gói
                   </span>
