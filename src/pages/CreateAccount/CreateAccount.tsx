@@ -2,7 +2,7 @@ import Header from "../../components/sections/Header";
 import Footer from "../../components/sections/Footer";
 import background from "../../assets/background.jpg";
 import logo_big from "../../assets/logo_big.png";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import useCreateAccount from "./useCreateAccount";
 import SetPassword from "../SignUp/SetPassword/SetPassword";
 import { GoogleLogin } from "@react-oauth/google";
@@ -18,7 +18,7 @@ const CreateAccount = () => {
   const buttonsRef = useRef<HTMLDivElement | null>(null);
   const [buttonsWidth, setButtonsWidth] = useState<number>(0);
   const { emailGg, setPassword } = useLocation().state || {};
-
+  const navigate = useNavigate();
   useEffect(() => {
     if (!buttonsRef.current) return;
     const update = () => {
@@ -182,7 +182,7 @@ const CreateAccount = () => {
         </div>
 
         {/* Set Password Modal */}
-        {<SetPassword visible={setPassword} emailGg={emailGg} />}
+        {<SetPassword visible={setPassword} emailGg={emailGg} handleCancel={() => navigate("/create-account")} />}
       </div>
 
       <Footer />

@@ -9,9 +9,10 @@ import useSignUp from "../useSignUp";
 type SetPasswordProps = {
   visible: boolean;
   emailGg: string;
+  handleCancel: () => void;
 };
 
-const SetPassword: React.FC<SetPasswordProps> = ({ visible, emailGg }) => {
+const SetPassword: React.FC<SetPasswordProps> = ({ visible, emailGg, handleCancel}) => {
   const { validatePassword } = useSignUp();
   const {
     password,
@@ -23,7 +24,6 @@ const SetPassword: React.FC<SetPasswordProps> = ({ visible, emailGg }) => {
     showConfirmPassword,
     setShowConfirmPassword,
     getStarted,
-    handleCancel,
   } = useSetPassword();
 
   if (!visible) return null;
