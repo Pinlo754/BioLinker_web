@@ -124,7 +124,7 @@ const SignUp = () => {
         {/* Desktop Layout: Logo left, Form right */}
         <div className="hidden lg:flex relative items-center justify-center lg:justify-around py-12 w-full max-w-7xl mx-auto z-10 px-8 gap-8">
           {/* Logo - Desktop */}
-          <div className="flex items-center justify-center flex-[3]">
+          <div className="flex items-center justify-center md:justify-start flex-[1.5]">
             <img
               src={logo_big || "/placeholder.svg"}
               className="w-[65%] max-w-md"
@@ -133,7 +133,7 @@ const SignUp = () => {
           </div>
 
           {/* Form - Desktop */}
-          <div className="flex-[2] bg-white rounded-2xl shadow-lg p-10 max-w-xl">
+          <div className="flex-[1] bg-white rounded-2xl shadow-lg p-10 max-w-xl">
             <form className="space-y-6">
               {/* Họ tên - Desktop */}
               <div className="flex flex-row gap-4">
