@@ -37,7 +37,7 @@ const Market = () => {
       <Header />
 
       {/* Loading & Notification */}
-      <LoadingOverlay visible={loading} />
+      <LoadingOverlay visible={loading} message="Đang tải dữ liệu..." />
       <NotificationOverlay
         visible={message !== ""}
         message={message}

@@ -30,7 +30,7 @@ const Domain = () => {
         onClose={() => setMessage("")}
         type={success}
       />
-      <LoadingOverlay visible={loading} />
+      <LoadingOverlay visible={loading} message="Đang tải dữ liệu..." />
       <h1 className="text-2xl sm:text-3xl lg:text-[2.5rem] font-bold bg-gradient-to-r from-green1 to-green2 bg-clip-text text-transparent px-4">
         Tùy chỉnh tên miền
       </h1>

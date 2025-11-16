@@ -29,7 +29,7 @@ const Information = () => {
     <div className="w-full flex flex-col gap-3 sm:gap-4 bg-[#F3F3F1] pb-6 sm:pb-8 lg:pb-10 mt-[3vh] h-full overflow-y-auto px-4 sm:px-6 lg:px-8">
       <div className="max-w-full sm:max-w-[85%] lg:max-w-[55%] mx-auto flex flex-col gap-3 sm:gap-4 w-full font-roboto text-[#4F4F4F]">
         {loading && (
-          <LoadingOverlay visible={loading} message="Saving details..." />
+          <LoadingOverlay visible={loading} message="Đang tải dữ liệu..." />
         )}
         {/* personal information */}
         <div className="w-full gap-6 sm:gap-8 lg:gap-10 text-xl sm:text-2xl mt-4 sm:mt-5 lg:mt-6 text-black">

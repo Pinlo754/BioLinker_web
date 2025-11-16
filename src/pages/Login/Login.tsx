@@ -196,7 +196,7 @@ const Login = () => {
           <a href="/terms-of-service">Điều khoản dịch vụ</a>
         </div>
       </div>
-      <LoadingOverlay visible={loading} /> 
+      <LoadingOverlay visible={loading} message="Đang tải dữ liệu..." /> 
       <Footer />
     </div>
   );

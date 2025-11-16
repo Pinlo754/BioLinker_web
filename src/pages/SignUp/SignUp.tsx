@@ -318,7 +318,7 @@ const SignUp = () => {
               </button>
 
               <ErrorOverlay visible={error} message={errorMessage} />
-              <LoadingOverlay visible={loading} message="loading..." />
+              <LoadingOverlay visible={loading} message="Đang tải dữ liệu..." />
 
               {/* Đã có tài khoản - Desktop */}
               <div className="text-center text-gray-500 text-sm mt-2">
@@ -531,7 +531,7 @@ const SignUp = () => {
               </button>
 
               <ErrorOverlay visible={error} message={errorMessage} />
-              <LoadingOverlay visible={loading} message="loading..." />
+              <LoadingOverlay visible={loading} message="Đang tải dữ liệu..." />
 
               {/* Đã có tài khoản - Mobile */}
               <div className="text-center text-gray-500 text-xs mt-2">

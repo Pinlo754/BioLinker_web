@@ -9,9 +9,10 @@ import { GoogleLogin } from "@react-oauth/google";
 import { toast } from "react-toastify";
 import { useEffect, useRef, useState } from "react";
 import useLogin from "../Login/useLogin";
+import { LoadingOverlay } from "../../components/ui/loading";
 
 const CreateAccount = () => {
-  const { validEmail, validSubmit, handleCreateAccount, email, setEmail } =
+  const { validEmail, validSubmit, handleCreateAccount, email, setEmail, exitsEmail, loading } =
     useCreateAccount();
   const { postGoogleLogin } = useLogin();
   const buttonsRef = useRef<HTMLDivElement | null>(null);
@@ -157,10 +158,15 @@ const CreateAccount = () => {
                   value={email}
                 />
                 {validEmail === false && validSubmit ? (
-                  <span className="ml-4 mt-2 text-red-500 text-sm sm:text-base">
+                  <span className="ml-4 mt-4 text-red-500 text-sm sm:text-base">
                     Vui lòng nhập địa chỉ email hợp lệ
                   </span>
-                ) : null}
+                ) : <></>}
+                {exitsEmail ? (
+                  <span className="ml-4 mt-4 text-red-500 text-sm sm:text-base">
+                    Email đã tồn tại
+                  </span>
+                ) : <></>}
               </div>
 
               {/* Submit Button */}
@@ -180,6 +186,7 @@ const CreateAccount = () => {
       </div>
 
       <Footer />
+      <LoadingOverlay visible={loading} message="Đang tải dữ liệu..." />
     </div>
   );
 };
